@@ -43,7 +43,20 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'created_at'">
-						<span class="card-shadow--small bg-danger">{{ props.row.created_at }}</span>
+						<span class="card-date">{{moment(props.row.created_at).format('YYYY-MM-DD')}}</span>
+					</span>
+					
+					<span v-else-if="props.column.field == 'name'">
+						<button class="el-button el-button--primary is-plain">{{ props.row.name }}</button>
+					</span>
+					
+					<span v-else-if="props.column.field == 'game_status'">
+						<span v-if="props.row.game_status == 'Finished'">
+							<button class="el-button el-button--success is-round">{{ props.row.game_status }}</button>
+						</span>
+						<span v-else>
+							<button class="el-button el-button--warning is-round">{{ props.row.game_status }}</button>
+						</span>
 					</span>
 
 					<span v-else>
@@ -131,6 +144,17 @@ export default {
 	width: 40px;
 	object-fit: cover;
 	border-radius: 5px;
+}
+
+.card-date {
+	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
+	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
+	background-color: #fff;
+    border-radius: 5px;
+	overflow: hidden;
+	margin: 10px 0px;
+	padding: 10px 20px;
+	font-weight: 900;
 }
 </style>
 
