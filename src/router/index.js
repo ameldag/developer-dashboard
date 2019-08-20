@@ -13,6 +13,7 @@ import Profile from '../views/pages/Profile.vue'
 import NotFound from '../views/pages/NotFound.vue'
 
 import Games from '../views/pages/management/Games.vue'
+import Teams from '../views/pages/management/Teams.vue'
 
 import layouts from '../layout'
 import store from '../store/index.js'
@@ -51,6 +52,17 @@ const router = new Router({
 			path: '/management/games',
 			name: 'games_management',
 			component: Games,
+			meta: {
+				auth: true,
+				layout: layouts.navLeft,
+				searchable: true,
+				tags: ['pages']
+			}
+		},
+		{
+			path: '/management/teams',
+			name: 'teams_management',
+			component: Teams,
 			meta: {
 				auth: true,
 				layout: layouts.navLeft,

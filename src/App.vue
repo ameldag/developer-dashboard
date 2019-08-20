@@ -55,9 +55,6 @@
 			@push-page="closeSidebar" 
 			v-if="navPos === 'right'"/>
 
-		<Footer v-if="footer === 'above'" :position="footer"/>
-
-		<layout-picker :position="navPos" v-if="isLogged"/>
 	</div>
 </template>
 
