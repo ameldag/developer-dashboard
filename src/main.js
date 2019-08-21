@@ -56,6 +56,10 @@ import VueGoodTable from 'vue-good-table'
 import 'vue-good-table/dist/vue-good-table.min.css'
 Vue.use(VueGoodTable)
 
+
+import Peity from 'vue-peity'
+Vue.component('Peity', Peity)
+
 // import moment from 'moment'
 Vue.prototype.moment = moment
 
