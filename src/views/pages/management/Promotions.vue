@@ -1,11 +1,11 @@
 <template>
 	<div class="page-vue-good-table scrollable only-y">
 		<div class="page-header">
-			<h1>Manage your games</h1>
+			<h1>Manage your promotions</h1>
 			<el-breadcrumb separator="/">
 				<el-breadcrumb-item :to="{ path: '/' }"><i class="mdi mdi-gamepad-right"></i></el-breadcrumb-item>
 				<el-breadcrumb-item>Management</el-breadcrumb-item>
-				<el-breadcrumb-item>Games</el-breadcrumb-item>
+				<el-breadcrumb-item>Promotions</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
 		</div>
@@ -34,28 +34,44 @@
 				class="styled">
 				<template slot="table-row" slot-scope="props">
 					<span v-if="props.column.field == 'icon'">
-						<span v-if="props.row.icon">
-							<img v-bind:src="props.row.icon" alt="icon" class="app-icon">
+						<span v-if="props.row.game.icon">
+							<img v-bind:src="props.row.game.icon" alt="icon" class="icon">
 						</span>
 						<span v-else>
-							<img src="http://via.placeholder.com/300x300" alt="icon" class="app-icon">
+							<img src="http://via.placeholder.com/300x300" alt="icon" class="icon">
 						</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'created_at'">
-						<span class="card-date">{{moment(props.row.created_at).format('YYYY-MM-DD')}}</span>
+						<span class="card-date-promotions">{{moment(props.row.created_at).format('YYYY-MM-DD')}}</span>
+					</span>
+					
+					<span v-else-if="props.column.field == 'start_date'">
+						<span class="card-date-promotions">{{moment(props.row.start_date).format('YYYY-MM-DD')}}</span>
+					</span>
+					
+					<span v-else-if="props.column.field == 'end_date'">
+						<span class="card-date-promotions">{{moment(props.row.end_date).format('YYYY-MM-DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
-						<button class="el-button el-button--primary is-plain">{{ props.row.name }}</button>
+						<button class="el-button el-button--primary is-plain">{{ props.row.first_name }} {{ props.row.last_name }}</button>
 					</span>
 					
-					<span v-else-if="props.column.field == 'game_status'">
-						<span v-if="props.row.game_status == 'Finished'">
-							<button class="el-button el-button--success is-round">{{ props.row.game_status }}</button>
+					<span v-else-if="props.column.field == 'channels'">
+                        <span v-for="game in props.row.channels" class="el-tag">{{ game.name }}</span>
+					</span>
+					
+					<span v-else-if="props.column.field == 'status'">
+						<span v-if="props.row.status == 'running'">
+                            <button type="button" class="el-button el-button--success is-circle">
+                                <i class="el-icon-check"></i>
+                            </button>
 						</span>
 						<span v-else>
-							<button class="el-button el-button--warning is-round">{{ props.row.game_status }}</button>
+                            <button type="button" class="el-button el-button--danger is-circle">
+                                <i class="el-icon-check"></i>
+                            </button>
 						</span>
 					</span>
 
@@ -72,35 +88,51 @@
 const axios = require('axios');
 
 export default {
-	name: 'Games',
+	name: 'Promotions',
 	data(){
 		return {
 			columns: [
 				{
-					label: 'App Icon',
+					label: 'Icon',
 					field: 'icon',
 					filterable: false,
 				},
 				{
-					label: 'App Name',
-					field: 'name',
+					label: 'Name',
+					field: 'promotion_name',
 					filterable: true,
 				},
 				{
-					label: 'Game Id',
-					field: '_id',
-					html: false,
+					label: 'Game',
+					field: 'game.name',
 					filterable: true,
 				},
 				{
-					label: 'Created On',
-					field: 'created_at',
-					type: 'string'
+					label: 'Featured In',
+					field: 'channels',
+					filterable: true,
 				},
 				{
 					label: 'Status',
-					field: 'game_status',
+					field: 'status',
 					html: false,
+					filterable: true,
+				},
+				{
+					label: 'Reach',
+					field: 'reach_count',
+					html: false,
+					filterable: true,
+				},
+				{
+					label: 'Starts At',
+					field: 'start_date',
+					type: 'string'
+				},
+				{
+					label: 'Ends At',
+					field: 'end_date',
+					type: 'string'
 				},
 			],
 			// rows: [
@@ -126,7 +158,7 @@ export default {
 		}
 	},
 	mounted() {
-		axios.get(this.$APIPATH + `/games/` + JSON.parse(localStorage.getItem('user')).teams[0])
+		axios.get(this.$APIPATH + `/promotions/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {			
 			this.rows = response.data.data
 			})
@@ -139,22 +171,22 @@ export default {
 	overflow: hidden;
 }
 
-.app-icon {
+.icon {
 	height: 40px;
 	width: 40px;
 	object-fit: cover;
-	border-radius: 5px;
+	border-radius: 10px;
 }
 
-.card-date {
-	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
-	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
-	background-color: #fff;
-    border-radius: 5px;
-	overflow: hidden;
-	margin: 10px 0px;
-	padding: 10px 20px;
-	font-weight: 900;
+.card-date-promotions {
+	// -webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
+	// box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
+	// background-color: #fff;
+    // border-radius: 5px;
+	// overflow: hidden;
+	// margin: 10px 0px;
+	// padding: 10px 20px;
+	// font-weight: 900;
 }
 </style>
 

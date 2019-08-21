@@ -368,14 +368,14 @@ export default {
 	},
 	methods: {
 		getChart1datax() {
-			axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/net-income-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 			.then(response => {
 				console.log(response.data.data.chart[0])
 				return response.data.data.chart[0]
 				})
 		},
 		getChart1datay() {
-			axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/net-income-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 			.then(response => {
 				console.log(response.data.data.chart[1])
 				return response.data.data.chart[1]
@@ -521,7 +521,7 @@ export default {
 
 	},
 	mounted() {
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/net-income-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.category = response.data.data.chart[0]
 			// this.chart1.setOption.xAxis.data = response.data.data.chart[0]
@@ -529,44 +529,44 @@ export default {
 			console.log(chart1.setOption)
 			})
 		
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/game-played-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/game-played-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.played_games = response.data.data.currentMonth
-			this.played_percentage = (((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 )
+			this.played_percentage = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
 			})
 
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/seemba-install-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/seemba-install-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.new_installs = response.data.data.currentMonth
-			this.percentage_of_new_installs = (((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 )
+			this.percentage_of_new_installs = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
 			})
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/seemba-arpdau-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/seemba-arpdau-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.arpdu = response.data.data.currentMonth
-			this.percentage_arpdu = (((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 )
+			this.percentage_arpdu = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
 			})
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/estimated-gross-revenue-monthly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/estimated-gross-revenue-monthly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.revenue = response.data.data.currentMonth
-			this.percentage_revenue = (((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 )
+			this.percentage_revenue = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
 			})
 
 		
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/all-tournaments-weekly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/all-tournaments-weekly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.all_tournaments = response.data.data.total
 			this.all_tournaments_chart = response.data.data.chart
 			})
 
 		
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/free-tournaments-weekly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/free-tournaments-weekly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.free_tournaments = response.data.data.total
 			this.free_tournaments_chart = response.data.data.chart
 			})
 
 		
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/cash-tournaments-weekly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/cash-tournaments-weekly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.cash_tournaments = response.data.data.total
 			this.cash_tournaments_chart = response.data.data.chart
@@ -574,21 +574,21 @@ export default {
 
 			
 		// Duels
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/all-challenges-weekly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/all-challenges-weekly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.all_challenges = response.data.data.total
 			this.all_challenges_chart = response.data.data.chart
 			})
 
 		
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/free-challenges-weekly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/free-challenges-weekly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.free_challenges = response.data.data.total
 			this.free_challenges_chart = response.data.data.chart
 			})
 
 		
-		axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/analytics/cash-challenges-weekly/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.post(this.$APIPATH + `/analytics/cash-challenges-weekly/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {
 			this.cash_challenges = response.data.data.total
 			this.cash_challenges_chart = response.data.data.chart

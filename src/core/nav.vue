@@ -38,7 +38,7 @@
 		<el-menu-item index="/management/teams">
 			<i class="mdi mdi-account-supervisor"></i><span slot="title">Teams</span>
 		</el-menu-item>
-		<el-menu-item index="/dashboard">
+		<el-menu-item index="/management/promotions">
 			<i class="mdi mdi-volume-high"></i><span slot="title">Promotions</span>
 		</el-menu-item>
 

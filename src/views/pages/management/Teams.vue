@@ -132,7 +132,7 @@ export default {
 		}
 	},
 	mounted() {
-		axios.get(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + JSON.parse(localStorage.getItem('user')).team)
+		axios.get(this.$APIPATH + `/editors/` + JSON.parse(localStorage.getItem('user')).teams[0])
 		.then(response => {			
 			this.rows = response.data.data
 			})
