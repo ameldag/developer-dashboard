@@ -15,6 +15,7 @@ import NotFound from '../views/pages/NotFound.vue'
 import Games from '../views/pages/management/Games.vue'
 import Teams from '../views/pages/management/Teams.vue'
 import Promotions from '../views/pages/management/Promotions.vue'
+import Game from '../views/pages/management/Game.vue'
 
 import layouts from '../layout'
 import store from '../store/index.js'
@@ -75,6 +76,17 @@ const router = new Router({
 			path: '/management/promotions',
 			name: 'promotions_management',
 			component: Promotions,
+			meta: {
+				auth: true,
+				layout: layouts.navLeft,
+				searchable: true,
+				tags: ['pages']
+			}
+		},
+		{
+			path: '/games/:id',
+			name: 'game',
+			component: Game,
 			meta: {
 				auth: true,
 				layout: layouts.navLeft,

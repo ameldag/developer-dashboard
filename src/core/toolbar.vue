@@ -65,7 +65,10 @@ export default {
 			popoverWidth: 300,
 			fullscreen: false,
 			lang: 'us',
-			user: null
+			user: {
+				first_name: null,
+				last_name: null
+			}
 		}
 	},
 	methods: {
