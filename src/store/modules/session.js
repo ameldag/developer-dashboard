@@ -43,6 +43,7 @@ const actions = {
             else {
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("user", JSON.stringify(res.data.editor))
+                localStorage.setItem("team", JSON.stringify(res.data.editor.teams[0]))
                 store.commit('setToken', res.data.token);
                 store.commit('setUser', res.data.editor);
                 store.commit('clearMessage');

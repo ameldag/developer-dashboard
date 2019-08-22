@@ -66,7 +66,7 @@ export default {
 
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
-		axios.get(this.$APIPATH + `/games/` + JSON.parse(localStorage.getItem('user')).teams[0] + "/" + this.$route.params.id)
+		axios.get(this.$APIPATH + `/games/` + JSON.parse(localStorage.getItem('team')) + "/" + this.$route.params.id)
 		.then(response => {			
 			this.game = response.data.data
 			})

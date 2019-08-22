@@ -42,6 +42,9 @@
 				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="/profile"><i class="mdi mdi-account mr-10"></i> Profile</el-dropdown-item>
+					<span v-for="(team, index) in user.teams">
+						<el-dropdown-item @click.native="changeTeam(team)" divided><i class="mdi mdi-account mr-10"></i> Team {{ index + 1 }}</el-dropdown-item>
+					</span>
 					<el-dropdown-item command="/logout" divided><i class="mdi mdi-logout mr-10"></i> Logout</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
@@ -96,6 +99,12 @@ export default {
 				wrap: false,
 				callback: () => {this.fullscreen = this.$fullscreen.getState()}
 			})
+		},
+		changeTeam(team) {
+			console.log("changing the team")
+			localStorage.setItem("team", team)
+			// window.location('/')
+			this.$router.go('/')
 		}
 	},
 	components: {

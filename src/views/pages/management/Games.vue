@@ -126,7 +126,7 @@ export default {
 		}
 	},
 	mounted() {
-		axios.get(this.$APIPATH + `/games/` + JSON.parse(localStorage.getItem('user')).teams[0])
+		axios.get(this.$APIPATH + `/games/` + localStorage.getItem('team'))
 		.then(response => {			
 			this.rows = response.data.data
 			})
