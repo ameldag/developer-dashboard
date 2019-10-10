@@ -47,7 +47,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
-						<button class="el-button el-button--primary is-plain">{{ props.row.name }}</button>
+						<button class="el-button el-button--primary is-plain" @click="GameProfile(props.row._id)">{{ props.row.name }}</button>
 					</span>
 					
 					<span v-else-if="props.column.field == 'game_status'">
@@ -103,33 +103,24 @@ export default {
 					html: false,
 				},
 			],
-			// rows: [
-			// 	{_id:1, name:"John",age:20,createdAt: '2010-10-31',score: 0.03343},
-			// 	{_id:2, name:"Jane",age:24,createdAt: '2011-10-31',score: 0.03343},
-			// 	{_id:3, name:"Susan",age:16,createdAt: '2011-10-30',score: 0.03343},
-			// 	{_id:4, name:"Chris",age:55,createdAt: '2011-10-11',score: 0.03343},
-			// 	{_id:5, name:"Dan",age:40,createdAt: '2011-10-21',score: 0.03343},
-			// 	{_id:6, name:"John",age:20,createdAt: '2011-10-31',score: 0.03343},
-			// 	{_id:7, name:"Jane",age:24,createdAt: '20111031'},
-			// 	{_id:8, name:"Susan",age:16,createdAt: '2013-10-31',score: 0.03343},
-			// 	{_id:9, name:"Chris",age:55,createdAt: '2012-10-31',score: 0.03343},
-			// 	{_id:10, name:"Dan",age:40,createdAt: '2011-10-31',score: 0.03343},
-			// 	{_id:11, name:"John",age:20,createdAt: '2011-10-31',score: 0.03343},
-			// 	{_id:12, name:"Jane",age:24,createdAt: '2011-07-31',score: 0.03343},
-			// 	{_id:13, name:"Susan",age:16,createdAt: '2017-02-28',score: 0.03343},
-			// 	{_id:14, name:"Chris",age:55,createdAt: '',score: 0.03343},
-			// 	{_id:15, name:"Dan",age:40,createdAt: '2011-10-31',score: 0.03343},
-			// 	{_id:19, name:"Chris",age:55,createdAt: '2011-10-31',score: 0.03343},
-			// 	{_id:20, name:"Dan",age:40,createdAt: '2011-10-31',score: 0.03343},
-			// ],
 			rows: [],
 		}
 	},
+    methods: {
+        GameProfile(id){
+            console.log("hi");
+            window.location.href = '/games/' + id;
+        }
+    },
 	mounted() {
-		axios.get(this.$APIPATH + `/games/` + localStorage.getItem('team'))
-		.then(response => {			
-			this.rows = response.data.data
-			})
+		let data = {
+			token : localStorage.getItem("token"),
+			id : this.$store.getters['session/me'].team
+		}
+		this.$store.dispatch("games/getGames", data).then((res) => {
+			this.rows = this.$store.getters['games/games']
+		});
+		
 	}
 }
 </script>

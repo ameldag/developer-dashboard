@@ -32,7 +32,7 @@
 		</el-menu-item>
 
 		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Management</span></div>
-		<el-menu-item index="/management/games">
+		<el-menu-item :index="'/management/games'">
 			<i class="mdi mdi-gamepad-right"></i><span slot="title">Games</span>
 		</el-menu-item>
 		<el-menu-item index="/management/teams">
@@ -103,7 +103,8 @@ export default {
 		return {
 			isIe: true,
 			isEdge: true,
-			activeLink: null
+			activeLink: null,
+			
 		}
 	},
 	methods: {
@@ -129,8 +130,7 @@ export default {
 		})
 		//console.log('this.$router.currentRoute.path', this.$router.currentRoute.path)
 	},
-	mounted() {
-		//console.log('nav component mounted')				
+	mounted() {		
 	}
 }
 </script>

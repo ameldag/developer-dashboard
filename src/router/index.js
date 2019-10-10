@@ -103,14 +103,6 @@ const router = new Router({
 			}
 		},
 		{
-			path: '/login2',
-			name: 'login2',
-			component: Login2,
-			meta: {
-				layout: layouts.contenOnly
-			}
-		},
-		{
 			path: '/register',
 			name: 'register',
 			component: Register,
@@ -167,11 +159,9 @@ const l = {
 }
 
 //insert here login logic
-const auth = {
+let auth = {
 	loggedIn() {
-		if (localStorage.getItem("token") && localStorage.getItem("user")) {
-			store.commit('setToken', localStorage.getItem("token"));
-			store.commit('setUser', localStorage.getItem("user"));
+		if (localStorage.getItem("token")) {
 			return true
 		} else {
 			return false
@@ -184,39 +174,28 @@ const auth = {
 }
 
 router.beforeEach((to, from, next) => {
-	let authrequired = false
-	if(to && to.meta && to.meta.auth)
-		authrequired = true
+		// console.log('loggedin',auth.loggedIn());
 
-	//console.log('authrequired', authrequired, to.name)
+		
+			var hasPermission = localStorage.getItem("token");
 
-	if(authrequired) {
-		if(auth.loggedIn()) {			
-			if(to.name === 'login') {				
-				window.location.href = '/'
-				 //this.$router.push('/')
-				return false
-			} else { 
-				next()
+			console.log({hasPermission});
+			console.log(to.name);
+			if(hasPermission != null){
+				if(to.name === 'login'){
+					window.location.href = '/'
+					return false
+				} else {
+					next()
+				}
+			} else {
+				if(to.name !== 'login'){
+					window.location.href = '/login'
+					return false
+				} else {
+					next()
+				}
 			}
-		} else {
-			if(to.name !== 'login'){
-				window.location.href = '/login'
-				//this.$router.replace('/login')
-
-				return false
-			}
-			next()
-		}
-	} else {
-		if(auth.loggedIn() && to.name === 'login'){
-			window.location.href = '/'
-			//this.$router.replace('/')
-			return false
-		} else {
-			next()
-		}
-	}
 
 	if(to && to.meta && to.meta.layout){
 		l.set(to.meta.layout)

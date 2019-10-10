@@ -68,10 +68,7 @@ export default {
 			popoverWidth: 300,
 			fullscreen: false,
 			lang: 'us',
-			user: {
-				first_name: null,
-				last_name: null
-			}
+			user: null
 		}
 	},
 	methods: {
@@ -111,12 +108,11 @@ export default {
 		NotificationBox,
 		Search
 	},
-	mounted() {
+	async mounted() {
 		this.fullscreen = this.$fullscreen.getState()
 		this.resizePopoverWidth();
 		window.addEventListener('resize', this.resizePopoverWidth);
-		console.log(localStorage.getItem('user'))
-		this.user = JSON.parse(localStorage.getItem('user'));
+		this.user = await this.$store.getters['session/me'];
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizePopoverWidth);

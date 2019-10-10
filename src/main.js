@@ -76,8 +76,8 @@ Vue.directive('affix', Affix)
 
 const i18n = new VueI18n({ locale: 'us', messages:i18n_messages })
 
-// Vue.prototype.$APIPATH = "https://seemba-api.herokuapp.com/api/dashboard/v1"
-Vue.prototype.$APIPATH = "https://api.seemba.com/api/dashboard/v1"
+Vue.prototype.$APIPATH = "https://seemba-api.herokuapp.com/api/dashboard/v1"
+// Vue.prototype.$APIPATH = "https://api.seemba.com/api/dashboard/v1"
 
 new Vue({
 	i18n,

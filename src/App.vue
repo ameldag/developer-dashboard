@@ -129,12 +129,11 @@ export default {
 		if(browser.name)
 			document.getElementsByTagName("html")[0].classList.add(browser.name)
 	},
-	mounted() {
+	async mounted() {
 		this.resizeOpenNav()
 		window.addEventListener('resize', this.resizeOpenNav);
 		if(localStorage.getItem('token')) {
-			this.setToken(localStorage.getItem('token'))
-			this.$store.dispatch("session/getMe", localStorage.getItem('token'))
+			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
 		}
 	},
 	beforeDestroy() {

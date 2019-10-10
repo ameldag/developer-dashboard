@@ -4,6 +4,10 @@ import createPersistedState from 'vuex-persistedstate'
 
 
 import session from './modules/session'
+import games from './modules/games'
+import team from './modules/team'
+import analytics from './modules/analytics'
+import promotion from './modules/promotion'
 
 Vue.use(Vuex)
 
@@ -11,7 +15,11 @@ const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
     modules: {
-        session
+		session,
+		games,
+		team,
+		analytics,
+		promotion
     },
 	state: {
 		layout: {

@@ -368,14 +368,14 @@ export default {
 	},
 	methods: {
 		getChart1datax() {
-			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem('team'))
+			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + this.$store.getters['session/me'].team)
 			.then(response => {
 				console.log(response.data.data.chart[0])
 				return response.data.data.chart[0]
 				})
 		},
 		getChart1datay() {
-			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem('team'))
+			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + this.$store.getters['session/me'].team)
 			.then(response => {
 				console.log(response.data.data.chart[1])
 				return response.data.data.chart[1]
@@ -521,78 +521,126 @@ export default {
 
 	},
 	mounted() {
-		axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.category = response.data.data.chart[0]
-			// this.chart1.setOption.xAxis.data = response.data.data.chart[0]
-			this.lineData = response.data.data.chart[1]
-			console.log(chart1.setOption)
-			})
 		
-		axios.post(this.$APIPATH + `/analytics/game-played-monthly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.played_games = response.data.data.currentMonth
-			this.played_percentage = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
-			})
+		let data = {
+			token : localStorage.getItem("token"),
+			id : this.$store.getters['session/me'].team
+		}
 
-		axios.post(this.$APIPATH + `/analytics/seemba-install-monthly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.new_installs = response.data.data.currentMonth
-			this.percentage_of_new_installs = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
-			})
-		axios.post(this.$APIPATH + `/analytics/seemba-arpdau-monthly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.arpdu = response.data.data.currentMonth
-			this.percentage_arpdu = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
-			})
-		axios.post(this.$APIPATH + `/analytics/estimated-gross-revenue-monthly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.revenue = response.data.data.currentMonth
-			this.percentage_revenue = Math.floor((((response.data.data.currentMonth - response.data.data.lastMonth) / response.data.data.lastMonth) * 100 ))
-			})
+		//played duels this month
+		this.$store.dispatch("analytics/game_played_monthly", data)
+		.then((res) => {
+			this.played_games = this.$store.getters['analytics/gamePlayedMonthly']
+			this.played_percentage = Math.trunc(this.$store.getters['analytics/gamePlayedMonthlyPercentage']);
+		});
+
+		//seemba installs this month
+		this.$store.dispatch("analytics/newInstalls", data)
+		.then((res) => {
+			this.new_installs = this.$store.getters['analytics/newInstalls']
+			this.percentage_of_new_installs = Math.trunc(this.$store.getters['analytics/percentageNewInstalls']) 
+		});
+
+		//seemba ARPDU this month
+		this.$store.dispatch("analytics/ARPDU", data)
+		.then((res) => {
+			this.arpdu = this.$store.getters['analytics/arpdu']
+			this.percentage_arpdu = Math.trunc(this.$store.getters['analytics/percentageArpdu']) 
+		});
+
+		//seemba revenue this month
+		this.$store.dispatch("analytics/revenue", data)
+		.then((res) => {
+			this.revenue = this.$store.getters['analytics/revenue']
+			this.percentage_revenue = Math.trunc(this.$store.getters['analytics/percentageRevenue']) 
+		})
+
+		this.$store.dispatch("analytics/allTournaments", data)
+		.then((res) => {
+			this.all_tournaments = this.$store.getters['analytics/allTournaments']
+			this.all_tournaments_chart = this.$store.getters['analytics/allTournamentsChart']
+		})
+
+		this.$store.dispatch("analytics/freeTournaments", data)
+		.then((res) => {
+			this.free_tournaments = this.$store.getters['analytics/freeTournaments']
+			this.free_tournaments_chart = this.$store.getters['analytics/freeTournamentsChart']
+		})
+
+		this.$store.dispatch("analytics/cashTournaments", data)
+		.then((res) => {
+			this.cash_tournaments = this.$store.getters['analytics/cashTournaments']
+			this.cash_tournaments_chart = this.$store.getters['analytics/cashTournamentsChart']
+		})
+
+		this.$store.dispatch("analytics/allChallenges", data)
+		.then((res) => {
+			this.all_challenges = this.$store.getters['analytics/allChallenges']
+			this.all_challenges_chart = this.$store.getters['analytics/allChallengesChart']
+		})
+
+		this.$store.dispatch("analytics/freeChallenges", data)
+		.then((res) => {
+			this.free_challenges = this.$store.getters['analytics/freeChallenges']
+			this.free_challenges_chart = this.$store.getters['analytics/freeChallengesChart']
+		})
+
+		this.$store.dispatch("analytics/cashChallenges", data)
+		.then((res) => {
+			this.cash_challenges = this.$store.getters['analytics/cashChallenges']
+			this.cash_challenges_chart = this.$store.getters['analytics/cashChallengesChart']
+		})
+
+		// axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.category = response.data.data.chart[0]
+		// 	// this.chart1.setOption.xAxis.data = response.data.data.chart[0]
+		// 	this.lineData = response.data.data.chart[1]
+		// 	console.log(chart1.setOption)
+		// 	})
 
 		
-		axios.post(this.$APIPATH + `/analytics/all-tournaments-weekly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.all_tournaments = response.data.data.total
-			this.all_tournaments_chart = response.data.data.chart
-			})
+		// axios.post(this.$APIPATH + `/analytics/all-tournaments-weekly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.all_tournaments = response.data.data.total
+		// 	this.all_tournaments_chart = response.data.data.chart
+		// 	})
 
 		
-		axios.post(this.$APIPATH + `/analytics/free-tournaments-weekly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.free_tournaments = response.data.data.total
-			this.free_tournaments_chart = response.data.data.chart
-			})
+		// axios.post(this.$APIPATH + `/analytics/free-tournaments-weekly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.free_tournaments = response.data.data.total
+		// 	this.free_tournaments_chart = response.data.data.chart
+		// 	})
 
 		
-		axios.post(this.$APIPATH + `/analytics/cash-tournaments-weekly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.cash_tournaments = response.data.data.total
-			this.cash_tournaments_chart = response.data.data.chart
-			})
+		// axios.post(this.$APIPATH + `/analytics/cash-tournaments-weekly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.cash_tournaments = response.data.data.total
+		// 	this.cash_tournaments_chart = response.data.data.chart
+		// 	})
 
 			
-		// Duels
-		axios.post(this.$APIPATH + `/analytics/all-challenges-weekly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.all_challenges = response.data.data.total
-			this.all_challenges_chart = response.data.data.chart
-			})
+		// // Duels
+		// axios.post(this.$APIPATH + `/analytics/all-challenges-weekly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.all_challenges = response.data.data.total
+		// 	this.all_challenges_chart = response.data.data.chart
+		// 	})
 
 		
-		axios.post(this.$APIPATH + `/analytics/free-challenges-weekly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.free_challenges = response.data.data.total
-			this.free_challenges_chart = response.data.data.chart
-			})
+		// axios.post(this.$APIPATH + `/analytics/free-challenges-weekly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.free_challenges = response.data.data.total
+		// 	this.free_challenges_chart = response.data.data.chart
+		// 	})
 
 		
-		axios.post(this.$APIPATH + `/analytics/cash-challenges-weekly/` + localStorage.getItem('team'))
-		.then(response => {
-			this.cash_challenges = response.data.data.total
-			this.cash_challenges_chart = response.data.data.chart
-			})
+		// axios.post(this.$APIPATH + `/analytics/cash-challenges-weekly/` + this.$store.getters['session/me'].team)
+		// .then(response => {
+		// 	this.cash_challenges = response.data.data.total
+		// 	this.cash_challenges_chart = response.data.data.chart
+		// 	})
 	},
 	beforeDestroy() {
 	},

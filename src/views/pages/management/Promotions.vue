@@ -55,11 +55,11 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'promotion_name'">
-						<button class="el-button el-button--primary is-plain" @click="GameProfile(props.row.game._id)">{{ props.row.promotion_name }}</button>
+						<button class="el-button el-button--primary is-plain" >{{ props.row.promotion_name }}</button>
 					</span>
 					
 					<span v-else-if="props.column.field == 'channels'">
-                        <span v-for="game in props.row.channels" class="el-tag">{{ game.name }}</span>
+                        <span v-for="game in props.row.channels" class="el-tag" >{{ game.name }}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'status'">
@@ -146,10 +146,17 @@ export default {
         }
     },
 	mounted() {
-		axios.get(this.$APIPATH + `/promotions/` + localStorage.getItem('team'))
-		.then(response => {			
-			this.rows = response.data.data
-			})
+
+		let data = {
+			token : localStorage.getItem("token"),
+			id : this.$store.getters['session/me'].team
+		}
+
+		this.$store.dispatch("promotion/getPromotions", data)
+		.then((res) => {
+			this.rows = this.$store.getters['promotion/promotions']
+		});
+
 	}
 }
 </script>

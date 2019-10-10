@@ -50,7 +50,7 @@ export default {
 		}
 	},
   methods: {
-    login(e) {
+    async login(e) {
 	 e.preventDefault();
 
       if (this.email && this.password) {
@@ -58,14 +58,12 @@ export default {
           email: this.email,
           password: this.password
         };
-        console.log("store", this.$store);
-
-        this.$store.dispatch("session/login", user).then((res) => {
+		await this.$store.dispatch("session/login", user)
+		.then((res) => {
 			console.log({res});
-			// this.$router.push('/')
-		}
-			// this.$router.push('/')
-		);
+			this.$router.push('/')
+		})
+		.catch(err => console.log({err}))
       } else { console.log('====================================');
 	  console.log("no pwd no em;");
 	  console.log('====================================')}
