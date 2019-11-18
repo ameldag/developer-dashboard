@@ -1,8 +1,8 @@
 <template>
 	<vue-scroll class="page-profile" id="affix-container">
-		<div class="card-base card-shadow--medium identity" id="boundary">
+		<!--<div class="card-base card-shadow--medium identity" id="boundary">
 			<div class="cover"></div>
-			<!--<div class="username" v-affix="{parentid: 'affix-container', boundaryid: '', delay:600, offset:0, enable:() => affixEnabled}">-->
+			<div class="username" v-affix="{parentid: 'affix-container', boundaryid: '', delay:600, offset:0, enable:() => affixEnabled}">
 			<div class="username">
 				<div class="cover-small"></div>
 				<div class="avatar-small"><img src="http://www.twitrcovers.com/wp-content/uploads/2015/02/Blizzard-s.jpg" alt="avatar"></div>
@@ -13,12 +13,12 @@
 			</div>
 			<div class="avatar"><img v-bind:src="game.icon" alt="avatar"></div>
 			<img src="http://www.twitrcovers.com/wp-content/uploads/2015/02/Blizzard-s.jpg" id="color-thief" class="color-thief" alt="profile cover">
-		</div>
+		</div>-->
 		<div class="card-base card-shadow--medium info bg-white black-text">
 			<el-tabs v-model="activeTab">
-				<el-tab-pane label="Info" name="info">
+				<!--<el-tab-pane label="Info" name="info">-->
 					<game-edit :game="game"></game-edit>
-				</el-tab-pane>
+				<!--</el-tab-pane>-->
 			</el-tabs>
 		</div>
 	</vue-scroll>

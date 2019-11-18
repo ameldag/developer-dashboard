@@ -8,6 +8,7 @@
 				<el-breadcrumb-item>Games</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
+			<button class="el-button el-button--primary" @click="addGamePage" >Add new game</button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -110,7 +111,11 @@ export default {
         GameProfile(id){
             console.log("hi");
             window.location.href = '/games/' + id;
-        }
+        },
+
+		addGamePage(){
+			window.location.href = '/games/new';
+		}
     },
 	mounted() {
 		let data = {

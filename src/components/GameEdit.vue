@@ -2,59 +2,10 @@
 	<div class="page-game-edit">
 
 		<el-form ref="form" :model="game" label-width="120px" :label-position="labelPosition">
-			<el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Name">
-						<el-input v-model="game.name"/>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Android Name">
-						<el-input v-model="game.android_name"/>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Android Version">
-						<el-input v-model="game.android_version"/>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="iOS Name">
-						<el-input v-model="game.ios_name"/>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="iOS Version">
-						<el-input v-model="game.ios_version"/>
-					</el-form-item>
-				</el-col>
-			</el-col>
-			<el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Status">
-						<el-radio-group v-model="game.status">
-							<el-radio label="true" border>Active</el-radio>
-							<el-radio label="false" border>Disabled</el-radio>
-						</el-radio-group>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Engine">
-						<el-radio-group v-model="game.engine">
-							<el-radio label="unity" border></el-radio>
-							<el-radio label="unreal" border></el-radio>
-						</el-radio-group>
-					</el-form-item>
-				</el-col>
-
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Orientation">
-						<el-radio-group v-model="game.orientation">
-							<el-radio label="portrait" border></el-radio>
-							<el-radio label="landscape" border></el-radio>
-						</el-radio-group>
-					</el-form-item>
-				</el-col>
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Name">
+					<el-input v-model="game.name"/>
+				</el-form-item>
 			</el-col>
 			
 			<el-col class="col-p">
@@ -62,6 +13,104 @@
 					<el-input type="textarea" v-model="game.description" autosize></el-input>
 				</el-form-item>
 			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Platform">
+					<el-checkbox-group v-model="game.platforms">
+						<el-checkbox label="Android" border></el-checkbox>
+						<el-checkbox label="IOS" border></el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Orientation">
+					<el-radio-group v-model="game.orientation">
+						<el-radio label="portrait" border></el-radio>
+						<el-radio label="landscape" border></el-radio>
+					</el-radio-group>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Engine">
+					<el-radio-group v-model="game.engine">
+						<el-radio label="unity" border></el-radio>
+						<el-radio label="unreal" border></el-radio>
+					</el-radio-group>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Status">
+					<el-radio-group v-model="game.status">
+						<el-radio label="true" border>Active</el-radio>
+						<el-radio label="false" border>Disabled</el-radio>
+					</el-radio-group>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Duels">
+					<el-checkbox-group v-model="game.tournaments">
+						<el-checkbox label="Novice" border></el-checkbox>
+						<el-checkbox label="Amateur" border></el-checkbox>
+						<el-checkbox label="Confirmed" border></el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Brackets">
+					<el-checkbox-group v-model="game.brackets">
+						<el-checkbox label="Confident" border></el-checkbox>
+						<el-checkbox label="Champion" border></el-checkbox>
+						<el-checkbox label="Legend" border></el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Icon">
+					<el-input type="file" accept=".jpg, .jpeg, .png" @change="processIcon" v-model="game.icon"/>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Background">
+				<el-input type="file" accept=".jpg, .jpeg, .png" @change="processBackground" v-model="game.background_image"/>
+				</el-form-item>
+			</el-col>
+
+			<el-col class="col-p">
+				<h6 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">iOS Notifications</h6>
+				<p>Switch your notifications from sandbox to production. For any assistance in switching over your notifications, visit our <a href="https://www.google.com">Documentation</a>.</p>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="p12 file">
+						<el-input type="file" accept=".p12" @change="processP12" v-model="game.p_12_file"/>
+				</el-form-item>
+			</el-col>
+
+			<el-col class="col-p">
+				<el-form-item label="p12 password">
+					<el-input type="password" v-model="game.p_12_password" autosize></el-input>
+				</el-form-item>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<h6 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">Android - GCM Notifications</h6>
+				<p>To get token, go to the <a href="https://www.google.com">Developer Console</a>.</p>
+				<div class="mg-t-25 mg-l-20"><ul class="list-group"><li> APIs &amp; Auth </li> <li> Credentials </li> <li> Add Credentials </li> <li> Server Key </li> <li> Give it a name, leave "&nbsp;Accept requests from these server IP addresses&nbsp;" blank, click create </li> <li> You are given an API key </li></ul></div>
+			</el-col>
+
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Enter this key">
+					<el-input type="text" v-model="game.gcm_api_key" autosize></el-input>
+				</el-form-item>
+			</el-col>
+			
 			<el-col class="col-p">
 				<el-form-item>
 					<el-button type="primary" @click="onSubmit">Save</el-button>
@@ -73,7 +122,7 @@
 </template>
 
 <script>
-
+const axios = require('axios');
 export default {
     
     props: [
@@ -82,23 +131,23 @@ export default {
 	name: 'GameEdit',
 	data() {
 		return {
-			form: {
-				username: 'aShenton',
-				email: 'ashenton@mail.com',
-				firstName: 'Aurora',
-				lastName: 'Shenton',
-				birthday: '1991-02-13T23:00:00.000Z',
-				phone: '',
-				website: '',
-				hobbies: [],
-				skills: ['JavaScript', 'HTML', 'CSS', 'Vue.js'],
-                gender: null,
+			game: {
+				name: '',
+				description: '',
+				icon: null,
+				background_image: null,
+				p_12_file: null,
+				p_12_password: '',
+				p_12_password_overwrite: '',
+				gcm_api_key: '',
+				appstore_id: '',
+                bundle_id: null,
                 orientation: null,
-				address: '',
-				city: '',
-				country: '',
-				postalCode: '',
-				aboutMe: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dapibus posuere libero, nec convallis arcu ullamcorper a. Vestibulum diam neque, egestas scelerisque arcu a, fermentum ornare mauris. Ut venenatis vulputate maximus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur scelerisque quis turpis ac tempus. Quisque dolor dolor, fermentum nec magna eget, fringilla auctor lacus. Aenean sagittis est ac ligula pharetra, quis imperdiet ante dignissim. Ut vehicula nec nisl a pretium. Quisque faucibus auctor viverra. Sed ultricies convallis magna. In blandit eros id efficitur vulputate. Duis efficitur sollicitudin dui non vehicula. Nullam ut eros fermentum, dapibus metus non, accumsan neque. Mauris sed pellentesque felis. Suspendisse viverra risus sit amet congue consectetur.'
+				status: null,
+				engine: null,
+				platforms: [],
+				tournaments: [],
+				brackets: []
 			},
 			hobbies: [
 				{
@@ -129,13 +178,35 @@ export default {
 	},
 	methods: {
 		onSubmit() {
-			console.log('submit!');
+			console.log(this.game);
 		},
 		resizeLabelPosition() {
 			if(window.innerWidth <= 768) {
 				this.labelPosition = 'top'	
 			}
-		}
+		},
+		async processIcon($event){
+			console.log({event})
+			if (event.target.files.length) {
+				const formData = new FormData();
+				formData.append('image',event.target.files[0])
+				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { Authorization: localStorage.getItem('token') } })
+				.then((res) => {
+					console.log({res})
+					this.game.icon = res.data.data
+				})
+				.catch((error) => {
+					return error.response;
+				});
+			}
+		},
+		processBackground(){
+
+		},
+		processP12(){
+
+		},
+
 	},
 	mounted() {
 		this.resizeLabelPosition();
