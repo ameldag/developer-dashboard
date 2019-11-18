@@ -4,7 +4,7 @@
 		<el-form ref="form" :model="game" label-width="120px" :label-position="labelPosition">
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Name">
-					<el-input v-model="game.name"/>
+					<el-input type="text" v-model="game.name"/>
 				</el-form-item>
 			</el-col>
 			
@@ -89,7 +89,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="p12 file">
-						<el-input type="file" accept=".p12" @change="processP12" v-model="game.p_12_file"/>
+						<el-input type="file" @change="processP12" v-model="game.p_12_file"/>
 				</el-form-item>
 			</el-col>
 
@@ -125,9 +125,7 @@
 const axios = require('axios');
 export default {
     
-    props: [
-        'game'
-    ],
+    
 	name: 'GameEdit',
 	data() {
 		return {
@@ -147,7 +145,7 @@ export default {
 				engine: null,
 				platforms: [],
 				tournaments: [],
-				brackets: []
+				brackets: [],
 			},
 			hobbies: [
 				{
@@ -177,8 +175,18 @@ export default {
 		}
 	},
 	methods: {
-		onSubmit() {
-			console.log(this.game);
+		async onSubmit() {
+			let data = {
+				token : localStorage.getItem("token"),
+				id : this.$store.getters['session/me'].team
+			}
+			await axios.post(`http://localhost:8000/api/dashboard/v1/games/` + data.id ,this.game ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+			.then((res) => {
+				window.location.href = '/management/games'
+			})
+			.catch((error) => {
+				return error.response;
+			});
 		},
 		resizeLabelPosition() {
 			if(window.innerWidth <= 768) {
@@ -186,11 +194,10 @@ export default {
 			}
 		},
 		async processIcon($event){
-			console.log({event})
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('image',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { Authorization: localStorage.getItem('token') } })
+				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 					console.log({res})
 					this.game.icon = res.data.data
@@ -200,18 +207,39 @@ export default {
 				});
 			}
 		},
-		processBackground(){
-
+		async processBackground(){
+			if (event.target.files.length) {
+				const formData = new FormData();
+				formData.append('image',event.target.files[0])
+				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				.then((res) => {
+					console.log({res})
+					this.game.background_image = res.data.data
+				})
+				.catch((error) => {
+					return error.response;
+				});
+			}
 		},
-		processP12(){
-
+		async processP12(){
+			if (event.target.files.length) {
+				const formData = new FormData();
+				formData.append('file',event.target.files[0])
+				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				.then((res) => {
+					console.log({res})
+					this.game.p_12_file = res.data.data
+				})
+				.catch((error) => {
+					return error.response;
+				});
+			}
 		},
 
 	},
 	mounted() {
 		this.resizeLabelPosition();
         window.addEventListener('resize', this.resizeLabelPosition);
-        console.log(this.game)
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizeLabelPosition);

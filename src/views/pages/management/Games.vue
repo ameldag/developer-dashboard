@@ -43,8 +43,8 @@
 						</span>
 					</span>
 					
-					<span v-else-if="props.column.field == 'created_at'">
-						<span class="card-date">{{moment(props.row.created_at).format('YYYY-MM-DD')}}</span>
+					<span v-else-if="props.column.field == 'createdAt'">
+						<span class="card-date">{{moment(props.row.createdAt).format('YYYY-MM-DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
@@ -95,7 +95,7 @@ export default {
 				},
 				{
 					label: 'Created On',
-					field: 'created_at',
+					field: 'createdAt',
 					type: 'string'
 				},
 				{
