@@ -1,22 +1,25 @@
 <template>
+	
 	<div class="page-game-edit">
-
-		<el-form ref="form" :model="game" label-width="120px" :label-position="labelPosition">
+		<div class="page-header">
+			<h1>{{action}} game </h1>
+		</div>
+		<el-form ref="form" :model="currentGame" label-width="120px" :label-position="labelPosition">
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Name">
-					<el-input type="text" v-model="game.name"/>
+					<el-input type="text" v-model="currentGame.name"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col class="col-p">
 				<el-form-item label="Description">
-					<el-input type="textarea" v-model="game.description" autosize></el-input>
+					<el-input type="textarea" v-model="currentGame.description" autosize></el-input>
 				</el-form-item>
 			</el-col>
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Platform">
-					<el-checkbox-group v-model="game.platforms">
+					<el-checkbox-group v-model="currentGame.platforms">
 						<el-checkbox label="Android" border></el-checkbox>
 						<el-checkbox label="IOS" border></el-checkbox>
 					</el-checkbox-group>
@@ -25,7 +28,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Orientation">
-					<el-radio-group v-model="game.orientation">
+					<el-radio-group v-model="currentGame.orientation">
 						<el-radio label="portrait" border></el-radio>
 						<el-radio label="landscape" border></el-radio>
 					</el-radio-group>
@@ -34,7 +37,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Engine">
-					<el-radio-group v-model="game.engine">
+					<el-radio-group v-model="currentGame.engine">
 						<el-radio label="unity" border></el-radio>
 						<el-radio label="unreal" border></el-radio>
 					</el-radio-group>
@@ -43,7 +46,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Status">
-					<el-radio-group v-model="game.status">
+					<el-radio-group v-model="currentGame.status">
 						<el-radio label="true" border>Active</el-radio>
 						<el-radio label="false" border>Disabled</el-radio>
 					</el-radio-group>
@@ -52,7 +55,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Duels">
-					<el-checkbox-group v-model="game.tournaments">
+					<el-checkbox-group v-model="currentGame.tournaments">
 						<el-checkbox label="Novice" border></el-checkbox>
 						<el-checkbox label="Amateur" border></el-checkbox>
 						<el-checkbox label="Confirmed" border></el-checkbox>
@@ -62,7 +65,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Brackets">
-					<el-checkbox-group v-model="game.brackets">
+					<el-checkbox-group v-model="currentGame.brackets">
 						<el-checkbox label="Confident" border></el-checkbox>
 						<el-checkbox label="Champion" border></el-checkbox>
 						<el-checkbox label="Legend" border></el-checkbox>
@@ -72,13 +75,13 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Icon">
-					<el-input type="file" accept=".jpg, .jpeg, .png" @change="processIcon" v-model="game.icon"/>
+					<el-input type="file" accept=".jpg, .jpeg, .png" @change="processIcon" v-model="currentGame.icon"/>
 				</el-form-item>
 			</el-col>
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Background">
-				<el-input type="file" accept=".jpg, .jpeg, .png" @change="processBackground" v-model="game.background_image"/>
+				<el-input type="file" accept=".jpg, .jpeg, .png" @change="processBackground" v-model="currentGame.background_image"/>
 				</el-form-item>
 			</el-col>
 
@@ -89,13 +92,13 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="p12 file">
-						<el-input type="file" @change="processP12" v-model="game.p_12_file"/>
+						<el-input type="file" @change="processP12" v-model="currentGame.p_12_file"/>
 				</el-form-item>
 			</el-col>
 
 			<el-col class="col-p">
 				<el-form-item label="p12 password">
-					<el-input type="password" v-model="game.p_12_password" autosize></el-input>
+					<el-input type="password" v-model="currentGame.p_12_password" autosize></el-input>
 				</el-form-item>
 			</el-col>
 
@@ -107,7 +110,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Enter this key">
-					<el-input type="text" v-model="game.gcm_api_key" autosize></el-input>
+					<el-input type="text" v-model="currentGame.gcm_api_key" autosize></el-input>
 				</el-form-item>
 			</el-col>
 			
@@ -124,29 +127,10 @@
 <script>
 const axios = require('axios');
 export default {
-    
-    
 	name: 'GameEdit',
+	props: ['action','currentGame'],
 	data() {
 		return {
-			game: {
-				name: '',
-				description: '',
-				icon: null,
-				background_image: null,
-				p_12_file: null,
-				p_12_password: '',
-				p_12_password_overwrite: '',
-				gcm_api_key: '',
-				appstore_id: '',
-                bundle_id: null,
-                orientation: null,
-				status: null,
-				engine: null,
-				platforms: [],
-				tournaments: [],
-				brackets: [],
-			},
 			hobbies: [
 				{
 					value: 'Model building',
@@ -174,19 +158,35 @@ export default {
 			labelPosition: 'left' //left, right, or top
 		}
 	},
+    props: {
+		action : String,
+		currentGame : Object
+	},
 	methods: {
 		async onSubmit() {
+			console.log(this.currentGame)
+			console.log(this.action)
 			let data = {
 				token : localStorage.getItem("token"),
 				id : this.$store.getters['session/me'].team
 			}
-			await axios.post(`http://localhost:8000/api/dashboard/v1/games/` + data.id ,this.game ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-			.then((res) => {
-				window.location.href = '/management/games'
-			})
-			.catch((error) => {
-				return error.response;
-			});
+			if(this.action == "Update"){
+				await axios.put(`http://localhost:8000/api/dashboard/v1/games/` + data.id + '/' + this.$route.params.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				.then((res) => {
+				this.$router.replace('/management/games');
+				})
+				.catch((error) => {
+					return error.response;
+				});
+			} else {
+				await axios.post(`http://localhost:8000/api/dashboard/v1/games/` + data.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				.then((res) => {
+				this.$router.replace('/management/games');
+				})
+				.catch((error) => {
+					return error.response;
+				});
+			}
 		},
 		resizeLabelPosition() {
 			if(window.innerWidth <= 768) {
@@ -199,36 +199,33 @@ export default {
 				formData.append('image',event.target.files[0])
 				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
-					console.log({res})
-					this.game.icon = res.data.data
+					this.currentGame.icon = res.data.data
 				})
 				.catch((error) => {
 					return error.response;
 				});
 			}
 		},
-		async processBackground(){
+		async processBackground($event){
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('image',event.target.files[0])
 				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
-					console.log({res})
-					this.game.background_image = res.data.data
+					this.currentGame.background_image = res.data.data
 				})
 				.catch((error) => {
 					return error.response;
 				});
 			}
 		},
-		async processP12(){
+		async processP12($event){
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('file',event.target.files[0])
 				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
-					console.log({res})
-					this.game.p_12_file = res.data.data
+					this.currentGame.p_12_file = res.data.data
 				})
 				.catch((error) => {
 					return error.response;
