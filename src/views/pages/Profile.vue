@@ -6,13 +6,59 @@
 			<div class="username">
 				<div class="cover-small"></div>
 				<div class="avatar-small"><img src="@/assets/images/avatar.jpg" alt="avatar"></div>
-				<span>{{username}}</span>
+				<span>{{me.first_name}} {{me.last_name}}</span>
 				<div class="colors-box">
 					<div v-for="i in 5" :key="i" :class="{'color':true, 'active':colorActive}" :style="{'background':color}"></div>
 				</div>
 			</div>
-			<div class="avatar"><img src="@/assets/images/avatar.jpg" alt="avatar"></div>
-			<img src="@/assets/images/cover-2.jpg" id="color-thief" class="color-thief" alt="profile cover">
+			<div class="avatar"><img :src="me.avatar" alt="avatar"></div>
+		</div>
+		<div class="page-profile" id="boundary">
+			<el-form ref="form" label-width="120px">
+			
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="First Name">
+					<el-input type="text" v-model="me.first_name"/>
+				</el-form-item>
+			</el-col>
+			
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Last Name">
+					<el-input type="text" v-model="me.last_name"/>
+				</el-form-item>
+			</el-col>
+			
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Adress">
+					<el-input type="text" v-model="me.address"/>
+				</el-form-item>
+			</el-col>
+			
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Country">
+					<el-input type="text" v-model="me.country"/>
+				</el-form-item>
+			</el-col>
+			
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="City">
+					<el-input type="text" v-model="me.city"/>
+				</el-form-item>
+			</el-col>
+			
+			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+				<el-form-item label="Zip Code">
+					<el-input type="text" v-model="me.zipcode"/>
+				</el-form-item>
+			</el-col>
+			
+			<el-col class="col-p">
+				<el-form-item>
+					<el-button type="primary" @click="onSubmit">Save</el-button>
+					<el-button>Cancel</el-button>
+				</el-form-item>
+			</el-col>
+		</el-form>
 		</div>
 	</vue-scroll>
 </template>
@@ -20,12 +66,21 @@
 <script>
 import ColorThief from 'color-thief-browser'
 import Affix from '@/components/Affix'
+const axios = require('axios');
 
 export default {
 	name: 'Profile',
 	data() {
 		return {
-			username: 'Aurora Shenton',
+			me : {
+				first_name: this.$store.getters['session/me'].first_name,
+				last_name: this.$store.getters['session/me'].last_name,
+				address: this.$store.getters['session/me'].address,
+				country: this.$store.getters['session/me'].country,
+				city: this.$store.getters['session/me'].city,
+				zipcode: this.$store.getters['session/me'].zipcode,
+				avatar: this.$store.getters['session/me'].avatar,
+			},
 			colorActive: false,
 			color: 'white',
 			affixEnabled: true
@@ -38,6 +93,22 @@ export default {
 			} else {
 				this.affixEnabled = true	
 			}
+		},
+
+		async onSubmit(){
+			let data = {
+				token : localStorage.getItem("token"),
+				id : this.$store.getters['session/me']._id
+			}
+			console.log(this.me)
+			await axios.put(`http://localhost:8000/api/dashboard/v1/editors/` + data.id + '/personal' ,this.me ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+			.then((res) => {
+				console.log({res})
+				this.$router.replace('/dashboard');
+			})
+			.catch((error) => {
+				return error.response;
+			});
 		}
 	},
 	mounted() {
