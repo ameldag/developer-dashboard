@@ -109,12 +109,11 @@ export default {
 	},
     methods: {
         GameProfile(id){
-            console.log("hi");
-            window.location.href = '/games/' + id;
+			this.$router.replace('/games/' + id);
         },
 
 		addGamePage(){
-			window.location.href = '/games/new';
+			this.$router.replace('/games/new');
 		}
     },
 	mounted() {

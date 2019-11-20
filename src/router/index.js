@@ -84,7 +84,7 @@ const router = new Router({
 			}
 		},
 		{
-			path: '/games/new',
+			path: '/games/:id',
 			name: 'game',
 			component: Game,
 			meta: {

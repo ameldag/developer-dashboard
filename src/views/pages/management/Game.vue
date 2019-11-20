@@ -1,24 +1,8 @@
 <template>
 	<vue-scroll class="page-profile" id="affix-container">
-		<!--<div class="card-base card-shadow--medium identity" id="boundary">
-			<div class="cover"></div>
-			<div class="username" v-affix="{parentid: 'affix-container', boundaryid: '', delay:600, offset:0, enable:() => affixEnabled}">
-			<div class="username">
-				<div class="cover-small"></div>
-				<div class="avatar-small"><img src="http://www.twitrcovers.com/wp-content/uploads/2015/02/Blizzard-s.jpg" alt="avatar"></div>
-				<span>{{ game.name }}</span>
-				<div class="colors-box">
-					<div v-for="i in 5" :key="i" :class="{'color':true, 'active':colorActive}" :style="{'background':color}"></div>
-				</div>
-			</div>
-			<div class="avatar"><img v-bind:src="game.icon" alt="avatar"></div>
-			<img src="http://www.twitrcovers.com/wp-content/uploads/2015/02/Blizzard-s.jpg" id="color-thief" class="color-thief" alt="profile cover">
-		</div>-->
 		<div class="card-base card-shadow--medium info bg-white black-text">
 			<el-tabs v-model="activeTab">
-				<!--<el-tab-pane label="Info" name="info">-->
-					<game-edit :game="game"></game-edit>
-				<!--</el-tab-pane>-->
+				<game-edit :action="action" :currentGame="current_game"></game-edit>
 			</el-tabs>
 		</div>
 	</vue-scroll>
@@ -41,8 +25,24 @@ export default {
 			color: 'white',
 			activeTab: 'info',
             affixEnabled: true,
-            game: {
-
+			action: 'Add new',
+            current_game: {
+				name: '',
+				description: '',
+				icon: '',
+				background_image: null,
+				p_12_file: null,
+				p_12_password: '',
+				p_12_password_overwrite: '',
+				gcm_api_key: '',
+				appstore_id: '',
+                bundle_id: null,
+                orientation: null,
+				status: null,
+				engine: null,
+				platforms: [],
+				tournaments: [],
+				brackets: [],
             }
 		}
 	},
@@ -66,10 +66,15 @@ export default {
 
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
-		// axios.get(this.$APIPATH + `/games/` + JSON.parse(localStorage.getItem('team')) + "/" + this.$route.params.id)
-		// .then(response => {			
-		// 	this.game = response.data.data
-		// })
+		if(this.$route.params.id != "new"){
+			axios.get(this.$APIPATH + `/games/` + this.$store.getters['session/me'].team + "/" + this.$route.params.id)
+			.then(response => {	
+				console.log({response})		
+				this.current_game = response.data.data
+			})
+			this.action = "Update"
+		}
+		
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizeAffixEnabled);
