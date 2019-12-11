@@ -2,19 +2,25 @@
 	<vue-scroll class="register-page align-vertical">
 		<div class="form-wrapper align-vertical-middle">
 			<div class="form-box card-base card-shadow--extraLarge">
-				<img class="image-logo" src="@/assets/images/logo.svg" alt="logo"/>
+				<img class="image-logo" src="@/assets/images/logo_seemba.png" alt="logo"/>
 				
 				<float-label class="styled">
-					<input type="text" placeholder="Name">
+					<input type="text" placeholder="Firstname" v-model="data.first_name">
 				</float-label>
 				<float-label class="styled">
-					<input type="email" placeholder="E-mail">
+					<input type="text" placeholder="Lastname" v-model="data.last_name">
 				</float-label>
 				<float-label class="styled">
-					<input type="password" placeholder="Password">
+					<input type="email" placeholder="E-mail" v-model="data.email">
 				</float-label>
 				<float-label class="styled">
-					<input type="password" placeholder="Password (confirm)">
+					<input type="text" placeholder="Team name" v-model="data.company_name">
+				</float-label>
+				<float-label class="styled">
+					<input type="password" placeholder="Password" v-model="data.password">
+				</float-label>
+				<float-label class="styled">
+					<input type="password" placeholder="Password (confirm)" v-model="data.pwConfirm">
 				</float-label>
 				
 				<div class="flex">
@@ -22,13 +28,13 @@
 				</div>
 
 				<div class="flex text-center center pt-30 pb-20">			
-					<el-button plain size="small" @click="login" class="signin-btn tada animated">
+					<el-button plain size="small" @click="signup" class="signin-btn tada animated">
 						SIGN IN
 					</el-button>
 				</div>
 
 				<div class="text-center login-box pt-10">
-					Already have an account? <a>Login</a>
+					Already have an account? <a href="/login">Login</a>
 				</div>
 			</div>
 		</div>
@@ -40,16 +46,33 @@ export default {
 	name: 'Register',
 	data() {
 		return {
-			form: {
+			data: {
+				first_name:'',
+				last_name:'',
+				company_name:'',
 				email: '',
 				password: '',
+				pwConfirm:''
 			}
 		}
 	},
 	methods: {
-		login() {
-			this.$store.commit('setLogin')
-			this.$router.push('dashboard')
+		async signup(e) {
+			console.log(this.data)
+			e.preventDefault();
+
+			if (this.data.email && this.data.first_name && this.data.last_name && this.data.company_name && this.data.password) {
+			await this.$store.dispatch("session/signup", this.data)
+			.then((res) => {
+				console.log({res});
+				this.$router.push('/')
+			})
+			.catch(err => console.log({err}))
+			} else { 
+				console.log('====================================');
+				console.log("no pwd no em;");
+				console.log('====================================')
+			}
 		}
 	}
 }
@@ -82,7 +105,7 @@ export default {
 		}
 
 		.image-logo {
-			width: 80px;
+			width: 270px;
 			margin: 0px auto;
 			margin-bottom: 50px;
 			display: block;

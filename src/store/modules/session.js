@@ -1,7 +1,7 @@
 import session from '../../services/session';
-const state = {
+let state = {
     token: null,
-    user: null,
+    user: {},
     errorMessage: ''
 };
 // mutations
@@ -40,6 +40,23 @@ const actions = {
             }
             else {
                 localStorage.setItem("token", res.data.token)
+                localStorage.setItem("current_team", res.data.editor.teams[0]._id)
+                store.commit('setToken', res.data.token);
+                store.commit('setUser', res.data.editor);
+                store.commit('clearMessage');
+            }
+        });
+    },
+
+    async signup(store, data) {
+        await session.signup(data).then(res => {
+            if (res.data.success == false) {
+                store.commit('setErrorMessage', res.data.message);
+            }
+            else {
+                console.log(res.data)
+                localStorage.setItem("token", res.data.token)
+                localStorage.setItem("current_team", res.data.editor.teams[0]._id)
                 store.commit('setToken', res.data.token);
                 store.commit('setUser', res.data.editor);
                 store.commit('clearMessage');

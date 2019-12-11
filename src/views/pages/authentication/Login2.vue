@@ -32,6 +32,10 @@
 						</el-button>
 					</div>
 
+					<div class="text-center login-box pt-10">
+						Already have an account? <a href="/register">Signup</a>
+					</div>
+
 				</form>
 			</div>
 			
@@ -51,24 +55,25 @@ export default {
 	},
   methods: {
     async login(e) {
-	 e.preventDefault();
+		e.preventDefault();
 
-      if (this.email && this.password) {
-        const user = {
-          email: this.email,
-          password: this.password
-        };
+		if (this.email && this.password) {
+		const user = {
+			email: this.email,
+			password: this.password
+		};
 		await this.$store.dispatch("session/login", user)
 		.then((res) => {
 			console.log({res});
 			this.$router.push('/')
 		})
 		.catch(err => console.log({err}))
-      } else { console.log('====================================');
-	  console.log("no pwd no em;");
-	  console.log('====================================')}
-    }
-  }
+		} else { 
+			console.log('====================================');
+			console.log("no pwd no em;");
+			console.log('====================================')}
+    	}
+  	}
 }
 </script>
 
@@ -120,7 +125,7 @@ export default {
 
 		a {
 			font-size: 14px;
-			color: var(--color-accent);
+			color: $text-color-accent;
 			text-decoration: none;
 			font-weight: 500;
 		}
@@ -145,6 +150,10 @@ export default {
 				border-color: var(--text-color);
 				color: var( --text-color);
 			}
+		}
+
+		.login-box {
+			font-size: 14px;
 		}
 	}
 }
