@@ -1,7 +1,7 @@
 <template>
-	<vue-scroll class="page-profile" id="affix-container">
+	<vue-scroll class="page-promotion" id="affix-container">
 			<el-tabs v-model="activeTab">
-				<game-edit :action="action" :currentGame="current_game"></game-edit>
+				<promotion-edit :action="action" :currentPromotion="current_promotion"></promotion-edit>
 			</el-tabs>
 	</vue-scroll>
 </template>
@@ -9,7 +9,7 @@
 <script>
 import ColorThief from 'color-thief-browser'
 import Affix from '@/components/Affix'
-import GameEdit from '@/components/GameEdit'
+import PromotionEdit from '@/components/PromotionEdit'
 import axios from 'axios'
 // import ProfileGallery from '@/components/Profile/ProfileGallery'
 // import ProfileTimeline from '@/components/Profile/ProfileTimeline'
@@ -24,7 +24,7 @@ export default {
 			activeTab: 'info',
             affixEnabled: true,
 			action: 'Add new',
-            current_game: {
+            current_promotion: {
 				name: '',
 				description: '',
 				icon: '',
@@ -64,14 +64,14 @@ export default {
 
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
-		if(this.$route.params.id != "new"){
-			axios.get(this.$APIPATH + `/games/` + localStorage.getItem("current_team") + "/" + this.$route.params.id)
-			.then(response => {	
-				console.log({response})		
-				this.current_game = response.data.data
-			})
-			this.action = "Update"
-		}
+		// if(this.$route.params.id != "new"){
+		// 	axios.get(this.$APIPATH + `/games/` + localStorage.getItem("current_team") + "/" + this.$route.params.id)
+		// 	.then(response => {	
+		// 		console.log({response})		
+		// 		this.current_game = response.data.data
+		// 	})
+		// 	this.action = "Update"
+		// }
 		
 	},
 	beforeDestroy() {
@@ -79,7 +79,7 @@ export default {
 	},
 	components: {
 		Affix,
-		GameEdit,
+		PromotionEdit,
 		// ProfileGallery,
 		// ProfileTimeline
 	}

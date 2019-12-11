@@ -15,6 +15,7 @@ import NotFound from '../views/pages/NotFound.vue'
 import Games from '../views/pages/management/Games.vue'
 import Teams from '../views/pages/management/Teams.vue'
 import Promotions from '../views/pages/management/Promotions.vue'
+import Promotion from '../views/pages/management/Promotion.vue'
 import Game from '../views/pages/management/Game.vue'
 
 import layouts from '../layout'
@@ -76,6 +77,17 @@ const router = new Router({
 			path: '/management/promotions',
 			name: 'promotions_management',
 			component: Promotions,
+			meta: {
+				auth: true,
+				layout: layouts.navLeft,
+				searchable: true,
+				tags: ['pages']
+			}
+		},
+		{
+			path: '/promotions/:id',
+			name: 'promotion',
+			component: Promotion,
 			meta: {
 				auth: true,
 				layout: layouts.navLeft,
@@ -169,31 +181,32 @@ let auth = {
 		//return store.getters.isLogged
 	},
 	logout() {
-		store.commit('setLogout')
+		localStorage.removeItem('token')
+		localStorage.removeItem('current_team')
 	}
 }
 
 router.beforeEach((to, from, next) => {
 		// console.log('loggedin',auth.loggedIn());
 
-		
+			
 			var hasPermission = localStorage.getItem("token");
 
 			console.log({hasPermission});
 			console.log(to.name);
 			if(hasPermission != null){
-				if(to.name === 'login'){
+				if(to.name === 'login' || to.name === 'register'){
 					window.location.href = '/'
 					return false
 				} else {
 					next()
 				}
 			} else {
-				if(to.name !== 'login'){
+				if(to.name === 'login' || to.name === 'register'){
+					next()
+				} else {
 					window.location.href = '/login'
 					return false
-				} else {
-					next()
 				}
 			}
 

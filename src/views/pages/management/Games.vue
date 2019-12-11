@@ -7,8 +7,8 @@
 				<el-breadcrumb-item>Management</el-breadcrumb-item>
 				<el-breadcrumb-item>Games</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
+			<button class="el-button el-button--primary" style="float:right;" @click="addGamePage" >Add new game</button>
 			</el-breadcrumb>
-			<button class="el-button el-button--primary" @click="addGamePage" >Add new game</button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -119,7 +119,7 @@ export default {
 	mounted() {
 		let data = {
 			token : localStorage.getItem("token"),
-			id : this.$store.getters['session/me'].team
+			id : localStorage.getItem("current_team")
 		}
 		this.$store.dispatch("games/getGames", data).then((res) => {
 			this.rows = this.$store.getters['games/games']

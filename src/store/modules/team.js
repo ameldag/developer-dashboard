@@ -1,12 +1,16 @@
 import team from '../../services/team';
 const state = {
     members: null,
+    currentTeam: null,
     errorMessage: ''
 };
 // mutations
 const mutations = {
     setMembers(state, members) {
         state.members = members;
+    },
+    setCurrentTeam(state, team) {
+        state.currentTeam = team;
     },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
@@ -20,6 +24,9 @@ const getters = {
 
     members: state => {
         return state.members
+    },
+    currentTeam: state => {
+        return state.currentTeam
     },
 
 };
@@ -37,6 +44,9 @@ const actions = {
             }
         })
     },
+    setCurrentTeam(store, team) {
+        store.commit('setCurrentTeam', team)
+    }
 };
 export default {
     namespaced: true,

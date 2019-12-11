@@ -4,7 +4,9 @@
 		<div class="page-header">
 			<h1>{{action}} game </h1>
 		</div>
+		
 		<el-form ref="form" :model="currentGame" label-width="120px" :label-position="labelPosition">
+		<div class="card-base card-shadow--medium info bg-white black-text" style="padding: 20px;">
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Name">
 					<el-input type="text" v-model="currentGame.name"/>
@@ -84,11 +86,10 @@
 				<el-input type="file" accept=".jpg, .jpeg, .png" @change="processBackground" v-model="currentGame.background_image"/>
 				</el-form-item>
 			</el-col>
-
-			<el-col class="col-p">
-				<h6 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">iOS Notifications</h6>
+		</div>
+				<h3 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">iOS Notifications</h3>
 				<p>Switch your notifications from sandbox to production. For any assistance in switching over your notifications, visit our <a href="https://www.google.com">Documentation</a>.</p>
-			</el-col>
+		<div class="card-base card-shadow--medium info bg-white black-text" style="padding: 20px;">
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="p12 file">
@@ -101,13 +102,13 @@
 					<el-input type="password" v-model="currentGame.p_12_password" autosize></el-input>
 				</el-form-item>
 			</el-col>
-
-			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<h6 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">Android - GCM Notifications</h6>
+			</div>
+			<h3 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">Android - GCM Notifications</h3>
 				<p>To get token, go to the <a href="https://www.google.com">Developer Console</a>.</p>
 				<div class="mg-t-25 mg-l-20"><ul class="list-group"><li> APIs &amp; Auth </li> <li> Credentials </li> <li> Add Credentials </li> <li> Server Key </li> <li> Give it a name, leave "&nbsp;Accept requests from these server IP addresses&nbsp;" blank, click create </li> <li> You are given an API key </li></ul></div>
-			</el-col>
 
+			<div class="card-base card-shadow--medium info bg-white black-text" style="padding: 20px;">
+			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Enter this key">
 					<el-input type="text" v-model="currentGame.gcm_api_key" autosize></el-input>
@@ -120,6 +121,7 @@
 					<el-button>Cancel</el-button>
 				</el-form-item>
 			</el-col>
+		</div>
 		</el-form>
 	</div>
 </template>
@@ -168,7 +170,7 @@ export default {
 			console.log(this.action)
 			let data = {
 				token : localStorage.getItem("token"),
-				id : this.$store.getters['session/me'].team
+				id : localStorage.getItem("current_team")
 			}
 			if(this.action == "Update"){
 				await axios.put(`http://localhost:8000/api/dashboard/v1/games/` + data.id + '/' + this.$route.params.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })

@@ -35,15 +35,15 @@
 			<el-badge :is-dot="true" class="notification-icon-badge">
 				<el-button v-popover:popover icon="mdi mdi-bell" class="notification-icon"></el-button>
 			</el-badge>
-			<span class="username"><router-link to="/profile">{{ user.first_name }} {{ user.last_name }}</router-link></span>
+			<span class="username"><router-link to="/profile">{{ this.$store.state.session.user.first_name }} {{ this.$store.state.session.user.last_name }}</router-link></span>
 			<el-dropdown trigger="click" @command="onCommand">
 				<span class="el-dropdown-link">
-					<img v-bind:src="user.avatar" class="avatar" alt="avatar">
+					<img v-bind:src="this.$store.state.session.user.avatar" class="avatar" alt="avatar">
 				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="/profile"><i class="mdi mdi-account mr-10"></i> Profile</el-dropdown-item>
-					<span v-for="(team, index) in user.teams">
-						<el-dropdown-item @click.native="changeTeam(team)" divided><i class="mdi mdi-account mr-10"></i> Team {{ index + 1 }}</el-dropdown-item>
+					<span v-for="(team, index) in this.$store.state.session.user.teams">
+						<el-dropdown-item @click.native="changeTeam(team._id)" divided><i class="mdi mdi-account mr-10"></i> {{ team.company_name }}</el-dropdown-item>
 					</span>
 					<el-dropdown-item command="/logout" divided><i class="mdi mdi-logout mr-10"></i> Logout</el-dropdown-item>
 				</el-dropdown-menu>
@@ -59,7 +59,7 @@
 <script>
 import NotificationBox from '@/components/NotificationBox'
 import Search from '@/components/Search'
-
+import {mapState}from 'vuex'
 export default {
 	name: 'Toolbar',
 	props: ['menuBurger'],
@@ -68,7 +68,6 @@ export default {
 			popoverWidth: 300,
 			fullscreen: false,
 			lang: 'us',
-			user: null
 		}
 	},
 	methods: {
@@ -98,11 +97,15 @@ export default {
 			})
 		},
 		changeTeam(team) {
-			console.log("changing the team")
-			localStorage.setItem("team", team)
-			// window.location('/')
+			console.log('changing team')
+			localStorage.setItem("current_team", team)
 			this.$router.go('/')
 		}
+	},
+	computed: {
+		...mapState({
+			user: state => this.$store.state.session.user
+		})
 	},
 	components: {
 		NotificationBox,
@@ -112,7 +115,10 @@ export default {
 		this.fullscreen = this.$fullscreen.getState()
 		this.resizePopoverWidth();
 		window.addEventListener('resize', this.resizePopoverWidth);
-		this.user = await this.$store.getters['session/me'];
+		console.log(this.$store.state.session.user.first_name)
+	},
+	updated() {
+
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizePopoverWidth);

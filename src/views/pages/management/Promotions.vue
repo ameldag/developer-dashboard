@@ -8,6 +8,7 @@
 				<el-breadcrumb-item>Promotions</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
+			<button class="el-button el-button--primary" style="float:right;" @click="addPromotionPage" >Create Promotion</button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -55,7 +56,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'promotion_name'">
-						<button class="el-button el-button--primary is-plain" >{{ props.row.promotion_name }}</button>
+						<button class="el-button el-button--primary is-plain" @click="goToPromotion(props.row._id)">{{ props.row.promotion_name }}</button>
 					</span>
 					
 					<span v-else-if="props.column.field == 'channels'">
@@ -140,16 +141,20 @@ export default {
 		}
     },
     methods: {
-        GameProfile(id){
+        goToPromotion(id){
             console.log("hi");
-            window.location.href = '/games/' + id;
-        }
+            window.location.href = '/promotions/' + id;
+        },
+
+		addPromotionPage(){
+			this.$router.replace('/promotions/new');
+		}
     },
 	mounted() {
 
 		let data = {
 			token : localStorage.getItem("token"),
-			id : this.$store.getters['session/me'].team
+			id : localStorage.getItem("current_team")
 		}
 
 		this.$store.dispatch("promotion/getPromotions", data)

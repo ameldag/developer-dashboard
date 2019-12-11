@@ -8,6 +8,20 @@
 				<el-breadcrumb-item>Team Members</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
+			<button class="el-button el-button--primary" style="float:right;" @click="centerDialogVisible = true" >Invite New Member</button>
+			<el-dialog
+			:visible.sync="centerDialogVisible"
+			width="30%"
+			center>
+			<div>
+				<el-label>email :</el-label>
+				<el-input type="text" v-model="email" />
+			</div>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="centerDialogVisible = false">Annuler</el-button>
+				<el-button type="primary" @click="sendInvitation">Confirmer</el-button>
+			</span>
+			</el-dialog>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -75,6 +89,8 @@ export default {
 	name: 'Games',
 	data(){
 		return {
+			centerDialogVisible: false,
+			email: '',
 			columns: [
 				{
 					label: 'Avatar',
@@ -115,11 +131,27 @@ export default {
 	mounted() {
 		let data = {
 			token : localStorage.getItem("token"),
-			id : this.$store.getters['session/me'].team
+			id : localStorage.getItem("current_team")
 		}
 		this.$store.dispatch("team/getMembers", data).then((res) => {
 			this.rows = this.$store.getters['team/members']
 		});
+	},
+	methods: {
+		async sendInvitation() {
+			let data = {
+				token : localStorage.getItem("token"),
+				id : localStorage.getItem("current_team")
+			}
+
+			await axios.post(`http://localhost:8000/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+			.then((res) => {
+			this.$router.replace('/management/teams');
+			})
+			.catch((error) => {
+				return error.response;
+			});
+		}
 	}
 }
 </script>
