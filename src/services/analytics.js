@@ -74,5 +74,19 @@ export default {
             return error.response;
         });
     },
+    
+    async netIncomeMonthly(data){
+        return await axios.post(APIPATH + `/analytics/net-income-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+		.catch((error) => {
+            return error.response;
+        });
+    },
+
+    async newReturningMonthly(data){
+        return await axios.post(APIPATH + `/analytics/new-returning-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+		.catch((error) => {
+            return error.response;
+        });
+    },
 
 };

@@ -19,7 +19,11 @@ const state = {
     free_challenges: 0,
 	free_challenges_chart: [],
     cash_challenges: 0,
-	cash_challenges_chart: [],
+    cash_challenges_chart: [],
+    monthly_income: 0,
+    monthly_income_chart: [],
+    new_monthly: 0,
+    returning_monthly: 0,
     errorMessage: ''
 };
 // mutations
@@ -83,6 +87,18 @@ const mutations = {
     },
     setCashChallengesChart(state, cash_challenges_chart) {
         state.cash_challenges_chart = cash_challenges_chart;
+    },
+    setMonthlyIncome(state, monthly_income) {
+        state.monthly_income = monthly_income;
+    },
+    setMonthlyIncomeChart(state, monthly_income_chart) {
+        state.monthly_income_chart = monthly_income_chart;
+    },
+    setNewMonthly(state, new_monthly) {
+        state.new_monthly = new_monthly;
+    },
+    setReturningMonthly(state, returning_monthly) {
+        state.returning_monthly = returning_monthly;
     },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
@@ -222,7 +238,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setAllTournaments', res.data.data.total);
-                store.commit('setAllTournamentsChart', res.data.data.chart);
+                store.commit('setAllTournamentsChart', res.data.data.chart.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -236,7 +252,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setFreeTournaments', res.data.data.total);
-                store.commit('setFreeTournamentsChart', res.data.data.chart);
+                store.commit('setFreeTournamentsChart', res.data.data.chart.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -250,7 +266,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setCashTournaments', res.data.data.total);
-                store.commit('setCashTournamentsChart', res.data.data.chart);
+                store.commit('setCashTournamentsChart', res.data.data.chart.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -264,7 +280,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setAllChallenges', res.data.data.total);
-                store.commit('setAllChallengesChart', res.data.data.chart);
+                store.commit('setAllChallengesChart', res.data.data.chart.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -278,7 +294,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setFreeChallenges', res.data.data.total);
-                store.commit('setFreeChallengesChart', res.data.data.chart);
+                store.commit('setFreeChallengesChart', res.data.data.chart.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -292,7 +308,35 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setCashChallenges', res.data.data.total);
-                store.commit('setCashChallengesChart', res.data.data.chart);
+                store.commit('setCashChallengesChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('clearMessage');
+            }
+        })
+    },
+    
+    async netIncomeMonthly(store, data) {
+
+        await analytics.netIncomeMonthly(data).then(res => {
+            console.log({res})
+            if (res.data.success == false) {
+                store.commit('setErrorMessage', res.data.error);
+            } else {
+                store.commit('setMonthlyIncome', res.data.data.total);
+                store.commit('setMonthlyIncomeChart', res.data.data.chart);
+                store.commit('clearMessage');
+            }
+        })
+    },
+
+    async newReturningMonthly(store, data) {
+
+        await analytics.newReturningMonthly(data).then(res => {
+            console.log({res})
+            if (res.data.success == false) {
+                store.commit('setErrorMessage', res.data.error);
+            } else {
+                store.commit('setNewMonthly', res.data.data.new);
+                store.commit('setReturningMonthly', res.data.data.returning);
                 store.commit('clearMessage');
             }
         })

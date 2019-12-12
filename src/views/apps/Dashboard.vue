@@ -87,10 +87,10 @@
 
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-				<div class="card-base card-shadow--medium bg-accent p-20" style="height:400px" v-loading="!asyncChart1">
-					<h1 class="white-text mv-0 animated fadeInDown">Statistics</h1>
-					<h3 class="mt-0 mb-40 white-text o-050 animated slideInUp">revenue</h3>
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#56f19a"] }' :data="[5,5,2,9,7,3,4,7,8,9,6,5].toString()"/>
+				<div class="card-base card-shadow--medium bg-accent p-20 " style="height:400px" v-loading="!asyncChart1">
+					<h1 class="white-text mv-0 animated fadeInDown">NET INCOME</h1>
+					<h3 class="mt-0 mb-40 white-text o-050 animated slideInUp">Total. {{ this.$store.state.analytics.monthly_income }}</h3>
+					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: "77%", fill: ["#56f19a"] }' :data="this.$store.state.analytics.monthly_income_chart[1].toString()"/>
 				</div>
 			</el-col>
 		</el-row>
@@ -109,12 +109,12 @@
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
 								<div class="o-050 widget-title text-truncate pt-5 pb-10">All Tournaments</div>
-								<h2 class="m-0 text-truncate">{{ all_tournaments }}</h2>
+								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_tournaments }}</h2>
 							</div>
 						</div>
 					</div>
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#991FE3"] }' :data="[6, 5, 4, 3, 5, 3, 4, 5, 6, 5, 4, 2].toString()"/>
+					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#991FE3"] }' :data="this.$store.state.analytics.all_tournaments_chart.toString()"/>
 					
 				</div>
 			</el-col>
@@ -135,7 +135,7 @@
 						</div>
 					</div>
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80 }' :data="[6, 5, 4, 3, 5, 3, 4, 5, 6, 5, 4, 2].toString()"/>
+					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80 }' :data="this.$store.state.analytics.free_tournaments_chart.toString()"/>
 					
 				</div>
 			</el-col>
@@ -152,7 +152,7 @@
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
 								<div class="o-050 widget-title text-truncate pt-5 pb-10">Cash Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_tournaments }}</h2>
-								<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#56f19a"] }' :data="[6, 5, 4, 3, 5, 3, 4, 5, 6, 5, 4, 2].toString()"/>
+								<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#56f19a"] }' :data="this.$store.state.analytics.cash_tournaments_chart.toString()"/>
 							</div>
 						</div>
 					</div>
@@ -161,6 +161,25 @@
 				</div>
 			</el-col>
 
+
+
+
+
+		</el-row>
+
+
+
+		<el-row class="mt-0" :gutter="30">
+			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
+				<div class="card-base card-shadow--medium bg-danger p-20" style="height:530px" v-loading="!asyncChart1">
+					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
+					<h3 class="mt-0 mb-40 white-text o-050 animated slideInUp">Returning and new users</h3>
+					<peity :type="'pie'" :options="{  width: '100%', height:'80%',  'radius': 40 }" :data="[$store.state.analytics.new_monthly,$store.state.analytics.returning_monthly].toString()"></peity>
+					<!-- <div id="piechart" style="height:300px; width:100%"></div> -->
+				</div>
+			</el-col>
+
+			
 
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
@@ -178,7 +197,7 @@
 						</div>
 					</div>
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#fe5000"] }' :data="[6, 5, 4, 3, 5, 3, 4, 5, 6, 5, 4, 2].toString()"/>
+					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#fe5000"] }' :data="this.$store.state.analytics.all_challenges_chart.toString()"/>
 					
 				</div>
 			</el-col>
@@ -199,7 +218,7 @@
 						</div>
 					</div>
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#74d2e7"] }' :data="[6, 5, 4, 3, 5, 3, 4, 5, 6, 5, 4, 2].toString()"/>
+					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#74d2e7"] }' :data="this.$store.state.analytics.free_challenges_chart.toString()"/>
 					
 				</div>
 			</el-col>
@@ -220,26 +239,8 @@
 						</div>
 					</div>
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#7d3f98"] }' :data="[6, 5, 4, 3, 5, 3, 4, 5, 6, 5, 4, 2].toString()"/>
+					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#7d3f98"] }' :data="this.$store.state.analytics.cash_challenges_chart.toString()"/>
 					
-				</div>
-			</el-col>
-
-
-
-
-		</el-row>
-
-
-
-		<el-row class="mt-0" :gutter="30">
-			<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-				<div class="card-base card-shadow--medium bg-danger p-20" style="height:400px" v-loading="!asyncChart1">
-					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
-					<h3 class="mt-0 mb-40 white-text o-050 animated slideInUp">Returning and new users</h3>
-					
-					<peity  data-peity='{ "height": 100, "radius": 40, "height": +, "width": 200 }' :type="'pie'" :data="'226/360'"></peity>
-					<!-- <div id="piechart" style="height:300px; width:100%"></div> -->
 				</div>
 			</el-col>
 		</el-row>
@@ -479,6 +480,10 @@ export default {
 		this.$store.dispatch("analytics/freeChallenges", data)
 
 		this.$store.dispatch("analytics/cashChallenges", data)
+
+		this.$store.dispatch("analytics/netIncomeMonthly", data)
+
+		this.$store.dispatch("analytics/newReturningMonthly", data)
 
 		// axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem("current_team"))
 		// .then(response => {
