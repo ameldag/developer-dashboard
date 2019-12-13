@@ -173,7 +173,7 @@ export default {
 				id : localStorage.getItem("current_team")
 			}
 			if(this.action == "Update"){
-				await axios.put(`http://localhost:8000/api/dashboard/v1/games/` + data.id + '/' + this.$route.params.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await axios.put(this.$APIPATH + data.id + '/' + this.$route.params.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 				this.$router.replace('/management/games');
 				})
@@ -181,7 +181,7 @@ export default {
 					return error.response;
 				});
 			} else {
-				await axios.post(`http://localhost:8000/api/dashboard/v1/games/` + data.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await axios.post(this.$APIPATH + data.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 				this.$router.replace('/management/games');
 				})

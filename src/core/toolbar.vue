@@ -97,9 +97,8 @@ export default {
 			})
 		},
 		changeTeam(team) {
-			console.log('changing team')
 			localStorage.setItem("current_team", team)
-			this.$router.go('/')
+			window.location.href = '/dashboard'
 		}
 	},
 	computed: {

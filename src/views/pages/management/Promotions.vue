@@ -14,7 +14,7 @@
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table
 				:columns="columns"
-				:rows="rows"
+				:rows="this.$store.state.promotion.promotions"
 				:search-options="{
 					enabled: true,
 					placeholder: 'Search this table'
@@ -137,13 +137,11 @@ export default {
 					type: 'string'
 				},
 			],
-			rows: [],
 		}
     },
     methods: {
         goToPromotion(id){
-            console.log("hi");
-            window.location.href = '/promotions/' + id;
+			this.$router.replace('/promotions/' + id);
         },
 
 		addPromotionPage(){
@@ -158,9 +156,6 @@ export default {
 		}
 
 		this.$store.dispatch("promotion/getPromotions", data)
-		.then((res) => {
-			this.rows = this.$store.getters['promotion/promotions']
-		});
 
 	}
 }

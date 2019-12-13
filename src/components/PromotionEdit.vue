@@ -5,7 +5,7 @@
 			<h1>{{action}} promotion </h1>
 		</div>
         <h3>Information</h3>
-		<el-form ref="form" label-width="120px" :label-position="labelPosition">
+		<el-form ref="form" :model="currentPromotion" label-width="120px" :label-position="labelPosition">
 		<div class="card-base card-shadow--medium info bg-white black-text" style="padding: 20px;">
             <el-col class="col-p">
 				<p>Promote the launch of a new game and make sure all of your players are aware they can enter eSport tournaements and monetize their talent by downloading it !</p>
@@ -14,13 +14,13 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Promo Name :*">
-					<el-input type="text" v-model="promotion.promotion_name"/>
+					<el-input type="text" v-model="currentPromotion.promotion_name"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col class="col-p">
 				<el-form-item label="Select Game :">
-					<el-select v-model="promotion.game" placeholder="Select">
+					<el-select v-model="currentPromotion.game" placeholder="Select">
 						<el-option
 						v-for="item in games"
 						:key="item.value"
@@ -33,7 +33,7 @@
 
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="UPLOAD GAME GRAPHICS :">
-					<el-input type="file" accept=".jpg, .jpeg, .png" @change="processIcon" v-model="promotion.icon"/>
+					<el-input type="file" accept=".jpg, .jpeg, .png" @change="processIcon" v-model="currentPromotion.icon"/>
 				</el-form-item>
 			</el-col>
             </div>
@@ -45,7 +45,7 @@
 
 			<el-col :span="12" :md="24" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Platform">
-					<el-checkbox-group v-model="promotion.channels">
+					<el-checkbox-group v-model="currentPromotion.channels">
 						<el-checkbox-button 
 							v-for="item in getAvailablesGames"
 							:key="item.value"
@@ -71,7 +71,7 @@
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="Beginging of Promotion :*">
 					<el-date-picker
-					v-model="promotion.start_date"
+					v-model="currentPromotion.start_date"
 					type="date"
 					placeholder="pick a date">
                     </el-date-picker>
@@ -81,7 +81,7 @@
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 				<el-form-item label="End of Promotion :*">
 					<el-date-picker
-                    v-model="promotion.end_date"
+                    v-model="currentPromotion.end_date"
                     type="date"
                     placeholder="pick a date">
                     </el-date-picker>
@@ -103,17 +103,9 @@
 const axios = require('axios');
 export default {
 	name: 'GameEdit',
-	props: ['action'],
+	props: ['action', 'currentPromotion'],
 	data() {
 		return {
-			promotion: {
-				promotion_name: '',
-				game: '',
-				icon: '',
-				channels: [],
-				start_date: '',
-				end_date: '',
-			},
 			games: this.$store.getters['games/games'],
 			hobbies: [
 				{
@@ -144,12 +136,12 @@ export default {
 	},
 	computed: {
 		getAvailablesGames: function() {
-			return this.games.filter( e => e._id != this.promotion.game)
+			return this.games.filter( e => e._id != this.currentPromotion.game)
 		}
 	},
     props: {
 		action : String,
-		currentGame : Object
+		currentPromotion : Object
 	},
 	methods: {
 		async onSubmit() {
@@ -159,7 +151,7 @@ export default {
 				id : localStorage.getItem("current_team")
 			}
 			
-			await axios.post(`http://localhost:8000/api/dashboard/v1/promotions/` + data.id ,this.promotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+			await axios.post(this.$APIPATH + `/promotions/` + data.id ,this.promotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 			.then((res) => {
 			this.$router.replace('/management/promotions');
 			})
@@ -176,7 +168,7 @@ export default {
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('image',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await axios.post(this.$APIPATH + `/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 					this.icon = res.data.data
 				})
@@ -189,7 +181,7 @@ export default {
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('image',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await axios.post(this.$APIPATH + `/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 					this.background_image = res.data.data
 				})
@@ -202,7 +194,7 @@ export default {
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('file',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await axios.post(this.$APIPATH + `/games/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 					this.p_12_file = res.data.data
 				})
@@ -216,7 +208,6 @@ export default {
 	mounted() {
 		this.resizeLabelPosition();
         window.addEventListener('resize', this.resizeLabelPosition);
-		console.log(this.$store.getters['promotion/promotions'])
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizeLabelPosition);

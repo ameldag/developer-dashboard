@@ -14,7 +14,7 @@
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table
 				:columns="columns"
-				:rows="rows"
+				:rows="this.$store.state.games.games.reverse()"
 				:search-options="{
 					enabled: true,
 					placeholder: 'Search this table'
@@ -104,7 +104,6 @@ export default {
 					html: false,
 				},
 			],
-			rows: [],
 		}
 	},
     methods: {
@@ -121,9 +120,7 @@ export default {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
 		}
-		this.$store.dispatch("games/getGames", data).then((res) => {
-			this.rows = this.$store.getters['games/games']
-		});
+		this.$store.dispatch("games/getGames", data)
 		
 	}
 }

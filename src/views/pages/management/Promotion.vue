@@ -25,22 +25,12 @@ export default {
             affixEnabled: true,
 			action: 'Add new',
             current_promotion: {
-				name: '',
-				description: '',
+				promotion_name: '',
+				game: '',
 				icon: '',
-				background_image: null,
-				p_12_file: null,
-				p_12_password: '',
-				p_12_password_overwrite: '',
-				gcm_api_key: '',
-				appstore_id: '',
-                bundle_id: null,
-                orientation: null,
-				status: null,
-				engine: null,
-				platforms: [],
-				tournaments: [],
-				brackets: [],
+				channels: [],
+				start_date: '',
+				end_date: '',
             }
 		}
 	},
@@ -54,24 +44,23 @@ export default {
 		}
 	},
 	mounted() {
-		var colorThief = new ColorThief();
-		setTimeout(()=>{
-			let rgb = colorThief.getColor(document.getElementById('color-thief'))
-			//console.log('Profile mounted', rgb)
-			this.colorActive = true
-			this.color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
-		}, 1000)
+		// var colorThief = new ColorThief();
+		// setTimeout(()=>{
+		// 	let rgb = colorThief.getColor(document.getElementById('color-thief'))
+		// 	this.colorActive = true
+		// 	this.color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+		// }, 1000)
 
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
-		// if(this.$route.params.id != "new"){
-		// 	axios.get(this.$APIPATH + `/games/` + localStorage.getItem("current_team") + "/" + this.$route.params.id)
-		// 	.then(response => {	
-		// 		console.log({response})		
-		// 		this.current_game = response.data.data
-		// 	})
-		// 	this.action = "Update"
-		// }
+		if(this.$route.params.id != "new"){
+			axios.get(this.$APIPATH + `/promotions/` + this.$route.params.id)
+			.then(response => {	
+				console.log({response})		
+				this.current_promotion = response.data.data
+			})
+			this.action = "Update"
+		}
 		
 	},
 	beforeDestroy() {
@@ -89,7 +78,7 @@ export default {
 <style lang="scss" scoped>
 // @import '../../assets/scss/_variables';
 
-.page-profile {
+.page-promotion {
 	overflow: auto;
 
 	.identity {
@@ -247,7 +236,7 @@ export default {
 }
 
 @media (max-width: 768px) {
-	.page-profile {
+	.page-promotion {
 		.identity {
 			height: auto;
 
@@ -302,7 +291,7 @@ export default {
 </style>
 
 <style lang="scss">
-.page-profile {
+.page-promotion {
 	.el-tabs:not(.el-tabs--border-card) {
 		.el-tabs__item:not(.is-active) {
 			color: #32325d;

@@ -1,5 +1,5 @@
 <template>
-	<vue-scroll class="page-profile" id="affix-container">
+	<vue-scroll class="page-game" id="affix-container">
 			<el-tabs v-model="activeTab">
 				<game-edit :action="action" :currentGame="current_game"></game-edit>
 			</el-tabs>
@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 // @import '../../assets/scss/_variables';
 
-.page-profile {
+.page-game {
 	overflow: auto;
 
 	.identity {
@@ -247,7 +247,7 @@ export default {
 }
 
 @media (max-width: 768px) {
-	.page-profile {
+	.page-game {
 		.identity {
 			height: auto;
 
@@ -302,7 +302,7 @@ export default {
 </style>
 
 <style lang="scss">
-.page-profile {
+.page-game {
 	.el-tabs:not(.el-tabs--border-card) {
 		.el-tabs__item:not(.is-active) {
 			color: #32325d;

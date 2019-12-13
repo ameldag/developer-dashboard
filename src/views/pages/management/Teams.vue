@@ -27,7 +27,7 @@
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table
 				:columns="columns"
-				:rows="rows"
+				:rows="this.$store.state.team.members"
 				:search-options="{
 					enabled: true,
 					placeholder: 'Search this table'
@@ -125,7 +125,6 @@ export default {
 					html: false,
 				},
 			],
-			rows: [],
 		}
 	},
 	mounted() {
@@ -133,9 +132,7 @@ export default {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
 		}
-		this.$store.dispatch("team/getMembers", data).then((res) => {
-			this.rows = this.$store.getters['team/members']
-		});
+		this.$store.dispatch("team/getMembers", data)
 	},
 	methods: {
 		async sendInvitation() {

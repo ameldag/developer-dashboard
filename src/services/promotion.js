@@ -5,7 +5,7 @@ const APIPATH = "http://localhost:8000/api/dashboard/v1"
 
 export default {
     async promotions(data) {
-        return await axios.get(APIPATH + `/promotions/` + data.id , { headers: { 'x-access-token': data.token } })
+        return await axios.get(APIPATH + `/promotions/teams/` + data.id , { headers: { 'x-access-token': data.token } })
         .catch((error) => {
         return error.response;
         });

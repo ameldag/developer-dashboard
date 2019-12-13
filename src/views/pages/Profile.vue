@@ -6,14 +6,14 @@
 			<div class="username">
 				<div class="cover-small"></div>
 				<div class="avatar-small"><img src="@/assets/images/avatar.jpg" alt="avatar"></div>
-				<span>{{me.first_name}} {{me.last_name}}</span>
+				<span>{{this.$store.state.session.user.first_name}} {{this.$store.state.session.user.last_name}}</span>
 				<div class="colors-box">
 					<div v-for="i in 5" :key="i" :class="{'color':true, 'active':colorActive}" :style="{'background':color}"></div>
 				</div>
 			</div>
 			<div class="avatar"><img :src="me.avatar" alt="avatar"></div>
 		</div>
-		<div class="page-profile" id="boundary">
+		<div class="page-profile card-base card-shadow--medium" style="padding: 20px;" id="boundary">
 			<el-form ref="form" label-width="120px">
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
