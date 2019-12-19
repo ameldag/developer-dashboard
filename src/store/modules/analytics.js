@@ -9,21 +9,22 @@ const state = {
     revenue: 0,
     percentage_revenue: 0,
     all_tournaments: 0,
-	all_tournaments_chart: [],
+	all_tournaments_chart: {},
     free_tournaments: 0,
-	free_tournaments_chart: [],
+	free_tournaments_chart: {},
     cash_tournaments: 0,
-	cash_tournaments_chart: [],
+	cash_tournaments_chart: {},
     all_challenges: 0,
-	all_challenges_chart: [],
+	all_challenges_chart: {},
     free_challenges: 0,
-	free_challenges_chart: [],
+	free_challenges_chart: {},
     cash_challenges: 0,
-    cash_challenges_chart: [],
+    cash_challenges_chart: {},
     monthly_income: 0,
-    monthly_income_chart: [],
+    monthly_income_chart: {},
     new_monthly: 0,
     returning_monthly: 0,
+    labels: [],
     errorMessage: ''
 };
 // mutations
@@ -99,6 +100,9 @@ const mutations = {
     },
     setReturningMonthly(state, returning_monthly) {
         state.returning_monthly = returning_monthly;
+    },
+    setLabels(state, labels) {
+        state.labels = labels;
     },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
@@ -238,7 +242,8 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setAllTournaments', res.data.data.total);
-                store.commit('setAllTournamentsChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('setAllTournamentsChart', res.data.data.chart.data.reverse().map(e => e.y));
+                store.commit('setLabels', res.data.data.chart.labels);
                 store.commit('clearMessage');
             }
         })
@@ -252,7 +257,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setFreeTournaments', res.data.data.total);
-                store.commit('setFreeTournamentsChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('setFreeTournamentsChart', res.data.data.chart.data.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -266,7 +271,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setCashTournaments', res.data.data.total);
-                store.commit('setCashTournamentsChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('setCashTournamentsChart', res.data.data.chart.data.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -280,7 +285,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setAllChallenges', res.data.data.total);
-                store.commit('setAllChallengesChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('setAllChallengesChart', res.data.data.chart.data.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -294,7 +299,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setFreeChallenges', res.data.data.total);
-                store.commit('setFreeChallengesChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('setFreeChallengesChart', res.data.data.chart.data.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })
@@ -308,7 +313,7 @@ const actions = {
                 store.commit('setErrorMessage', res.data.error);
             } else {
                 store.commit('setCashChallenges', res.data.data.total);
-                store.commit('setCashChallengesChart', res.data.data.chart.reverse().map(e => e.y));
+                store.commit('setCashChallengesChart', res.data.data.chart.data.reverse().map(e => e.y));
                 store.commit('clearMessage');
             }
         })

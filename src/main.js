@@ -56,6 +56,8 @@ import VueGoodTable from 'vue-good-table'
 import 'vue-good-table/dist/vue-good-table.min.css'
 Vue.use(VueGoodTable)
 
+import TrendChart from "vue-trend-chart";
+Vue.use(TrendChart);
 
 import Peity from 'vue-peity'
 Vue.component('Peity', Peity)

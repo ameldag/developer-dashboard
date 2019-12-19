@@ -13,11 +13,11 @@
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-account-multiple accent-text fs-60"></i>
 								<div class="badge-box">
-									<span class="badge"><i class="mdi mdi-trending-up success-text mr-10"></i><strong class="accent-text">{{ this.$store.state.analytics.game_played_monthly_percentage }}%</strong></span>
+									<span class="badge"><i class="mdi mdi-trending-up accent-text mr-10"></i><strong class="accent-text">{{ this.$store.state.analytics.game_played_monthly_percentage }}%</strong></span>
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Played Duels This Month</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">Played Duels This Month</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.game_played_monthly }}</h2>
 							</div>
 						</div>
@@ -32,11 +32,11 @@
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-account-plus-outline accent-text fs-60"></i>
 								<div class="badge-box">
-									<span class="badge"><i class="mdi mdi-trending-up success-text mr-10"></i><strong class="accent-text">{{ this.$store.state.analytics.percentage_of_new_installs }}%</strong></span>
+									<span class="badge"><i class="mdi mdi-trending-up accent-text mr-10"></i><strong class="accent-text">{{ this.$store.state.analytics.percentage_of_new_installs }}%</strong></span>
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Installs</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">Installs</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.new_installs }}</h2>
 							</div>
 						</div>
@@ -49,13 +49,13 @@
 					<div class="widget-header ph-20 pt-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-account-convert success-text fs-60"></i>
+								<i class="widget-icon mdi mdi-account-convert accent-text fs-60"></i>
 								<div class="badge-box">
-									<span class="badge"><i class="mdi mdi-trending-neutral info-text mr-10"></i><strong class="success-text">{{ this.$store.state.analytics.percentage_arpdu }}%</strong></span>
+									<span class="badge"><i class="mdi mdi-trending-up accent-text mr-10"></i><strong class="accent-text">{{ this.$store.state.analytics.percentage_arpdu }}%</strong></span>
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Seemba ARPDU</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">Seemba ARPDU</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.arpdu }}</h2>
 							</div>
 						</div>
@@ -68,13 +68,13 @@
 					<div class="widget-header ph-20 pt-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-cash-multiple success-text fs-60"></i>
+								<i class="widget-icon mdi mdi-cash-multiple accent-text fs-60"></i>
 								<div class="badge-box">
-									<span class="badge"><i class="mdi mdi-trending-neutral info-text mr-10"></i><strong class="success-text">{{ this.$store.state.analytics.percentage_revenue }}%</strong></span>
+									<span class="badge"><i class="mdi mdi-trending-up accent-text mr-10"></i><strong class="accent-text">{{ this.$store.state.analytics.percentage_revenue }}%</strong></span>
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Estimated Revenue</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">Estimated Revenue</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.revenue }}</h2>
 							</div>
 						</div>
@@ -87,10 +87,31 @@
 
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-				<div class="card-base card-shadow--medium bg-accent p-20 " style="height:400px" v-loading="!asyncChart1">
+				<div class="card-base card-shadow--medium bg-gradiant p-20 " style="height:400px" v-loading="!asyncChart1">
 					<h1 class="white-text mv-0 animated fadeInDown">NET INCOME</h1>
-					<h3 class="mt-0 mb-40 white-text o-050 animated slideInUp">Total. {{ this.$store.state.analytics.monthly_income }}</h3>
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: "77%", fill: ["#56f19a"] }' :data="this.$store.state.analytics.monthly_income_chart[1].toString()"/>
+					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Total. {{ this.$store.state.analytics.monthly_income }}</h3>					
+					<TrendChart
+						v-if="netIncome.length"
+						width="100%"
+						height="65%"
+						:datasets="[
+							{
+							data: netIncome,
+							smooth: true,
+							fill: true,
+							showPoints: true
+							}
+						]"
+						:grid="{
+							verticalLines: true,
+							horizontalLines: true
+						}"
+						:labels="{
+							xLabels: netIncomeLabels,
+							yLabels: 5
+						}"
+						:min="0">
+					</TrendChart>
 				</div>
 			</el-col>
 		</el-row>
@@ -105,16 +126,34 @@
 					<div class="widget-header ph-20 pt-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-finance success-text fs-30"></i>
+								<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">All Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">All Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_tournaments }}</h2>
 							</div>
 						</div>
 					</div>
-
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#991FE3"] }' :data="this.$store.state.analytics.all_tournaments_chart.toString()"/>
+					<TrendChart
+						v-if="all_tournaments_chart.length"
+						:datasets="[
+							{
+							data: all_tournaments_chart,
+							smooth: true,
+							fill: true,
+							showPoints: true
+							}
+						]"
+						:grid="{
+							verticalLines: true,
+							horizontalLines: true
+						}"
+						:labels="{
+							xLabels: this.$store.state.analytics.labels,
+							yLabels: 5
+						}"
+						:min="0">
+					</TrendChart>
 					
 				</div>
 			</el-col>
@@ -126,16 +165,34 @@
 					<div class="widget-header ph-20 pt-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-poll-box success-text fs-30"></i>
+								<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Free Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">Free Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_tournaments }}</h2>
 							</div>
 						</div>
 					</div>
-
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80 }' :data="this.$store.state.analytics.free_tournaments_chart.toString()"/>
+					<TrendChart
+						v-if="free_tournaments_chart.length"
+						:datasets="[
+							{
+							data: free_tournaments_chart,
+							smooth: true,
+							fill: true,
+							showPoints: true
+							}
+						]"
+						:grid="{
+							verticalLines: true,
+							horizontalLines: true
+						}"
+						:labels="{
+							xLabels: this.$store.state.analytics.labels,
+							yLabels: 5
+						}"
+						:min="0">
+					</TrendChart>
 					
 				</div>
 			</el-col>
@@ -147,17 +204,33 @@
 					<div class="widget-header ph-20 pt-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-cash-multiple success-text fs-30"></i>
+								<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Cash Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">Cash Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_tournaments }}</h2>
-								<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#56f19a"] }' :data="this.$store.state.analytics.cash_tournaments_chart.toString()"/>
 							</div>
 						</div>
 					</div>
-
-					
+					<TrendChart
+						v-if="cash_tournaments_chart.length"
+						:datasets="[
+							{
+							data: cash_tournaments_chart,
+							smooth: true,
+							fill: true
+							}
+						]"
+						:grid="{
+							verticalLines: true,
+							horizontalLines: true
+						}"
+						:labels="{
+							xLabels: this.$store.state.analytics.labels,
+							yLabels: 5
+						}"
+						:min="0">
+					</TrendChart>
 				</div>
 			</el-col>
 
@@ -170,78 +243,132 @@
 
 
 		<el-row class="mt-0" :gutter="30">
+		
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
-				<div class="card-base card-shadow--medium bg-danger p-20" style="height:530px" v-loading="!asyncChart1">
+				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%" v-loading="!asyncChart1">
 					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
-					<h3 class="mt-0 mb-40 white-text o-050 animated slideInUp">Returning and new users</h3>
+					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Returning and new users</h3>
 					<peity :type="'pie'" :options="{  width: '100%', height:'80%',  'radius': 40 }" :data="[$store.state.analytics.new_monthly,$store.state.analytics.returning_monthly].toString()"></peity>
 					<!-- <div id="piechart" style="height:300px; width:100%"></div> -->
 				</div>
 			</el-col>
 
 			
-
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
-					
-					<div class="widget-header ph-20 pt-20">
-						<div class="flex justify-center align-center">
-							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-finance success-text fs-30"></i>
-							</div>
-							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">All Challenges</div>
-								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_challenges }}</h2>
+						
+						<div class="widget-header ph-20 pt-20">
+							<div class="flex justify-center align-center">
+								<div class="widget-icon-box mr-20 animated fadeInRight">
+									<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
+								</div>
+								<div class="widget-info box grow text-truncate animated fadeInLeft">
+									<div class="m-0 widget-title text-truncate pt-5 pb-10">All Challenges</div>
+									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_challenges }}</h2>
+								</div>
 							</div>
 						</div>
+						<TrendChart
+							v-if="all_challenges_chart.length"
+							:datasets="[
+								{
+								data: all_challenges_chart,
+								smooth: true,
+								fill: true
+								}
+							]"
+							:grid="{
+								verticalLines: true,
+								horizontalLines: true
+							}"
+							:labels="{
+								xLabels: this.$store.state.analytics.labels,
+								yLabels: 5
+							}"
+							:min="0">
+						</TrendChart>
+						
 					</div>
+				</el-col>
+				
+				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#fe5000"] }' :data="this.$store.state.analytics.all_challenges_chart.toString()"/>
-					
-				</div>
-			</el-col>
-			
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
-
-					
-					<div class="widget-header ph-20 pt-20">
-						<div class="flex justify-center align-center">
-							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-poll-box success-text fs-30"></i>
-							</div>
-							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Free Challenges</div>
-								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_challenges }}</h2>
+						
+						<div class="widget-header ph-20 pt-20">
+							<div class="flex justify-center align-center">
+								<div class="widget-icon-box mr-20 animated fadeInRight">
+									<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
+								</div>
+								<div class="widget-info box grow text-truncate animated fadeInLeft">
+									<div class="m-0 widget-title text-truncate pt-5 pb-10">Free Challenges</div>
+									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_challenges }}</h2>
+								</div>
 							</div>
 						</div>
+
+						<TrendChart
+							v-if="free_challenges_chart.length"
+							:datasets="[
+								{
+								data: free_challenges_chart,
+								smooth: true,
+								fill: true
+								}
+							]"
+							:grid="{
+								verticalLines: true,
+								horizontalLines: true
+							}"
+							:labels="{
+								xLabels: this.$store.state.analytics.labels,
+								yLabels: 5
+							}"
+							:min="0">
+						</TrendChart>
 					</div>
+				</el-col>
+				
+				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#74d2e7"] }' :data="this.$store.state.analytics.free_challenges_chart.toString()"/>
-					
-				</div>
-			</el-col>
-			
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
-
-					
-					<div class="widget-header ph-20 pt-20">
-						<div class="flex justify-center align-center">
-							<div class="widget-icon-box mr-20 animated fadeInRight">
-								<i class="widget-icon mdi mdi-cash-multiple success-text fs-30"></i>
-							</div>
-							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="o-050 widget-title text-truncate pt-5 pb-10">Cash Challenges</div>
-								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_challenges }}</h2>
+						
+						<div class="widget-header ph-20 pt-20">
+							<div class="flex justify-center align-center">
+								<div class="widget-icon-box mr-20 animated fadeInRight">
+									<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
+								</div>
+								<div class="widget-info box grow text-truncate animated fadeInLeft">
+									<div class="m-0 widget-title text-truncate pt-5 pb-10">Cash Challenges</div>
+									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_challenges }}</h2>
+								</div>
 							</div>
 						</div>
+						<TrendChart
+							v-if="cash_challenges_chart.length"
+							:datasets="[
+								{
+								data: cash_challenges_chart,
+								smooth: true,
+								fill: true,
+								showPoints: true
+								}
+							]"
+							:grid="{
+								verticalLines: true,
+								horizontalLines: true
+							}"
+							:labels="{
+								xLabels: this.$store.state.analytics.labels,
+								yLabels: 5
+							}"
+							:min="0">
+						</TrendChart>
+						
 					</div>
-
-					<component :is="asyncComponent" :type="'bar'" :options='{ width: "100%", height: 80, fill: ["#7d3f98"] }' :data="this.$store.state.analytics.cash_challenges_chart.toString()"/>
-					
-				</div>
+				</el-col>
 			</el-col>
 		</el-row>
 
@@ -254,30 +381,11 @@
 import axios from 'axios'
 import echarts from 'echarts'
 import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
-
+import { mapMutations, mapActions, mapState } from "vuex";
 export default {
 	name: 'Dashboard',
 	data () {
 		return {
-			played_games: 0,
-			played_percentage: 0,
-			percentage_of_new_installs: 0,
-			new_installs: 0,
-			percentage_arpdu: 0,
-			arpdu: 0,
-			percentage_revenue: 0,
-			revenue: 0,
-
-			all_tournaments: 0,
-			all_tournaments_chart: [],
-			free_tournaments: 0,
-			free_tournaments_chart: [],
-			cash_tournaments: 0,
-			free_tournaments_chart: [],
-
-			all_challenges: 0,
-			free_challenges: 0,
-			cash_challenges: 0,
 
 			asyncComponent: 'peity',
 			asyncChart1: true,
@@ -292,8 +400,20 @@ export default {
 	computed: {
 		smallWidget() {
 			return this.dashboardWidth >= 970 && this.dashboardWidth <= 1412 && this.windowWidth >= 1200
-		}
+		},
+		   ...mapState({
+			netIncome: state => state.analytics.monthly_income_chart[1],
+			netIncomeLabels: state => state.analytics.monthly_income_chart[0],
+			all_tournaments_chart: state => state.analytics.all_tournaments_chart,
+			free_tournaments_chart: state => state.analytics.free_tournaments_chart,
+			cash_tournaments_chart: state => state.analytics.cash_tournaments_chart,
+			all_challenges_chart: state => state.analytics.all_challenges_chart,
+			free_challenges_chart: state => state.analytics.free_challenges_chart,
+			cash_challenges_chart: state => state.analytics.cash_challenges_chart,
+
+			})
 	},
+
 	methods: {
 		getChart1datax() {
 			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem("current_team"))
@@ -484,6 +604,8 @@ export default {
 		this.$store.dispatch("analytics/netIncomeMonthly", data)
 
 		this.$store.dispatch("analytics/newReturningMonthly", data)
+		
+		this.$store.dispatch("games/getGames", data)
 
 		// axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem("current_team"))
 		// .then(response => {
@@ -552,7 +674,12 @@ export default {
 </style>
 
 <style lang="scss">
-.page-dashboard {}
+.page-dashboard {
+	.bg-gradiant {
+		background: linear-gradient(45deg,slateblue 0,darkturquoise 100%);
+		height: 100vh;
+	}
+}
 
 .peity {
 	margin-bottom: -7px;
