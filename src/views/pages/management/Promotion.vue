@@ -26,8 +26,7 @@ export default {
 			action: 'Add new',
             current_promotion: {
 				promotion_name: '',
-				game: '',
-				icon: '',
+				game: {},
 				channels: [],
 				start_date: '',
 				end_date: '',

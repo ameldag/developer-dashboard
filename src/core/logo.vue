@@ -1,7 +1,7 @@
 <template>
 	<div class="box-logo flex align-center" :class="{'nav-collapsed':collapseNav, [mode]:true}">
 		<!--<div class="letter-logo">P</div>-->
-		<img class="image-logo" src="@/assets/images/logo_seemba.png" alt="logo"  @click="goto('/')"/>
+		<img class="image-logo" src="@/assets/images/logo_seemba_white.png" alt="logo"  @click="goto('/')"/>
 		<button class="collapse-nav" @click="collapseNavToggle">
 			<i class="mdi mdi-menu"></i>
 		</button>

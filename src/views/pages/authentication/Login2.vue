@@ -111,7 +111,7 @@ export default {
 		}
 	}
 	.box-right {
-		background: white;
+		background: $background-color;
 		color: var(--background-color);
 	}
 	

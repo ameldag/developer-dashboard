@@ -7,8 +7,8 @@
 				<el-breadcrumb-item>Management</el-breadcrumb-item>
 				<el-breadcrumb-item>Games</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
-			<button class="el-button el-button--primary" style="float:right;" @click="addGamePage" >Add new game</button>
 			</el-breadcrumb>
+			<button class="el-button el-button--primary" style="float:right;" @click="addGamePage" >Add new game</button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -127,6 +127,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../../assets/scss/_variables';
 .page-vue-good-table {
 	overflow: hidden;
 }
@@ -141,7 +142,7 @@ export default {
 .card-date {
 	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
 	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
-	background-color: #fff;
+	background-color: $card-background-color;
     border-radius: 5px;
 	overflow: hidden;
 	margin: 10px 0px;

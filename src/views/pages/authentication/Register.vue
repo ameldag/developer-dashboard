@@ -2,7 +2,7 @@
 	<vue-scroll class="register-page align-vertical">
 		<div class="form-wrapper align-vertical-middle">
 			<div class="form-box card-base card-shadow--extraLarge">
-				<img class="image-logo" src="@/assets/images/logo_seemba.png" alt="logo"/>
+				<img class="image-logo" src="@/assets/images/logo_seemba_white.png" alt="logo"/>
 				
 				<float-label class="styled">
 					<input type="text" placeholder="Firstname" v-model="data.first_name">
@@ -82,7 +82,7 @@ export default {
 @import '../../../assets/scss/_variables';
 
 .register-page {
-	background: $text-color;
+	background: $background-color;
 	margin-left: -30px;
 	margin-right: -30px;
 

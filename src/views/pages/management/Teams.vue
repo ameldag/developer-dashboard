@@ -165,15 +165,15 @@ export default {
 	border-radius: 50%;
 }
 
-.card-date {
-	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
-	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
-	background-color: #fff;
-    border-radius: 5px;
-	overflow: hidden;
-	margin: 10px 0px;
-	padding: 10px 20px;
-	font-weight: 900;
-}
+// .card-date {
+// 	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
+// 	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
+// 	background-color: #fff;
+//     border-radius: 5px;
+// 	overflow: hidden;
+// 	margin: 10px 0px;
+// 	padding: 10px 20px;
+// 	font-weight: 900;
+// }
 </style>
 

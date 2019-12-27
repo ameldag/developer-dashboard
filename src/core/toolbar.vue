@@ -5,7 +5,7 @@
 				<i class="mdi mdi-menu"></i>
 			</button>
 
-			<img class="logo-mini" src="@/assets/images/logo_seemba.png" alt="logo"/>
+			<img class="logo-mini" src="@/assets/images/logo_seemba_white.png" alt="logo"/>
 
 			<search class="hidden-xs-only"></search>
 		</div>

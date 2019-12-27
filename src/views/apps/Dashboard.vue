@@ -8,7 +8,7 @@
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 						
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-account-multiple accent-text fs-60"></i>
@@ -27,7 +27,7 @@
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-account-plus-outline accent-text fs-60"></i>
@@ -46,7 +46,7 @@
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-account-convert accent-text fs-60"></i>
@@ -65,7 +65,7 @@
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-cash-multiple accent-text fs-60"></i>
@@ -108,7 +108,8 @@
 						}"
 						:labels="{
 							xLabels: netIncomeLabels,
-							yLabels: 5
+							yLabels: 15,
+							yLabelsTextFormatter: val => Math.round(val)
 						}"
 						:min="0">
 					</TrendChart>
@@ -123,7 +124,7 @@
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
 					
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
@@ -162,7 +163,7 @@
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
 					
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
@@ -201,7 +202,7 @@
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
 					
-					<div class="widget-header ph-20 pt-20">
+					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-icon-box mr-20 animated fadeInRight">
 								<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
@@ -218,7 +219,8 @@
 							{
 							data: cash_tournaments_chart,
 							smooth: true,
-							fill: true
+							fill: true,
+							showPoints: true
 							}
 						]"
 						:grid="{
@@ -242,10 +244,10 @@
 
 
 
-		<el-row class="mt-0" :gutter="30">
-		
+		<el-row class="mt-0 flex" :gutter="30">
+		 
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
-				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%" v-loading="!asyncChart1">
+				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%; box-sizing: border-box;" v-loading="!asyncChart1">
 					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
 					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Returning and new users</h3>
 					<peity :type="'pie'" :options="{  width: '100%', height:'80%',  'radius': 40 }" :data="[$store.state.analytics.new_monthly,$store.state.analytics.returning_monthly].toString()"></peity>
@@ -254,12 +256,12 @@
 			</el-col>
 
 			
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" style="padding-left: 0px;padding-right: 0px;">
 				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
 					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
 						
-						<div class="widget-header ph-20 pt-20">
+						<div class="widget-header ph-20 pt-20 pb-20">
 							<div class="flex justify-center align-center">
 								<div class="widget-icon-box mr-20 animated fadeInRight">
 									<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
@@ -276,7 +278,8 @@
 								{
 								data: all_challenges_chart,
 								smooth: true,
-								fill: true
+								fill: true,
+								showPoints: true
 								}
 							]"
 							:grid="{
@@ -297,7 +300,7 @@
 					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
 						
-						<div class="widget-header ph-20 pt-20">
+						<div class="widget-header ph-20 pt-20 pb-20">
 							<div class="flex justify-center align-center">
 								<div class="widget-icon-box mr-20 animated fadeInRight">
 									<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
@@ -315,7 +318,8 @@
 								{
 								data: free_challenges_chart,
 								smooth: true,
-								fill: true
+								fill: true,
+								showPoints: true
 								}
 							]"
 							:grid="{
@@ -335,7 +339,7 @@
 					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
 
 						
-						<div class="widget-header ph-20 pt-20">
+						<div class="widget-header ph-20 pt-20 pb-20">
 							<div class="flex justify-center align-center">
 								<div class="widget-icon-box mr-20 animated fadeInRight">
 									<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
