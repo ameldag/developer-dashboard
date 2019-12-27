@@ -29,10 +29,11 @@
 
 	.vgt-table {
 		border: none;
-
+		background-color: $card-background-color;
 		td {
 			border: none;
 			border-top: 1px solid transparentize($background-color, .7);
+			color: $text-color;
 		}
 		tr:first-child {
 			td {

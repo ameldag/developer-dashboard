@@ -20,6 +20,15 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 	padding: 0;
 	line-height: 30px;
 }
+
+.el-form-item__label {
+	color: $text-color
+}
+
+.el-radio {
+	color: $text-color
+}
+
 .el-upload.el-upload--text {
 	max-width: 100%; 
 
@@ -27,6 +36,49 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 		max-width: 100%;
 	}
 }
+
+.el-step__head.is-success{
+	color: $text-color-accent;
+	border-color: $text-color-accent;
+	.el-step__line {
+		background-color: $text-color-accent;
+	}
+    
+}
+
+.el-step__title.is-success {
+    color: $text-color-accent;
+}
+
+.el-step__head.is-process{
+	color: $text-color;
+	border-color: $text-color-accent;
+	.el-step__icon {
+		background: $text-color-accent;
+	}
+
+}
+
+.el-step__icon {
+	font-size: 20px;
+}
+
+.el-step__title.is-process {
+    color: $text-color-accent;
+}
+
+.el-step.is-horizontal .el-step__line {
+    height: 3px;
+    top: 27px;
+    left: 0;
+    right: 0;
+}
+
+.el-step__icon{
+	width: 55px;
+	height: 55px;
+}
+
 .el-message {
 	min-width: 310px;
 }
@@ -147,4 +199,75 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 .el-dialog {
 	min-width: 310px;
+}
+
+input,textarea{
+	border: none;
+    border-bottom: 2px solid rgba(253, 254, 255, 0.15);
+    width: 100%;
+    padding: 0;
+    padding-bottom: 4px;
+    font-size: 16px;
+    -webkit-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+    border-radius: 0px;
+    color: #FDFEFF;
+    background: transparent;
+}
+
+.el-input__inner,.el-textarea__inner {
+	border: none;
+    border-bottom: 2px solid rgba(253, 254, 255, 0.15);
+    width: 100%;
+    padding: 0;
+    padding-bottom: 4px;
+    font-size: 16px;
+    -webkit-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+    border-radius: 0px;
+    color: #FDFEFF;
+    background: transparent;
+}
+
+.input-file {
+	position: absolute;
+	top: 0; left: 0;
+	width: 225px;
+	opacity: 0;
+	padding: 14px 0;
+	cursor: pointer;
+  }
+
+.flex-display {
+	.el-form-item__content{
+		display: flex;
+	}
+}
+.el-checkbox-button:first-child .el-checkbox-button__inner{
+	border-left: 0;
+	border-radius: 5px;
+}
+
+.el-checkbox-button:last-child .el-checkbox-button__inner {
+    border-radius: 5px;
+}
+
+
+.el-checkbox-button .el-checkbox-button__inner{
+	border: 0;
+	margin: 15px;
+	border-radius: 5px;
+}
+
+.el-checkbox-button__inner {
+	background: transparent;
+}
+
+.el-card{
+	border: 0;
+	background: $card-background-color;
+}
+
+.el-card.is-always-shadow {
+    box-shadow: -3px 0px 12px 6px rgba(0, 0, 0, 0.3);
 }
