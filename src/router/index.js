@@ -9,6 +9,7 @@ import Login from '../views/pages/authentication/Login.vue'
 import Login2 from '../views/pages/authentication/Login2.vue'
 import Register from '../views/pages/authentication/Register.vue'
 import ForgotPassword from '../views/pages/authentication/ForgotPassword.vue'
+import ResetPassword from '../views/pages/authentication/ResetPassword'
 import Profile from '../views/pages/Profile.vue'
 import NotFound from '../views/pages/NotFound.vue'
 
@@ -130,6 +131,14 @@ const router = new Router({
 				layout: layouts.contenOnly
 			}
 		},
+		{
+			path: '/password/new/:token',
+			name: 'reset-password',
+			component: ResetPassword,
+			meta: {
+				layout: layouts.contenOnly
+			}
+		},
 		{ 
 			path: '/logout',
 			beforeEnter (to, from, next) {
@@ -202,7 +211,7 @@ router.beforeEach((to, from, next) => {
 					next()
 				}
 			} else {
-				if(to.name === 'login' || to.name === 'register'){
+				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password'){
 					next()
 				} else {
 					window.location.href = '/login'

@@ -1,16 +1,16 @@
 <template>
-	<vue-scroll class="forgot-password-page align-vertical">
+	<vue-scroll class="reset-password-page align-vertical">
 		<div class="form-wrapper align-vertical-middle">
 			<div class="form-box card-base card-shadow--extraLarge">
 				<img class="image-logo" src="@/assets/images/logo.png" alt="logo"/>
 				
 				<float-label class="styled">
-					<input type="email" placeholder="E-mail" v-model="email">
+					<input type="password" placeholder="New password" v-model="password">
 				</float-label>
 
 				<div class="flex text-center center pt-20 pb-10">			
-					<el-button plain size="small" @click="sendResetMail" class="send-btn pulse animated themed">
-						SEND RESET LINK
+					<el-button plain size="small" @click="resetPassword" class="send-btn pulse animated themed">
+						UPDATE PASSWORD
 					</el-button>
 				</div>
 			</div>
@@ -21,16 +21,16 @@
 <script>
 const axios = require('axios');
 export default {
-	name: 'ForgotPassword',
+	name: 'ResetPassword',
 	data() {
 		return {
-			email: '',
+			password: '',
 		}
 	},
 	methods: {
-		async sendResetMail() {
-			console.log(this.email)
-			await axios.post(this.$APIPATH + `/editors/password/reset` ,{email: this.email} ,{ })
+		async resetPassword() {
+			console.log(this.password)
+			await axios.put(this.$APIPATH + `/editors/password/new` ,{token: this.$route.params.token, new: this.password} ,{ })
 			.then((res) => {
 				this.$router.replace('/login');
 			})
@@ -45,7 +45,7 @@ export default {
 <style lang="scss">
 @import '../../../assets/scss/_variables';
 
-.forgot-password-page {
+.reset-password-page {
 	background: $background-color;
 	margin-left: -30px;
 	margin-right: -30px;

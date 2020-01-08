@@ -20,11 +20,10 @@
 					<float-label class="styled">
 						<input type="password" name="password" placeholder="Password" v-model="password">
 					</float-label>
-					
-					<!--<div class="flex">
-						<div class="box grow"><el-checkbox>Ricordami </el-checkbox></div>
-						<div class="box grow text-right"><router-link to="/dashboard">Password dimenticata?</router-link></div>
-					</div>-->
+
+					<div class="flex">
+						<div class="box grow text-left"><router-link to="/forgot-password">Forgot password?</router-link></div>
+					</div>
 
 					<div class="flex text-center center pt-30 pb-10">			
 						<el-button plain size="small" native-type="submit" class="login-btn pulse animated themed">
