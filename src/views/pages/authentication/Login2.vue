@@ -10,32 +10,31 @@
 		<div class="box grow scrollable align-vertical side-box box-right">
 			<div class="align-vertical-middle wrapper">
 				
-				<form class="form-box" @submit.prevent="login">
+				<el-form :model="user" class="form-box" :rules="rules" ref="user" >
 					<h2>Log in to your account</h2>
 					<p class="mb-40">Go to the dashboard</p>
 					
-					<float-label class="styled">
-						<input type="email" name="email" placeholder="Email" v-model="email">
-					</float-label>
-					<float-label class="styled">
-						<input type="password" name="password" placeholder="Password" v-model="password">
-					</float-label>
+					<p class="text-center" style="color: red;">{{ error }}</p>
+					<el-form-item class="styled" prop="email" >
+						<el-input type="email" name="email" placeholder="Email" v-model="user.email"></el-input>
+					</el-form-item>
+					<el-form-item class="styled" prop="password" >
+						<el-input type="password" name="password" placeholder="Password" v-model="user.password"></el-input>
+					</el-form-item>
 
 					<div class="flex">
 						<div class="box grow text-left"><router-link to="/forgot-password">Forgot password?</router-link></div>
 					</div>
 
-					<div class="flex text-center center pt-30 pb-10">			
-						<el-button plain size="small" native-type="submit" class="login-btn pulse animated themed">
-							Login
-						</el-button>
+					<div class="flex text-center center pt-30 pb-10">
+						<el-button type="primary login-btn pulse animated themed" @click="login('user')">Login</el-button>
 					</div>
 
 					<div class="text-center login-box pt-10">
 						Already have an account? <a href="/register">Signup</a>
 					</div>
 
-				</form>
+				</el-form>
 			</div>
 			
 		</div>
@@ -48,31 +47,39 @@ export default {
 	name: 'Login2',
 	data() {
 		return {
-			email: '',
-			password: ''
+			user: {
+				email: '',
+				password: '',
+			},
+			error : '',
+			rules: {
+				email: [
+					{ type: "email",required: true, message: 'Please enter a valid email', trigger: 'change' }
+				],
+				password: [
+					{ required: true, message: 'Please enter your password', trigger: 'change' }
+				]
+			}
 		}
 	},
-  methods: {
-    async login(e) {
-		e.preventDefault();
-
-		if (this.email && this.password) {
-		const user = {
-			email: this.email,
-			password: this.password
-		};
-		await this.$store.dispatch("session/login", user)
-		.then((res) => {
-			console.log({res});
-			this.$router.push('/')
-		})
-		.catch(err => console.log({err}))
-		} else { 
-			console.log('====================================');
-			console.log("no pwd no em;");
-			console.log('====================================')}
-    	}
-  	}
+	methods: {
+		login(user) {
+			this.$refs[user].validate(async (valid) => {
+				if (valid) {
+					await this.$store.dispatch("session/login", this.user)
+					.then((res) => {
+						if(this.$store.state.session.errorMessage == '')
+							this.$router.push('/')
+						else
+							this.error = 'Authentication failed.';
+					})
+					.catch(err => {this.error = err.message;})
+				} else {
+					return false;
+				}
+			});
+		}
+	}
 }
 </script>
 

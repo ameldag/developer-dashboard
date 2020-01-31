@@ -29,8 +29,7 @@ export default {
 	},
 	methods: {
 		async resetPassword() {
-			console.log(this.password)
-			await axios.put(this.$APIPATH + `/editors/password/new` ,{token: this.$route.params.token, new: this.password} ,{ })
+			await axios.put(process.env.VUE_APP_API_PATH + `/editors/password/new` ,{token: this.$route.params.token, new: this.password} ,{ })
 			.then((res) => {
 				this.$router.replace('/login');
 			})

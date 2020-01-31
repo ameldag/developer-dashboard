@@ -4,7 +4,7 @@
 		<div class="page-header">
 			<h1>{{action}} promotion </h1>
 		</div>
-		<el-form ref="form" :model="currentPromotion" label-width="120px" :label-position="labelPosition">
+		<el-form ref="currentPromotion" :rules="currentRules" :model="currentPromotion" label-width="120px" :label-position="labelPosition">
 		<div class="card-base card-shadow--medium info" style="padding: 20px;">
 			<el-steps :active="active" finish-status="success" style="padding-bottom: 30px">
 				<el-step title="Informations"></el-step>
@@ -18,13 +18,13 @@
 				</el-col>
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Promo Name :*">
+					<el-form-item label="Promo Name :" prop="promotion_name">
 						<el-input type="text" v-model="currentPromotion.promotion_name"/>
 					</el-form-item>
 				</el-col>
 				
 				<el-col class="col-p">
-					<el-form-item label="Select Game :">
+					<el-form-item label="Select Game :" prop="game">
 						<el-select v-model="currentPromotion.game" placeholder="Select">
 							<el-option
 							v-for="item in games"
@@ -37,8 +37,8 @@
 				</el-col>
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20 flex-display">
-					<el-form-item label="UPLOAD GAME GRAPHICS :">
-						<el-input type="file" accept=".jpg, .jpeg, .png" @change="processIcon"/>
+					<el-form-item label="UPLOAD GAME GRAPHICS :" prop="icon">
+						<input type="file" accept=".jpg, .jpeg, .png" @change="processIcon"/>
 						<img width="50px" heigth="50px" :src="currentPromotion.game.icon" ></img>
 					</el-form-item>
 				</el-col>
@@ -50,7 +50,7 @@
 				</el-col>
 
 				<el-col :span="12" :md="24" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Platform">
+					<el-form-item label="Platform" prop="channels">
 						<el-checkbox-group v-model="currentPromotion.channels">
 							<el-checkbox-button 
 								v-for="item in getAvailablesGames"
@@ -73,7 +73,7 @@
 
             <div v-if="active===2">
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="Beginging of Promotion :*">
+					<el-form-item label="Beginging of Promotion :" prop="start_date">
 						<el-date-picker
 						v-model="currentPromotion.start_date"
 						type="date"
@@ -83,7 +83,7 @@
 				</el-col>
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-					<el-form-item label="End of Promotion :*">
+					<el-form-item label="End of Promotion :" prop="end_date">
 						<el-date-picker
 						v-model="currentPromotion.end_date"
 						type="date"
@@ -95,7 +95,7 @@
 			<el-col class="col-p">
 				<el-form-item>
 					<el-button @click="back" v-if="active!==0 ">Back</el-button>
-					<el-button type="primary"  style="margin-top: 12px; float:right;" @click="next">Next</el-button>
+					<el-button type="primary"  style="margin-top: 12px; float:right;" @click="next('currentPromotion')">Next</el-button>
 				</el-form-item>
 			</el-col>
 		</div>
@@ -112,12 +112,49 @@ export default {
 		return {
 			games: this.$store.getters['games/games'],
 			active: 0,
-			labelPosition: 'left' //left, right, or top
-		}
+			labelPosition: 'left', //left, right, or top
+			rules: {
+				0: {
+					promotion_name: [
+						{ required: true, message: 'Please enter promotion name', trigger: 'change' },
+					],
+					game: [
+						{ required: true, message: 'Please enter promotion name', trigger: 'change' },
+					],
+					icon: [
+						{
+							validator: (rule, value, callback, source, options) => {
+							console.log({value})
+							if(value === '' || value === null){
+								callback(new Error('Please upload an icon'))
+							} else {
+								callback();
+							}
+						}, trigger: 'change'}
+					],
+				},
+				1: {
+					channels: [
+						{ type: 'array', required: true, message: 'Please select at least one platform', trigger: 'change' }
+					],
+				},
+				2:{
+					start_date: [
+						{ type: 'date', required: true, message: 'Please pick a start date', trigger: 'change' }
+					],
+					end_date: [
+						{ type: 'date', required: true, message: 'Please pick an end date', trigger: 'change' }
+					],
+				},
+			}
+		};
 	},
 	computed: {
 		getAvailablesGames: function() {
 			return this.games.filter( e => e._id != this.currentPromotion.game)
+		},
+		currentRules() {
+			return this.rules[this.active]
 		}
 	},
     props: {
@@ -128,21 +165,37 @@ export default {
 		back(){
 			this.active--
 		},
-		async next(){
-			if (++this.active > 2){
-				let data = {
-					token : localStorage.getItem("token"),
-					id : localStorage.getItem("current_team")
+		next(currentPromotion){
+			this.$refs[currentPromotion].validate(async (valid) => {
+			if (valid) {
+				if (++this.active > 2){
+					let data = {
+						token : localStorage.getItem("token"),
+						id : localStorage.getItem("current_team")
+					}
+					if(this.action == "Update"){
+						await axios.put(process.env.VUE_APP_API_PATH + `/promotions/` + this.$route.params.id ,this.currentPromotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+						.then((res) => {
+						this.$router.replace('/management/promotions');
+						})
+						.catch((error) => {
+							return error.response;
+						});
+					} else {
+						await axios.post(process.env.VUE_APP_API_PATH + `/promotions/` + data.id ,this.currentPromotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+						.then((res) => {
+						this.$router.replace('/management/promotions');
+						})
+						.catch((error) => {
+							return error.response;
+						});
+					}
 				}
-			
-				await axios.post(this.$APIPATH + `/promotions/` + data.id ,this.promotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-				.then((res) => {
-				this.$router.replace('/management/promotions');
-				})
-				.catch((error) => {
-					return error.response;
-				});
+			} else {
+				console.log('error submit!!');
+				return false;
 			}
+			});
 		},
 		resizeLabelPosition() {
 			if(window.innerWidth <= 768) {
@@ -153,35 +206,9 @@ export default {
 			if (event.target.files.length) {
 				const formData = new FormData();
 				formData.append('image',event.target.files[0])
-				await axios.post(this.$APIPATH + `/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await axios.post(process.env.VUE_APP_API_PATH + `/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 				.then((res) => {
 					this.icon = res.data.data
-				})
-				.catch((error) => {
-					return error.response;
-				});
-			}
-		},
-		async processBackground($event){
-			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('image',event.target.files[0])
-				await axios.post(this.$APIPATH + `/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-				.then((res) => {
-					this.background_image = res.data.data
-				})
-				.catch((error) => {
-					return error.response;
-				});
-			}
-		},
-		async processP12($event){
-			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('file',event.target.files[0])
-				await axios.post(this.$APIPATH + `/games/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-				.then((res) => {
-					this.p_12_file = res.data.data
 				})
 				.catch((error) => {
 					return error.response;

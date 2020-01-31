@@ -419,20 +419,6 @@ export default {
 	},
 
 	methods: {
-		getChart1datax() {
-			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem("current_team"))
-			.then(response => {
-				console.log(response.data.data.chart[0])
-				return response.data.data.chart[0]
-				})
-		},
-		getChart1datay() {
-			axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem("current_team"))
-			.then(response => {
-				console.log(response.data.data.chart[1])
-				return response.data.data.chart[1]
-				})
-		},
 		__resizeHanlder: _.throttle(function (e) {
 			if(this.resized) {			
 
@@ -499,15 +485,6 @@ export default {
 						color: '#ccc'
 					}
 				},
-				xAxis: {
-					data: this.getChart1datax(),
-					boundaryGap : false,
-					axisLine: {
-						lineStyle: {
-							color: 'rgba(255,255,255,0.5)'
-						}
-					}
-				},
 				yAxis: {
 					splitLine: {show: false},
 					axisLine: {
@@ -516,52 +493,6 @@ export default {
 						}
 					}
 				},
-				series: [
-					{
-						name: 'Data A',
-						type: 'line',
-						smooth: true,
-						showAllSymbol: true,
-						symbol: 'emptyCircle',
-						symbolSize: 10,
-						lineStyle: {
-							color: '#fff'
-						},
-						itemStyle: {
-							color: '#fff', 
-							borderColor: '#5f8fdf',
-							borderWidth: 3
-						},
-						areaStyle: {
-							color: 'rgba(255,255,255,0.2)'
-						},
-						animationDuration: 2800,
-						animationEasing: 'cubicInOut',
-						data: this.getChart1datay(),
-					},
-					{
-						name: 'Data A',
-						type: 'line',
-						smooth: true,
-						showAllSymbol: true,
-						symbol: 'emptyCircle',
-						symbolSize: 10,
-						lineStyle: {
-							color: '#fff'
-						},
-						itemStyle: {
-							color: '#fff', 
-							borderColor: '#5f8fdf',
-							borderWidth: 3
-						},
-						areaStyle: {
-							color: 'rgba(255,255,255,0.2)'
-						},
-						animationDuration: 2800,
-						animationEasing: 'cubicInOut',
-						data: this.getChart1datay(),
-					}
-				]
 			})
 		},
 		destroyChart1() {
@@ -610,57 +541,6 @@ export default {
 		this.$store.dispatch("analytics/newReturningMonthly", data)
 		
 		this.$store.dispatch("games/getGames", data)
-
-		// axios.post(this.$APIPATH + `/analytics/net-income-monthly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.category = response.data.data.chart[0]
-		// 	// this.chart1.setOption.xAxis.data = response.data.data.chart[0]
-		// 	this.lineData = response.data.data.chart[1]
-		// 	console.log(chart1.setOption)
-		// 	})
-
-		
-		// axios.post(this.$APIPATH + `/analytics/all-tournaments-weekly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.all_tournaments = response.data.data.total
-		// 	this.all_tournaments_chart = response.data.data.chart
-		// 	})
-
-		
-		// axios.post(this.$APIPATH + `/analytics/free-tournaments-weekly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.free_tournaments = response.data.data.total
-		// 	this.free_tournaments_chart = response.data.data.chart
-		// 	})
-
-		
-		// axios.post(this.$APIPATH + `/analytics/cash-tournaments-weekly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.cash_tournaments = response.data.data.total
-		// 	this.cash_tournaments_chart = response.data.data.chart
-		// 	})
-
-			
-		// // Duels
-		// axios.post(this.$APIPATH + `/analytics/all-challenges-weekly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.all_challenges = response.data.data.total
-		// 	this.all_challenges_chart = response.data.data.chart
-		// 	})
-
-		
-		// axios.post(this.$APIPATH + `/analytics/free-challenges-weekly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.free_challenges = response.data.data.total
-		// 	this.free_challenges_chart = response.data.data.chart
-		// 	})
-
-		
-		// axios.post(this.$APIPATH + `/analytics/cash-challenges-weekly/` + localStorage.getItem("current_team"))
-		// .then(response => {
-		// 	this.cash_challenges = response.data.data.total
-		// 	this.cash_challenges_chart = response.data.data.chart
-		// 	})
 	},
 	beforeDestroy() {
 	},

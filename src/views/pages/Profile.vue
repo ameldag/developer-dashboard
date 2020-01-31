@@ -11,7 +11,20 @@
 					<div v-for="i in 5" :key="i" :class="{'color':true, 'active':colorActive}" :style="{'background':color}"></div>
 				</div>
 			</div>
-			<div class="avatar"><img :src="me.avatar" alt="avatar"></div>
+			<div class="avatar-upload">
+				<div class="avatar-edit">
+					<input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" @change="profileImage" />
+					<label for="imageUpload"></label>
+					
+					
+				</div>
+				<div class="avatar-preview">
+					<img :src="me.avatar" alt="avatar">
+				</div>
+			</div>
+				
+    </div>
+		
 		</div>
 		<div class="page-profile card-base card-shadow--medium" style="padding: 20px;" id="boundary">
 			<el-form ref="form" label-width="120px">
@@ -73,13 +86,13 @@ export default {
 	data() {
 		return {
 			me : {
-				first_name: this.$store.getters['session/me'].first_name,
-				last_name: this.$store.getters['session/me'].last_name,
-				address: this.$store.getters['session/me'].address,
-				country: this.$store.getters['session/me'].country,
-				city: this.$store.getters['session/me'].city,
-				zipcode: this.$store.getters['session/me'].zipcode,
-				avatar: this.$store.getters['session/me'].avatar,
+				first_name: this.$store.state.session.user.first_name,
+				last_name: this.$store.state.session.user.last_name,
+				address: this.$store.state.session.user.address,
+				country: this.$store.state.session.user.country,
+				city: this.$store.state.session.user.city,
+				zipcode: this.$store.state.session.user.zipcode,
+				avatar: this.$store.state.session.user.avatar,
 			},
 			colorActive: false,
 			color: 'white',
@@ -95,13 +108,28 @@ export default {
 			}
 		},
 
+		async profileImage($event){
+			if (event.target.files.length) {
+				const formData = new FormData();
+				formData.append('image',event.target.files[0])
+				await axios.post(process.env.VUE_APP_API_PATH + `/editors/picture/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				.then((res) => {
+					this.me.avatar = res.data.data
+					console.log(this.me.avatar)
+				})
+				.catch((error) => {
+					return error.response;
+				});
+			}
+		},
+
 		async onSubmit(){
 			let data = {
 				token : localStorage.getItem("token"),
 				id : this.$store.getters['session/me']._id
 			}
 			console.log(this.me)
-			await axios.put(`http://localhost:8000/api/dashboard/v1/editors/` + data.id + '/personal' ,this.me ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+			await axios.put(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/personal' ,this.me ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 			.then((res) => {
 				console.log({res})
 				this.$router.replace('/dashboard');
@@ -269,14 +297,76 @@ export default {
 			width: 180px;
 			height: 180px;
 			overflow: hidden;
-			border-radius: 50%;
-			box-sizing: border-box;
-			box-shadow: 0px 20px 15px -15px rgba(0, 0, 0, 0.15);
+			// border-radius: 50%;
+			// box-sizing: border-box;
+			// box-shadow: 0px 20px 15px -15px rgba(0, 0, 0, 0.15);
 
 			img {
 				width: 100%;
 			}
 		}
+
+			.avatar-upload {
+				max-width: 205px;
+				margin: 50px auto;
+				position: absolute;
+				bottom: 0px;
+				left:50px;
+				width: 180px;
+				height: 180px;
+				overflow: hidden;
+			}
+			.avatar-upload .avatar-edit {
+				position: absolute;
+				right: 12px;
+				z-index: 1;
+				bottom: 5px;
+			}
+			.avatar-upload .avatar-edit input {
+				display: none;
+			}
+			.avatar-upload .avatar-edit input + label {
+				display: inline-block;
+				width: 34px;
+				height: 34px;
+				margin-bottom: 0;
+				border-radius: 100%;
+				background: #FFFFFF;
+				border: 1px solid transparent;
+				box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+				cursor: pointer;
+				font-weight: normal;
+				transition: all 0.2s ease-in-out;
+			}
+			.avatar-upload .avatar-edit input + label:hover {
+				background: #f1f1f1;
+				border-color: #d6d6d6;
+			}
+			.avatar-upload .avatar-edit input + label:after {
+				content: "\f040";
+				font-family: 'FontAwesome';
+				color: #757575;
+				position: absolute;
+				top: 10px;
+				left: 0;
+				right: 0;
+				text-align: center;
+				margin: auto;
+			}
+			.avatar-upload .avatar-preview {
+				border: 6px solid #fff;
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				width: 180px;
+				height: 180px;
+				overflow: hidden;
+				border-radius: 50%;
+				box-sizing: border-box;
+			img {
+				width: 100%;
+			}
+			}
 
 		.color-thief {
 			display: block;

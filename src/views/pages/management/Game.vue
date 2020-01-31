@@ -28,8 +28,8 @@ export default {
 				name: '',
 				description: '',
 				icon: '',
-				background_image: null,
-				p_12_file: null,
+				background_image: '',
+				p_12_file: '',
 				p_12_password: '',
 				p_12_password_overwrite: '',
 				gcm_api_key: '',
@@ -65,7 +65,7 @@ export default {
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
 		if(this.$route.params.id != "new"){
-			axios.get(this.$APIPATH + `/games/` + localStorage.getItem("current_team") + "/" + this.$route.params.id)
+			axios.get(process.env.VUE_APP_API_PATH + `/games/` + localStorage.getItem("current_team") + "/" + this.$route.params.id)
 			.then(response => {	
 				console.log({response})		
 				this.current_game = response.data.data

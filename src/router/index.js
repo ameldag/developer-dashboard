@@ -198,11 +198,12 @@ let auth = {
 router.beforeEach((to, from, next) => {
 		// console.log('loggedin',auth.loggedIn());
 
-			
+
 			var hasPermission = localStorage.getItem("token");
 
 			console.log({hasPermission});
 			console.log(to.name);
+			console.log(process.env.VUE_APP_API_PATH)
 			if(hasPermission != null){
 				if(to.name === 'login' || to.name === 'register'){
 					window.location.href = '/'

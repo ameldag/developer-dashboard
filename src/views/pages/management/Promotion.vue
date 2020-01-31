@@ -26,7 +26,7 @@ export default {
 			action: 'Add new',
             current_promotion: {
 				promotion_name: '',
-				game: {},
+				game: '',
 				channels: [],
 				start_date: '',
 				end_date: '',
@@ -53,7 +53,7 @@ export default {
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
 		if(this.$route.params.id != "new"){
-			axios.get(this.$APIPATH + `/promotions/` + this.$route.params.id)
+			axios.get(process.env.VUE_APP_API_PATH + `/promotions/` + this.$route.params.id)
 			.then(response => {	
 				console.log({response})		
 				this.current_promotion = response.data.data

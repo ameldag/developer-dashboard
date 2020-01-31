@@ -34,7 +34,7 @@ const getters = {
 const actions = {
     async login(store, data) {
         await session.login(data).then(res => {
-            console.log(res)
+            console.log({res})
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.message);
             }
@@ -45,6 +45,7 @@ const actions = {
                 store.commit('setUser', res.data.editor);
                 store.commit('clearMessage');
             }
+            return res
         });
     },
 
@@ -68,7 +69,6 @@ const actions = {
         console.log({data});
         
         await session.getMe(data).then(res => {
-            console.log({res})
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.message);
             } else {

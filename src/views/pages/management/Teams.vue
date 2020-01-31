@@ -141,7 +141,7 @@ export default {
 				id : localStorage.getItem("current_team")
 			}
 
-			await axios.post(`http://localhost:8000/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+			await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 			.then((res) => {
 			this.$router.replace('/management/teams');
 			})

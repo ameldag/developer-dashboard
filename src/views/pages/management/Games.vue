@@ -14,7 +14,7 @@
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table
 				:columns="columns"
-				:rows="this.$store.state.games.games.reverse()"
+				:rows="this.$store.state.games.games"
 				:search-options="{
 					enabled: true,
 					placeholder: 'Search this table'

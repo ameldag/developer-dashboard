@@ -30,7 +30,7 @@ export default {
 	methods: {
 		async sendResetMail() {
 			console.log(this.email)
-			await axios.post(this.$APIPATH + `/editors/password/reset` ,{email: this.email} ,{ })
+			await axios.post(process.env.VUE_APP_API_PATH + `/editors/password/reset` ,{email: this.email} ,{ })
 			.then((res) => {
 				this.$router.replace('/login');
 			})
