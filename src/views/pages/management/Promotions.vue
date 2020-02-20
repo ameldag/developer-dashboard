@@ -8,7 +8,7 @@
 				<el-breadcrumb-item>Promotions</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
-			<button class="el-button el-button--primary" style="float:right;" @click="addPromotionPage" >Create Promotion</button>
+			<el-button type="primary" class="text-truncate" style="float:right;" @click="addPromotionPage" >Create Promotion</el-button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -16,7 +16,7 @@
 				:columns="columns"
 				:rows="this.$store.state.promotion.promotions"
 				:search-options="{
-					enabled: true,
+					enabled: false,
 					placeholder: 'Search this table'
 				}"
 				:pagination-options="{
@@ -43,8 +43,8 @@
 						</span>
 					</span>
 					
-					<span v-else-if="props.column.field == 'created_at'">
-						<span class="card-date-promotions">{{moment(props.row.created_at).format('YYYY-MM-DD')}}</span>
+					<span v-else-if="props.column.field == 'createdAt'">
+						<span class="card-date-promotions">{{moment(props.row.createdAt).format('YYYY-MM-DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'start_date'">
@@ -56,7 +56,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'promotion_name'">
-						<button class="el-button el-button--primary is-plain" @click="goToPromotion(props.row._id)">{{ props.row.promotion_name }}</button>
+						<el-button type="text" class="text-truncate" @click="goToPromotion(props.row._id)">{{ props.row.promotion_name }}</el-button>
 					</span>
 					
 					<span v-else-if="props.column.field == 'channels'">
@@ -65,14 +65,10 @@
 					
 					<span v-else-if="props.column.field == 'status'">
 						<span v-if="props.row.status == 'running'">
-                            <button type="button" class="el-button el-button--success is-circle">
-                                <i class="el-icon-check"></i>
-                            </button>
+                            <el-button type="success" icon="el-icon-check" circle></el-button>
 						</span>
 						<span v-else>
-                            <button type="button" class="el-button el-button--danger is-circle">
-                                <i class="el-icon-check"></i>
-                            </button>
+                            <el-button type="danger" icon="el-icon-check" circle></el-button>
 						</span>
 					</span>
 

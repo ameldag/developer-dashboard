@@ -8,18 +8,18 @@
 				<el-breadcrumb-item>Team Members</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
-			<button class="el-button el-button--primary" style="float:right;" @click="centerDialogVisible = true" >Invite New Member</button>
+			<el-button type="primary" class="text-truncate" style="float:right;" @click="centerDialogVisible = true" >Invite New Member</el-button>
 			<el-dialog
 			:visible.sync="centerDialogVisible"
 			width="30%"
 			center>
 			<div>
-				<el-label>email :</el-label>
+				<el-label class="test-truncate">email :</el-label>
 				<el-input type="text" v-model="email" />
 			</div>
 			<span slot="footer" class="dialog-footer">
-				<el-button @click="centerDialogVisible = false">Annuler</el-button>
-				<el-button type="primary" @click="sendInvitation">Confirmer</el-button>
+				<el-button class="test-truncate" @click="centerDialogVisible = false">Annuler</el-button>
+				<el-button type="primary" class="test-truncate" @click="sendInvitation">Confirmer</el-button>
 			</span>
 			</el-dialog>
 		</div>
@@ -29,7 +29,7 @@
 				:columns="columns"
 				:rows="this.$store.state.team.members"
 				:search-options="{
-					enabled: true,
+					enabled: false,
 					placeholder: 'Search this table'
 				}"
 				:pagination-options="{
@@ -61,15 +61,15 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
-						<button class="el-button el-button--primary is-plain">{{ props.row.first_name }} {{ props.row.last_name }}</button>
+						<el-button type="text" class="text-truncate" plain>{{ props.row.first_name }} {{ props.row.last_name }}</el-button>
 					</span>
 					
 					<span v-else-if="props.column.field == 'role_in_team'">
 						<span v-if="props.row.role_in_team == 'Administrator'">
-							<button class="el-button el-button--success is-round">{{ props.row.role_in_team }}</button>
+							<el-button type="success" round class="test-truncate">{{ props.row.role_in_team }}</el-button>
 						</span>
 						<span v-else>
-							<button class="el-button el-button--default is-round">{{ props.row.role_in_team }}</button>
+							<el-button type="warning" round class="test-truncate">{{ props.row.role_in_team }}</el-button>
 						</span>
 					</span>
 

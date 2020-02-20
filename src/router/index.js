@@ -18,6 +18,7 @@ import Teams from '../views/pages/management/Teams.vue'
 import Promotions from '../views/pages/management/Promotions.vue'
 import Promotion from '../views/pages/management/Promotion.vue'
 import Game from '../views/pages/management/Game.vue'
+import Statement from '../views/pages/Statements.vue'
 
 import layouts from '../layout'
 import store from '../store/index.js'
@@ -100,6 +101,17 @@ const router = new Router({
 			path: '/games/:id',
 			name: 'game',
 			component: Game,
+			meta: {
+				auth: true,
+				layout: layouts.navLeft,
+				searchable: true,
+				tags: ['pages']
+			}
+		},
+		{
+			path: '/statements',
+			name: 'statement',
+			component: Statement,
 			meta: {
 				auth: true,
 				layout: layouts.navLeft,

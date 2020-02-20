@@ -8,7 +8,7 @@
 				<el-breadcrumb-item>Games</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
-			<button class="el-button el-button--primary" style="float:right;" @click="addGamePage" >Add new game</button>
+			<el-button type="primary" class="text-truncate" style="float:right;" @click="addGamePage" >Add new game</el-button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -16,7 +16,7 @@
 				:columns="columns"
 				:rows="this.$store.state.games.games"
 				:search-options="{
-					enabled: true,
+					enabled: false,
 					placeholder: 'Search this table'
 				}"
 				:pagination-options="{
@@ -48,15 +48,15 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
-						<button class="el-button el-button--primary is-plain" @click="GameProfile(props.row._id)">{{ props.row.name }}</button>
+						<el-button type="text" class="text-truncate" @click="GameProfile(props.row._id)">{{ props.row.name }}</el-button>
 					</span>
 					
 					<span v-else-if="props.column.field == 'game_status'">
 						<span v-if="props.row.game_status == 'Finished'">
-							<button class="el-button el-button--success is-round">{{ props.row.game_status }}</button>
+							<el-button type="success" class="text-truncate" round>{{ props.row.game_status }}</el-button>
 						</span>
 						<span v-else>
-							<button class="el-button el-button--warning is-round">{{ props.row.game_status }}</button>
+							<el-button type="warning" class="text-truncate" round>{{ props.row.game_status }}</el-button>
 						</span>
 					</span>
 

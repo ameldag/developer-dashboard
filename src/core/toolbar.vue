@@ -96,8 +96,9 @@ export default {
 				callback: () => {this.fullscreen = this.$fullscreen.getState()}
 			})
 		},
-		changeTeam(team) {
+		async changeTeam(team) {
 			localStorage.setItem("current_team", team)
+			await this.$store.dispatch("team/setCurrentTeam", team, {root:true})
 			window.location.href = '/dashboard'
 		}
 	},

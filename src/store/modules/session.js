@@ -33,14 +33,14 @@ const getters = {
 // actions
 const actions = {
     async login(store, data) {
-        await session.login(data).then(res => {
-            console.log({res})
+        await session.login(data).then(async res => {
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.message);
             }
             else {
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("current_team", res.data.editor.teams[0]._id)
+                await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
                 store.commit('setToken', res.data.token);
                 store.commit('setUser', res.data.editor);
                 store.commit('clearMessage');
@@ -50,7 +50,7 @@ const actions = {
     },
 
     async signup(store, data) {
-        await session.signup(data).then(res => {
+        await session.signup(data).then(async res => {
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.message);
             }
@@ -58,6 +58,7 @@ const actions = {
                 console.log(res.data)
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("current_team", res.data.editor.teams[0]._id)
+                await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
                 store.commit('setToken', res.data.token);
                 store.commit('setUser', res.data.editor);
                 store.commit('clearMessage');
@@ -66,13 +67,13 @@ const actions = {
     },
 
     async getMe(store, data) {
-        console.log({data});
         
-        await session.getMe(data).then(res => {
+        await session.getMe(data).then(async res => {
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.message);
             } else {
                 store.commit('setUser', res.data.editor);
+                await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
                 store.commit('setToken', data);
                 store.commit('clearMessage');
             }

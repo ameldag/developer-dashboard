@@ -16,12 +16,12 @@
 			<i class="mdi mdi-gauge"></i><span slot="title">Dashboard</span>
 		</el-menu-item>
 
-		
-		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Revenues</span></div>
-		<el-menu-item index="/dashboard">
-			<i class="mdi mdi-cash-multiple"></i><span slot="title">Statements</span>
-		</el-menu-item>
-
+		<div v-if="this.$store.state.team.currentTeam.editor == this.$store.state.session.user._id">
+			<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Revenues</span></div>
+			<el-menu-item index="/statements">
+				<i class="mdi mdi-cash-multiple"></i><span slot="title">Statements</span>
+			</el-menu-item>
+		</div>
 		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Management</span></div>
 		<el-menu-item :index="'/management/games'">
 			<i class="mdi mdi-gamepad-right"></i><span slot="title">Games</span>
@@ -34,7 +34,7 @@
 		</el-menu-item>
 
 		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Resources</span></div>
-		<el-menu-item index="/dashboard">
+		<el-menu-item index="">
 			<i class="mdi mdi-settings"></i><span slot="title">Resources</span>
 		</el-menu-item>
 
