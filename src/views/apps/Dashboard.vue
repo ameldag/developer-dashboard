@@ -336,7 +336,7 @@
 				</el-col>
 				
 				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+					<div class="card-base card-shadow--medium widget small-widget" v-loading="!asyncComponent">
 
 						
 						<div class="widget-header ph-20 pt-20 pb-20">
