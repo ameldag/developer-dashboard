@@ -169,6 +169,7 @@ export default {
 			this.$refs[currentPromotion].validate(async (valid) => {
 			if (valid) {
 				if (++this.active > 2){
+					this.$store.commit('setSplashScreen', true)
 					let data = {
 						token : localStorage.getItem("token"),
 						id : localStorage.getItem("current_team")
@@ -176,23 +177,26 @@ export default {
 					if(this.action == "Update"){
 						await axios.put(process.env.VUE_APP_API_PATH + `/promotions/` + this.$route.params.id ,this.currentPromotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 						.then((res) => {
-						this.$router.replace('/management/promotions');
+							this.$router.replace('/management/promotions');
+							this.$store.commit('setSplashScreen', false)
 						})
 						.catch((error) => {
 							return error.response;
+							this.$store.commit('setSplashScreen', false)
 						});
 					} else {
 						await axios.post(process.env.VUE_APP_API_PATH + `/promotions/` + data.id ,this.currentPromotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
 						.then((res) => {
-						this.$router.replace('/management/promotions');
+							this.$router.replace('/management/promotions');
+							this.$store.commit('setSplashScreen', false)
 						})
 						.catch((error) => {
+							this.$store.commit('setSplashScreen', false)
 							return error.response;
 						});
 					}
 				}
 			} else {
-				console.log('error submit!!');
 				return false;
 			}
 			});

@@ -68,7 +68,7 @@ import VerticalNav from '@/core/vertical-nav.vue'
 import Toolbar from '@/core/toolbar.vue'
 import Footer from '@/core/footer.vue'
 import LayoutPicker from '@/components/layout-picker.vue'
-
+const axios = require('axios')
 export default {
 	name: 'App',
 	data() {
@@ -106,7 +106,7 @@ export default {
 		splashScreen() {
 			return this.$store.getters.splashScreen
 		}
-	},	
+	},
 	methods: {
 		resizeOpenNav() {
 			this.innerWidth = window.innerWidth
@@ -125,16 +125,30 @@ export default {
 		Footer,
 		LayoutPicker
 	},
+	async beforeCreate() {
+		if(localStorage.getItem('token')) {
+			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
+		}
+	},
 	created() {
+		axios.interceptors.request.use(
+		config => {
+			return config;
+		},
+		error => {
+			return Promise.reject(error);
+		}
+		
+		);
 		if(browser.name)
 			document.getElementsByTagName("html")[0].classList.add(browser.name)
 	},
 	async mounted() {
 		this.resizeOpenNav()
 		window.addEventListener('resize', this.resizeOpenNav);
-		if(localStorage.getItem('token')) {
-			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
-		}
+		
+		
+		this.$store.commit('setSplashScreen', false)
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizeOpenNav);

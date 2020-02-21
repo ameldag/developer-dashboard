@@ -238,9 +238,9 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
-	setTimeout(()=>{
+	/* setTimeout(()=>{
 		store.commit('setSplashScreen', false)
-	}, 500)
+	}, 500) */
 })
 
 export default router

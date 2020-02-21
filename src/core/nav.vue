@@ -16,7 +16,7 @@
 			<i class="mdi mdi-gauge"></i><span slot="title">Dashboard</span>
 		</el-menu-item>
 
-		<div v-if="this.$store.state.team.currentTeam.editor == this.$store.state.session.user._id">
+		<div v-if="this.$store.state.team && this.$store.state.team.currentTeam ? this.$store.state.team.currentTeam.editor == this.$store.state.session.user._id : false">
 			<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Revenues</span></div>
 			<el-menu-item index="/statements">
 				<i class="mdi mdi-cash-multiple"></i><span slot="title">Statements</span>
@@ -75,7 +75,12 @@ export default {
 			this.activeLink = path
 		}
 	},
+	
+	async beforeCreate() {
+		console.log("before create nav")
+		},
 	created() {
+		console.log("nav created")
 		if(browser.name !== 'ie') this.isIe = false
 		if(browser.name !== 'edge') this.isEdge = false
 

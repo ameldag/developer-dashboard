@@ -140,13 +140,13 @@ export default {
 		}
 	},
 	mounted() {
-		var colorThief = new ColorThief();
+		/* var colorThief = new ColorThief();
 		setTimeout(()=>{
 			let rgb = colorThief.getColor(document.getElementById('color-thief'))
 			//console.log('Profile mounted', rgb)
 			this.colorActive = true
 			this.color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
-		}, 1000)
+		}, 1000) */
 
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);

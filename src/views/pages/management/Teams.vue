@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
-			<vue-good-table
+			<vue-good-table v-loading="loadingTableData"
 				:columns="columns"
 				:rows="this.$store.state.team.members"
 				:search-options="{
@@ -89,6 +89,7 @@ export default {
 	name: 'Games',
 	data(){
 		return {
+			loadingTableData: true,
 			centerDialogVisible: false,
 			email: '',
 			columns: [
@@ -127,12 +128,14 @@ export default {
 			],
 		}
 	},
-	mounted() {
+	async mounted() {
+		this.loadingTableData = true
 		let data = {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
 		}
-		this.$store.dispatch("team/getMembers", data)
+		await this.$store.dispatch("team/getMembers", data)
+		this.loadingTableData = false
 	},
 	methods: {
 		async sendInvitation() {

@@ -62,18 +62,27 @@ export default {
 			}
 		}
 	},
+	mounted(){
+		this.$store.commit('setSplashScreen', false)
+	},
 	methods: {
 		login(user) {
 			this.$refs[user].validate(async (valid) => {
 				if (valid) {
+					this.$store.commit('setSplashScreen', true)
 					await this.$store.dispatch("session/login", this.user)
 					.then((res) => {
 						if(this.$store.state.session.errorMessage == '')
 							this.$router.push('/')
-						else
+						else{
 							this.error = 'Authentication failed.';
+							this.$store.commit('setSplashScreen', false)
+						}
 					})
-					.catch(err => {this.error = err.message;})
+					.catch(err => {
+						this.error = err.message;
+						this.$store.commit('setSplashScreen', false)
+					})
 				} else {
 					return false;
 				}

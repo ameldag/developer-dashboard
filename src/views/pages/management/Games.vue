@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
-			<vue-good-table
+			<vue-good-table v-loading="loadingTableData"
 				:columns="columns"
 				:rows="this.$store.state.games.games"
 				:search-options="{
@@ -76,6 +76,7 @@ export default {
 	name: 'Games',
 	data(){
 		return {
+			loadingTableData: true,
 			columns: [
 				{
 					label: 'App Icon',
@@ -115,13 +116,16 @@ export default {
 			this.$router.replace('/games/new');
 		}
     },
-	mounted() {
+	beforeMount() {
+		this.loadingTableData = true;
+	},
+	async mounted() {
 		let data = {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
 		}
-		this.$store.dispatch("games/getGames", data)
-		
+		await this.$store.dispatch("games/getGames", data)
+		this.loadingTableData= false;
 	}
 }
 </script>

@@ -2,11 +2,10 @@
 	<vue-scroll class="page-dashboard">
 		
 		
-		<resize-observer @notify="__resizeHanlder" />
 
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 						
 					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
@@ -25,7 +24,7 @@
 				</div>
 			</el-col>
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
@@ -44,7 +43,7 @@
 				</div>
 			</el-col>
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
@@ -63,7 +62,7 @@
 				</div>
 			</el-col>
 			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
@@ -87,11 +86,11 @@
 
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-				<div class="card-base card-shadow--medium bg-gradiant p-20 " style="height:400px" v-loading="!asyncChart1">
+				<div class="card-base card-shadow--medium bg-gradiant p-20 " style="height:400px" v-loading="!loadingChart">
 					<h1 class="white-text mv-0 animated fadeInDown">NET INCOME</h1>
 					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Total. {{ this.$store.state.analytics.monthly_income }}</h3>					
 					<TrendChart
-						v-if="netIncome.length"
+						v-if="netIncome ? netIncome.length : false "
 						width="100%"
 						height="65%"
 						:datasets="[
@@ -121,7 +120,7 @@
 
 		<el-row class="mt-30 mb-15" :gutter="30">
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -136,7 +135,7 @@
 						</div>
 					</div>
 					<TrendChart
-						v-if="all_tournaments_chart.length"
+						v-if="all_tournaments_chart ? all_tournaments_chart.length : false "
 						:datasets="[
 							{
 							data: all_tournaments_chart,
@@ -160,7 +159,7 @@
 			</el-col>
 			
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -175,7 +174,7 @@
 						</div>
 					</div>
 					<TrendChart
-						v-if="free_tournaments_chart.length"
+						v-if="free_tournaments_chart ? free_tournaments_chart.length : false "
 						:datasets="[
 							{
 							data: free_tournaments_chart,
@@ -199,7 +198,7 @@
 			</el-col>
 			
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -214,7 +213,7 @@
 						</div>
 					</div>
 					<TrendChart
-						v-if="cash_tournaments_chart.length"
+						v-if="cash_tournaments_chart ? cash_tournaments_chart.length : false "
 						:datasets="[
 							{
 							data: cash_tournaments_chart,
@@ -247,7 +246,7 @@
 		<el-row class="mt-0 flex" :gutter="30">
 		 
 			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
-				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%; box-sizing: border-box;" v-loading="!asyncChart1">
+				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%; box-sizing: border-box;" v-loading="!loadingChart">
 					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
 					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Returning and new users</h3>
 					<peity :type="'pie'" :options="{  width: '100%', height:'80%',  'radius': 40 }" :data="[$store.state.analytics.new_monthly,$store.state.analytics.returning_monthly].toString()"></peity>
@@ -258,7 +257,7 @@
 			
 			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" style="padding-left: 0px;padding-right: 0px;">
 				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 						
 						<div class="widget-header ph-20 pt-20 pb-20">
@@ -273,7 +272,7 @@
 							</div>
 						</div>
 						<TrendChart
-							v-if="all_challenges_chart.length"
+							v-if="all_challenges_chart ? all_challenges_chart.length : false "
 							:datasets="[
 								{
 								data: all_challenges_chart,
@@ -297,7 +296,7 @@
 				</el-col>
 				
 				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!asyncComponent">
+					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 						
 						<div class="widget-header ph-20 pt-20 pb-20">
@@ -313,7 +312,7 @@
 						</div>
 
 						<TrendChart
-							v-if="free_challenges_chart.length"
+							v-if="free_challenges_chart ? free_challenges_chart.length : false "
 							:datasets="[
 								{
 								data: free_challenges_chart,
@@ -336,7 +335,7 @@
 				</el-col>
 				
 				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-					<div class="card-base card-shadow--medium widget small-widget" v-loading="!asyncComponent">
+					<div class="card-base card-shadow--medium widget small-widget" v-loading="!loadingChart">
 
 						
 						<div class="widget-header ph-20 pt-20 pb-20">
@@ -351,7 +350,7 @@
 							</div>
 						</div>
 						<TrendChart
-							v-if="cash_challenges_chart.length"
+							v-if="cash_challenges_chart ? cash_challenges_chart.length : false "
 							:datasets="[
 								{
 								data: cash_challenges_chart,
@@ -391,7 +390,7 @@ export default {
 	data () {
 		return {
 
-			asyncComponent: 'peity',
+			loadingChart: false,
 			asyncChart1: true,
 			asyncChart2: true,
 			chart1: null,
@@ -419,91 +418,10 @@ export default {
 	},
 
 	methods: {
-		__resizeHanlder: _.throttle(function (e) {
-			if(this.resized) {			
-
-				this.asyncComponent = null
-				this.removePeity()
-				setTimeout(()=>{this.asyncComponent = 'peity'}, 1000)
-		
-				this.asyncChart1 = false
-				this.asyncChart2 = false
-				setTimeout(()=>{this.asyncChart1 = true; this.resizeChart1()}, 1000)
-				setTimeout(()=>{this.asyncChart2 = true; this.resizeChart2()}, 2500)
-			}
-			this.resized = true
-		}, 700),
-		removePeity() {
-			const peityEl = document.querySelectorAll('.widget .peity')//.forEach((el)=>{el.remove()})
-			//ie fix
-			for(let i=0; i<peityEl.length; i++) {peityEl[i].parentNode.removeChild(peityEl[i])}
-		},
-		initChart1() {
-			this.chart1 = echarts.init(document.getElementById('chart1'))
-
-			// Generate data
-			// let category = [];
-			let dottedBase = +new Date();
-			let lineData = [];
-			let barData = [];
-
-			for (let i = 0; i < 6; i++) {
-				let date = new Date(dottedBase += 3600 * 24 * 1000);
-				// category.push([
-				// 	date.getFullYear(),
-				// 	date.getMonth() + 1,
-				// 	date.getDate()
-				// ].join('-'));
-				let b = Math.random() * 200;
-				let d = Math.random() * 200;
-
-				barData.push(parseInt(b))
-				// lineData.push(parseInt(d + b));
-			}
-
-
-			this.chart1.setOption({
-				//backgroundColor: '#0f375f',
-				grid: {
-					show: false,
-					left: '20px',
-					right: '50px',
-					bottom: '20px',
-					top: '20px',
-					containLabel: true
-				},
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: {
-						type: 'cross'
-					}
-				},
-				legend: {
-					show: false,
-					data: ['line', 'bar'],
-					textStyle: {
-						color: '#ccc'
-					}
-				},
-				yAxis: {
-					splitLine: {show: false},
-					axisLine: {
-						lineStyle: {
-							color: 'rgba(255,255,255,0.5)'
-						}
-					}
-				},
-			})
-		},
-		destroyChart1() {
-			if(this.chart1) {
-				this.chart1.dispose()
-				this.chart1 = null
-			}
-		},
 
 	},
 	async mounted() {
+		this.loadingChart = false
 		if(localStorage.getItem('token')) {
 			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
 		}
@@ -511,36 +429,40 @@ export default {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
 		}
-
+		
 		//played duels this month
-		this.$store.dispatch("analytics/game_played_monthly", data)
+		await this.$store.dispatch("analytics/game_played_monthly", data)
 
 		//seemba installs this month
-		this.$store.dispatch("analytics/newInstalls", data)
+		await this.$store.dispatch("analytics/newInstalls", data)
 
 		//seemba ARPDU this month
-		this.$store.dispatch("analytics/ARPDU", data)
+		await this.$store.dispatch("analytics/ARPDU", data)
 
 		//seemba revenue this month
-		this.$store.dispatch("analytics/revenue", data)
+		await this.$store.dispatch("analytics/revenue", data)
 
-		this.$store.dispatch("analytics/allTournaments", data)
+		await this.$store.dispatch("analytics/allTournaments", data)
 
-		this.$store.dispatch("analytics/freeTournaments", data)
+		await this.$store.dispatch("analytics/freeTournaments", data)
 
-		this.$store.dispatch("analytics/cashTournaments", data)
+		await this.$store.dispatch("analytics/cashTournaments", data)
 
-		this.$store.dispatch("analytics/allChallenges", data)
+		await this.$store.dispatch("analytics/allChallenges", data)
 
-		this.$store.dispatch("analytics/freeChallenges", data)
+		await this.$store.dispatch("analytics/freeChallenges", data)
 
-		this.$store.dispatch("analytics/cashChallenges", data)
+		await this.$store.dispatch("analytics/cashChallenges", data)
 
-		this.$store.dispatch("analytics/netIncomeMonthly", data)
+		await this.$store.dispatch("analytics/netIncomeMonthly", data)
 
-		this.$store.dispatch("analytics/newReturningMonthly", data)
+		await this.$store.dispatch("analytics/newReturningMonthly", data)
 		
-		this.$store.dispatch("games/getGames", data)
+		await this.$store.dispatch("games/getGames", data)
+
+		
+		//this.$store.commit('setSplashScreen', false)
+		this.loadingChart = true
 	},
 	beforeDestroy() {
 	},

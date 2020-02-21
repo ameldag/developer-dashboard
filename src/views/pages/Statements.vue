@@ -10,9 +10,9 @@
 					<div class="widget-header ph-20 pt-20 pb-20">
 						<div class="flex justify-center align-center">
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">CURRENTE BALANCE</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10">CURRENT BALANCE</div>
 								<div class="m-0 widget-title text-truncate pt-5 pb-10">Quick peek on your current balance</div>
-								<h2 class="m-0 text-truncate">{{ this.$store.state.team.currentTeam.balance }}</h2>
+								<h2 class="m-0 text-truncate">{{ this.$store.state.team.currentTeam.balance || 0 }}</h2>
 							</div>
 						</div>
 					</div>
@@ -25,7 +25,7 @@
 			center>
 			<el-form>
 				<div class="card-base card-shadow--medium info" style="padding: 20px;">
-
+				<!-- rib swift codeagence adressbank montant currency fullname adressfacturation -->
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 						<el-form-item label="Full Name :" >
 							<el-input type="text" />

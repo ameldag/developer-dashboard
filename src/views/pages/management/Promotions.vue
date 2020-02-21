@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
-			<vue-good-table
+			<vue-good-table v-loading="loadingTableData"
 				:columns="columns"
 				:rows="this.$store.state.promotion.promotions"
 				:search-options="{
@@ -60,7 +60,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'channels'">
-                        <span v-for="game in props.row.channels" class="el-tag" >{{ game.name }}</span>
+                        <span v-for="game in props.row.channels" class="el-tag mr-5" >{{ game.name }}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'status'">
@@ -88,6 +88,7 @@ export default {
 	name: 'Promotions',
 	data(){
 		return {
+			loadingTableData: true,
 			columns: [
 				{
 					label: 'Icon',
@@ -144,15 +145,15 @@ export default {
 			this.$router.replace('/promotions/new');
 		}
     },
-	mounted() {
-
+	async mounted() {
+		this.loadingTableData = true;
 		let data = {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
 		}
 
-		this.$store.dispatch("promotion/getPromotions", data)
-
+		await this.$store.dispatch("promotion/getPromotions", data)
+		this.loadingTableData = false
 	}
 }
 </script>
