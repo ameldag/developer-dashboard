@@ -26,6 +26,7 @@
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table v-loading="loadingTableData"
+				v-if="this.$store.state.team.members ? this.$store.state.team.members.length : false "
 				:columns="columns"
 				:rows="this.$store.state.team.members"
 				:search-options="{

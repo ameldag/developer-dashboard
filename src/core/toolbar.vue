@@ -10,7 +10,7 @@
 			<search class="hidden-xs-only"></search>
 		</div>
 		<div class="box-right flex align-center pl-10">
-			<el-dropdown trigger="click" @command="onCommandLang">
+			<!--<el-dropdown trigger="click" @command="onCommandLang">
 				<span class="el-dropdown-link">
 					<i class="flag-icon" :class="{['flag-icon-'+lang]:true}"></i>
 				</span>
@@ -24,17 +24,17 @@
 					<el-dropdown-item command="jp"><i class="flag-icon flag-icon-jp mr-15"></i>Japanese</el-dropdown-item>
 					<el-dropdown-item command="/multi-language"><i class="mdi mdi-translate mr-15"></i>Read the docs</el-dropdown-item>
 				</el-dropdown-menu>
-			</el-dropdown>
+			</el-dropdown>-->
 			<button class="fullscreen-button" @click="toggleFullscreen">
 				<i class="mdi mdi-fullscreen" v-if="!fullscreen"></i>
 				<i class="mdi mdi-fullscreen-exit" v-if="fullscreen"></i>
 			</button>
-			<el-popover ref="popover" placement="bottom" :width="popoverWidth" trigger="click">
+			<!--<el-popover ref="popover" placement="bottom" :width="popoverWidth" trigger="click">
 				<notification-box></notification-box>
 			</el-popover>
 			<el-badge :is-dot="true" class="notification-icon-badge">
 				<el-button v-popover:popover icon="mdi mdi-bell" class="notification-icon"></el-button>
-			</el-badge>
+			</el-badge>-->
 			<span class="username"><router-link to="/profile">{{ this.$store.state.session.user.first_name }} {{ this.$store.state.session.user.last_name }}</router-link></span>
 			<el-dropdown trigger="click" @command="onCommand">
 				<span class="el-dropdown-link">

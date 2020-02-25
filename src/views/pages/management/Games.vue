@@ -13,6 +13,7 @@
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table v-loading="loadingTableData"
+				v-if="this.$store.state.games.games ? this.$store.state.games.games.length : false "
 				:columns="columns"
 				:rows="this.$store.state.games.games"
 				:search-options="{

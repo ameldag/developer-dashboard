@@ -28,7 +28,7 @@
 					</el-form-item>
 
 					<div class="flex text-center center pt-30 pb-20">
-						<el-button type="primary signin-btn tada animated" @click="signup('user')">SIGN IN</el-button>
+						<el-button type="primary signin-btn tada animated" @click="signup('user')">SIGN UP</el-button>
 					</div>
 
 					<div class="text-center login-box pt-10">

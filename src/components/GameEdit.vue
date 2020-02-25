@@ -7,7 +7,7 @@
 		
 		<el-form ref="currentGame" :model="currentGame" :rules="currentRules" label-width="120px" :label-position="labelPosition">
 			<div class="card-base card-shadow--medium info" style="padding: 20px;">
-			<el-steps :active="active" finish-status="success" style="padding-bottom: 30px">
+			<el-steps :active="active" finish-status="success" style="padding-bottom: 30px" align-center>
 				<el-step title="Informations"></el-step>
 				<el-step title="Tournaments"></el-step>
 				<el-step title="Additional Information"></el-step>
@@ -25,7 +25,6 @@
 						<textarea v-model="currentGame.description" autosize></textarea>
 					</el-form-item>
 				</el-col>
-
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="Platform" prop="platforms">
 						<el-checkbox-group v-model="currentGame.platforms">

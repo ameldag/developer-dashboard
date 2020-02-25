@@ -6,7 +6,7 @@
 		</div>
 		<el-form ref="currentPromotion" :rules="currentRules" :model="currentPromotion" label-width="120px" :label-position="labelPosition">
 		<div class="card-base card-shadow--medium info" style="padding: 20px;">
-			<el-steps :active="active" finish-status="success" style="padding-bottom: 30px">
+			<el-steps :active="active" finish-status="success" style="padding-bottom: 30px" align-center>
 				<el-step title="Informations"></el-step>
 				<el-step title="Channels"></el-step>
 				<el-step title="Additional Information"></el-step>
@@ -33,13 +33,6 @@
 							:value="item._id">
 							</el-option>
 						</el-select>
-					</el-form-item>
-				</el-col>
-
-				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20 flex-display">
-					<el-form-item label="UPLOAD GAME GRAPHICS :" prop="icon">
-						<input type="file" accept=".jpg, .jpeg, .png" @change="processIcon"/>
-						<img width="50px" heigth="50px" :src="currentPromotion.game.icon" ></img>
 					</el-form-item>
 				</el-col>
 			</div>
@@ -121,17 +114,6 @@ export default {
 					game: [
 						{ required: true, message: 'Please enter promotion name', trigger: 'change' },
 					],
-					icon: [
-						{
-							validator: (rule, value, callback, source, options) => {
-							console.log({value})
-							if(value === '' || value === null){
-								callback(new Error('Please upload an icon'))
-							} else {
-								callback();
-							}
-						}, trigger: 'change'}
-					],
 				},
 				1: {
 					channels: [
@@ -204,19 +186,6 @@ export default {
 		resizeLabelPosition() {
 			if(window.innerWidth <= 768) {
 				this.labelPosition = 'top'	
-			}
-		},
-		async processIcon($event){
-			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('image',event.target.files[0])
-				await axios.post(process.env.VUE_APP_API_PATH + `/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-				.then((res) => {
-					this.icon = res.data.data
-				})
-				.catch((error) => {
-					return error.response;
-				});
 			}
 		},
 
