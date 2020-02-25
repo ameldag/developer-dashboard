@@ -461,7 +461,7 @@ export default {
 		await this.$store.dispatch("games/getGames", data)
 
 		
-		//this.$store.commit('setSplashScreen', false)
+		this.$store.commit('setSplashScreen', false)
 		this.loadingChart = true
 	},
 	beforeDestroy() {

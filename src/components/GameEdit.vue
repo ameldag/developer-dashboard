@@ -145,6 +145,7 @@
 
 <script>
 const axios = require('axios');
+import gamesService from '../services/games' 
 export default {
 	name: 'GameEdit',
 	props: ['action','currentGame'],
@@ -237,29 +238,30 @@ export default {
 		next(currentGame) {
 			this.$refs[currentGame].validate(async (valid) => {
 			if (valid) {
-			if (++this.active > 3) {
-				let data = {
-					token : localStorage.getItem("token"),
-					id : localStorage.getItem("current_team")
+				if (++this.active > 3) {
+					let data = {
+						token : localStorage.getItem("token"),
+						id : localStorage.getItem("current_team")
+					}
+					if(this.action == "Update"){
+						data.game_id = this.$route.params.id
+						await gamesService.updateGame(data, game)
+						.then((res) => {
+							this.$router.replace('/management/games');
+						})
+						.catch((error) => {
+							return error.response;
+						});
+					} else {
+						await gamesService.createGame(data, game)
+						.then((res) => {
+							this.$router.replace('/management/games');
+						})
+						.catch((error) => {
+							return error.response;
+						});
+					}
 				}
-				if(this.action == "Update"){
-					await axios.put(process.env.VUE_APP_API_PATH + '/games/' + data.id + '/' + this.$route.params.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-					.then((res) => {
-					this.$router.replace('/management/games');
-					})
-					.catch((error) => {
-						return error.response;
-					});
-				} else {
-					await axios.post(process.env.VUE_APP_API_PATH + '/games/' + data.id ,this.currentGame ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-					.then((res) => {
-					this.$router.replace('/management/games');
-					})
-					.catch((error) => {
-						return error.response;
-					});
-				}
-			}
 			} else {
 				return false;
 			}
@@ -274,11 +276,8 @@ export default {
 			}
 		},
 		async processIcon($event){
-			console.log(event)
 			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('image',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				gamesService.uploadIcon(event.target.files[0])
 				.then((res) => {
 					this.currentGame.icon = res.data.data
 				})
@@ -289,9 +288,7 @@ export default {
 		},
 		async processBackground($event){
 			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('image',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/image/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				gamesService.uploadIcon(event.target.files[0])
 				.then((res) => {
 					this.currentGame.background_image = res.data.data
 				})
@@ -302,9 +299,7 @@ export default {
 		},
 		async processP12($event){
 			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('file',event.target.files[0])
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/games/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				gamesService.uploadIcon(event.target.files[0])
 				.then((res) => {
 					this.currentGame.p_12_file = res.data.data
 				})

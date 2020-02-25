@@ -115,7 +115,6 @@ export default {
 		this.fullscreen = this.$fullscreen.getState()
 		this.resizePopoverWidth();
 		window.addEventListener('resize', this.resizePopoverWidth);
-		console.log(this.$store.state.session.user.first_name)
 	},
 	updated() {
 
