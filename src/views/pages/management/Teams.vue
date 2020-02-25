@@ -14,16 +14,15 @@
 			width="30%"
 			center>
 			<div>
-				<el-label class="test-truncate">email :</el-label>
+				<label name="email" class="test-truncate">email :</label>
 				<el-input type="text" v-model="email" />
 			</div>
 			<span slot="footer" class="dialog-footer">
 				<el-button class="test-truncate" @click="centerDialogVisible = false">Annuler</el-button>
-				<el-button type="primary" class="test-truncate" @click="sendInvitation">Confirmer</el-button>
+				<el-button type="primary" class="test-truncate" v-loading="sendInvitationLoader" @click="sendInvitation">Confirmer</el-button>
 			</span>
 			</el-dialog>
 		</div>
-
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table v-loading="loadingTableData"
 				v-if="this.$store.state.team.members ? this.$store.state.team.members.length : false "
@@ -92,6 +91,7 @@ export default {
 		return {
 			loadingTableData: true,
 			centerDialogVisible: false,
+			sendInvitationLoader: false,
 			email: '',
 			columns: [
 				{
@@ -140,18 +140,42 @@ export default {
 	},
 	methods: {
 		async sendInvitation() {
-			let data = {
-				token : localStorage.getItem("token"),
-				id : localStorage.getItem("current_team")
-			}
+			if(this.email != ''){
+				this.sendInvitationLoader = true
+				let data = {
+					token : localStorage.getItem("token"),
+					id : localStorage.getItem("current_team")
+				}
 
-			await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-			.then((res) => {
-			this.$router.replace('/management/teams');
-			})
-			.catch((error) => {
-				return error.response;
-			});
+				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				.then((res) => {
+					this.sendInvitationLoader = false
+					this.centerDialogVisible = false
+					if(res.data.success){
+						this.$notify({
+							title: 'Invitation send',
+          					type: 'success',
+							customClass: 'success-alert',
+						});
+					} else {
+						this.$notify({
+							title: res.data.message,
+          					type: 'warning',
+							customClass: 'warning-alert',
+						});
+					}
+					
+				})
+				.catch((error) => {
+					this.sendInvitationLoader = false
+					this.centerDialogVisible = false
+					this.$notify({
+						title: 'something went wrong please try later',
+						type: 'error',
+						customClass: 'error-alert',
+					});
+				});
+			}
 		}
 	}
 }
@@ -169,6 +193,18 @@ export default {
 	border-radius: 50%;
 }
 
+.success-alert{
+	background-color: #f0f9eb;
+	color: #67c23a
+}
+.warning-alert{
+	background-color: #fdf6ec;
+	color: #e6a23c
+}
+.error-alert{
+	background-color: #fef0f0;
+	color: #f56c6c
+}
 // .card-date {
 // 	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
 // 	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
