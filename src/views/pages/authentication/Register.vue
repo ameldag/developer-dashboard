@@ -97,11 +97,16 @@ export default {
 		signup(user) {
 			this.$refs[user].validate(async (valid) => {
 				if (valid) {
+					this.$store.commit('setSplashScreen', true)
 					await this.$store.dispatch("session/signup", this.user)
 					.then((res) => {
 						this.$router.push('/')
+						this.$store.commit('setSplashScreen', false)
 					})
-					.catch(err => {return false})
+					.catch(err => {
+						return false
+						this.$store.commit('setSplashScreen', false)
+						})
 				} else {
 					return false;
 				}
@@ -109,7 +114,7 @@ export default {
 		}
 	},
 	mounted(){
-		console.log(this.rules)
+		this.$store.commit('setSplashScreen', false)
 	}
 }
 </script>

@@ -31,7 +31,7 @@
 					</div>
 
 					<div class="text-center login-box pt-10">
-						Already have an account? <a href="/register">Signup</a>
+						Don't have an account yet? <a href="/register">Signup</a>
 					</div>
 
 				</el-form>
