@@ -13,14 +13,19 @@
 			:visible.sync="centerDialogVisible"
 			width="30%"
 			center>
-			<div>
-				<label name="email" class="test-truncate">email :</label>
-				<el-input type="text" v-model="email" />
-			</div>
-			<span slot="footer" class="dialog-footer">
-				<el-button class="test-truncate" @click="centerDialogVisible = false">Annuler</el-button>
-				<el-button type="primary" class="test-truncate" v-loading="sendInvitationLoader" @click="sendInvitation">Confirmer</el-button>
-			</span>
+			<el-form>
+				<div class="card-base card-shadow--medium info" style="padding: 20px;">
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="Email:" class="test-truncate">
+							<el-input type="text" v-model="email"/>
+						</el-form-item>
+					</el-row>
+					<el-row slot="footer" class="dialog-footer">
+						<el-button class="test-truncate" @click="centerDialogVisible = false">Annuler</el-button>
+						<el-button type="primary" class="test-truncate" v-loading="sendInvitationLoader" @click="sendInvitation">Confirmer</el-button>
+					</el-row>
+				</div>
+			</el-form>
 			</el-dialog>
 		</div>
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -84,7 +89,7 @@
 
 <script>
 const axios = require('axios');
-
+import teamsService from '../../../services/team'
 export default {
 	name: 'Games',
 	data(){
@@ -146,8 +151,7 @@ export default {
 					token : localStorage.getItem("token"),
 					id : localStorage.getItem("current_team")
 				}
-
-				await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				await teamsService.inviteTeamMember(data, this.email)
 				.then((res) => {
 					this.sendInvitationLoader = false
 					this.centerDialogVisible = false

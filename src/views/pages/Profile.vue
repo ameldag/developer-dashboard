@@ -3,23 +3,16 @@
 		<div class="card-base card-shadow--medium identity" id="boundary">
 			<div class="cover"></div>
 			<!--<div class="username" v-affix="{parentid: 'affix-container', boundaryid: '', delay:600, offset:0, enable:() => affixEnabled}">-->
-			<div class="username">
-				<div class="cover-small"></div>
-				<div class="avatar-small"><img src="@/assets/images/avatar.jpg" alt="avatar"></div>
-				<span>{{this.$store.state.session.user.first_name}} {{this.$store.state.session.user.last_name}}</span>
-				<div class="colors-box">
-					<div v-for="i in 5" :key="i" :class="{'color':true, 'active':colorActive}" :style="{'background':color}"></div>
-				</div>
-			</div>
+			
+				<span class="username">{{this.$store.state.session.user.first_name}} {{this.$store.state.session.user.last_name}}</span>
+			
 			<div class="avatar-upload">
+				<div class="avatar-preview" v-loading="uploadAvatarLoader">
+					<img :src="me.avatar" alt="avatar" >
+				</div>
 				<div class="avatar-edit">
 					<input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" @change="profileImage" />
 					<label for="imageUpload"></label>
-					
-					
-				</div>
-				<div class="avatar-preview">
-					<img :src="me.avatar" alt="avatar">
 				</div>
 			</div>
 				
@@ -80,11 +73,12 @@
 import ColorThief from 'color-thief-browser'
 import Affix from '@/components/Affix'
 const axios = require('axios');
-
+import userServices from '../../services/user'
 export default {
 	name: 'Profile',
 	data() {
 		return {
+			uploadAvatarLoader: false,
 			me : {
 				first_name: this.$store.state.session.user.first_name,
 				last_name: this.$store.state.session.user.last_name,
@@ -110,43 +104,50 @@ export default {
 
 		async profileImage($event){
 			if (event.target.files.length) {
-				const formData = new FormData();
-				formData.append('image',event.target.files[0])
-				await axios.post(process.env.VUE_APP_API_PATH + `/editors/picture/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+				this.uploadAvatarLoader = true
+				await userServices.uploadAvatar(event.target.files[0])
 				.then((res) => {
 					this.me.avatar = res.data.data
-					console.log(this.me.avatar)
+					this.uploadAvatarLoader = false
 				})
 				.catch((error) => {
-					return error.response;
+					this.uploadAvatarLoader = true
+					this.$notify({
+						title: 'something went wrong please try later',
+						type: 'error',
+						customClass: 'error-alert',
+					});
 				});
 			}
 		},
 
 		async onSubmit(){
+			this.$store.commit('setSplashScreen', true)
 			let data = {
 				token : localStorage.getItem("token"),
 				id : this.$store.getters['session/me']._id
 			}
-			console.log(this.me)
-			await axios.put(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/personal' ,this.me ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-			.then((res) => {
-				console.log({res})
-				this.$router.replace('/dashboard');
+			await userServices.updateUser(data, this.me)
+			.then(async (res) => {
+				await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
+				this.$store.commit('setSplashScreen', false)
+				this.$notify({
+					title: 'User updated successfully',
+					type: 'success',
+					customClass: 'success-alert',
+				});
 			})
 			.catch((error) => {
-				return error.response;
+				this.$store.commit('setSplashScreen', false)
+				this.$notify({
+					title: 'something went wrong please try later',
+					type: 'error',
+					customClass: 'error-alert',
+				});
 			});
 		}
 	},
 	mounted() {
-		/* var colorThief = new ColorThief();
-		setTimeout(()=>{
-			let rgb = colorThief.getColor(document.getElementById('color-thief'))
-			//console.log('Profile mounted', rgb)
-			this.colorActive = true
-			this.color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
-		}, 1000) */
 
 		this.resizeAffixEnabled();
 		window.addEventListener('resize', this.resizeAffixEnabled);
@@ -178,8 +179,8 @@ export default {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-image: url('../../assets/images/cover-2.jpg');
-			background-position: 50%;
+			background-image: url('../../assets/images/couverture.png');
+			background-position: 100%;
 			background-size: cover;
 			background-repeat: no-repeat;
 			width: 100%;
@@ -190,7 +191,7 @@ export default {
 			position: absolute;
 			width: 100%;
 			height: 50px;
-			bottom: 75px;
+			bottom: 40px;
 			left: 0;
 			right: 0;
 			background: #fff;
@@ -198,6 +199,7 @@ export default {
 			box-sizing: border-box;
 			padding-left: 250px;
 			font-size: 25px;
+			font-weight: bold;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
@@ -290,7 +292,6 @@ export default {
 			}
 		}
 		.avatar {
-			border: 6px solid #fff;
 			position: absolute;
 			bottom: 10px;
 			left: 50px;
@@ -303,12 +304,14 @@ export default {
 
 			img {
 				width: 100%;
+				height: 100%;
+				object-fit: cover;
 			}
 		}
 
 			.avatar-upload {
 				max-width: 205px;
-				margin: 50px auto;
+				margin: 13px auto;
 				position: absolute;
 				bottom: 0px;
 				left:50px;
@@ -319,7 +322,7 @@ export default {
 			.avatar-upload .avatar-edit {
 				position: absolute;
 				right: 12px;
-				z-index: 1;
+				z-index: 3000;
 				bottom: 5px;
 			}
 			.avatar-upload .avatar-edit input {
@@ -347,14 +350,13 @@ export default {
 				font-family: 'FontAwesome';
 				color: #757575;
 				position: absolute;
-				top: 10px;
+				top: 6px;
 				left: 0;
 				right: 0;
 				text-align: center;
 				margin: auto;
 			}
 			.avatar-upload .avatar-preview {
-				border: 6px solid #fff;
 				position: absolute;
 				bottom: 0px;
 				left: 0px;
@@ -365,6 +367,8 @@ export default {
 				box-sizing: border-box;
 			img {
 				width: 100%;
+				height: 100%;
+				object-fit: cover;
 			}
 			}
 
@@ -380,6 +384,16 @@ export default {
 	.info {
 		padding: 24px 32px;
 	}
+
+.success-alert{
+	background-color: #f0f9eb;
+	color: #67c23a
+}
+	
+.error-alert{
+	background-color: #fef0f0;
+	color: #f56c6c
+}
 }
 
 @media (max-width: 768px) {

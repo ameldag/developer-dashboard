@@ -27,7 +27,49 @@
 				<div class="card-base card-shadow--medium info" style="padding: 20px;">
 				<!-- rib swift codeagence adressbank montant currency fullname adressfacturation -->
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Full Name :" >
+						<el-form-item label="First Name:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="Last Name:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="Company:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="Adress:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="IBAN Name:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="BIC/SWIFT:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="Bank Name:" >
+							<el-input type="text" />
+						</el-form-item>
+					</el-row>
+
+					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+						<el-form-item label="Bank adress:" >
 							<el-input type="text" />
 						</el-form-item>
 					</el-row>
@@ -100,20 +142,6 @@ export default {
 		this.$store.dispatch("team/getMembers", data)
 	},
 	methods: {
-		async sendInvitation() {
-			let data = {
-				token : localStorage.getItem("token"),
-				id : localStorage.getItem("current_team")
-			}
-
-			await axios.post(`https://seemba-api.herokuapp.com/api/dashboard/v1/editors/` + data.id + '/invite' ,{email : this.email} ,{ headers: { "x-access-token": localStorage.getItem('token') } })
-			.then((res) => {
-			this.$router.replace('/management/teams');
-			})
-			.catch((error) => {
-				return error.response;
-			});
-		}
 	}
 }
 </script>

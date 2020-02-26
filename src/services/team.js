@@ -10,5 +10,11 @@ export default {
             return error.response;
         });
     },
+    async inviteTeamMember(data, email) {
+        return await axios.post(APIPATH + '/editors/' + data.id + '/invite' ,{email : email} ,{ headers: { "x-access-token": data.token } })
+        .catch((error) => {
+            return error.response;
+        });
+    },
 
 };
