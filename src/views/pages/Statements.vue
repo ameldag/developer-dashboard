@@ -23,60 +23,59 @@
 			:visible.sync="FormVisible"
 			width="30%"
 			center>
-			<el-form>
+			<el-form ref="demande" :model="demande" :rules="rules">
 				<div class="card-base card-shadow--medium info" style="padding: 20px;">
-				<!-- rib swift codeagence adressbank montant currency fullname adressfacturation -->
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="First Name:" >
-							<el-input type="text" />
+						<el-form-item label="First Name:" prop="firstname">
+							<el-input type="text" v-model="demande.firstname" />
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Last Name:" >
-							<el-input type="text" />
+						<el-form-item label="Last Name:" prop="lastname">
+							<el-input type="text" v-model="demande.lastname"/>
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Company:" >
-							<el-input type="text" />
+						<el-form-item label="Company:" prop="company">
+							<el-input type="text" v-model="demande.company"/>
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Adress:" >
-							<el-input type="text" />
+						<el-form-item label="address:" prop="address" >
+							<el-input type="text" v-model="demande.address"/>
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="IBAN Name:" >
-							<el-input type="text" />
+						<el-form-item label="IBAN:" prop="iban" >
+							<el-input type="text" v-model="demande.iban"/>
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="BIC/SWIFT:" >
-							<el-input type="text" />
+						<el-form-item label="BIC/SWIFT:" prop="swift" >
+							<el-input type="text" v-model="demande.swift"/>
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Bank Name:" >
-							<el-input type="text" />
+						<el-form-item label="Bank Name:" prop="bank_name" >
+							<el-input type="text" v-model="demande.bank_name"/>
 						</el-form-item>
 					</el-row>
 
 					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Bank adress:" >
-							<el-input type="text" />
+						<el-form-item label="Bank Address:" prop="bank_address" >
+							<el-input type="text" v-model="demande.bank_address"/>
 						</el-form-item>
 					</el-row>
 					
 					<el-row slot="footer" class="dialog-footer">
 						<el-button class="test-truncate" @click="FormVisible = false">Annuler</el-button>
-						<el-button type="primary" class="test-truncate" @click="sendInvitation">Confirmer</el-button>
+						<el-button type="primary" class="test-truncate" @click="next('demande')">Confirmer</el-button>
 					</el-row>
 				</div>
 			</el-form>
@@ -96,52 +95,82 @@ export default {
 	name: 'Games',
 	data(){
 		return {
-			email: '',
 			FormVisible: false,
-			columns: [
-				{
-					label: 'Avatar',
-					field: 'avatar',
-					filterable: false,
-				},
-				{
-					label: 'Name',
-					field: 'name',
-					filterable: true,
-				},
-				{
-					label: 'Email',
-					field: 'email',
-					html: false,
-					filterable: true,
-				},
-				{
-					label: 'Country',
-					field: 'country',
-					html: false,
-					filterable: true,
-				},
-				{
-					label: 'Registered At',
-					field: 'created_at',
-					type: 'string'
-				},
-				{
-					label: 'Role',
-					field: 'role_in_team',
-					html: false,
-				},
-			],
+			demande: {
+				firstname: '',
+				lastname: '',
+				company: '',
+				address: '',
+				iban: '',
+				swift:'',
+				bank_name: '',
+				bank_address: '',
+			},
+			rules: {
+				firstname: [
+					{ required: true, message: 'Please enter your first name', trigger: 'change' },
+				],
+				lastname: [
+					{ required: true, message: 'Please enter your last name', trigger: 'change' }
+				],
+				company: [
+					{ required: true, message: 'Please enter a company name', trigger: 'change' }
+				],
+				address: [
+					{ required: true, message: 'Please enter an adress', trigger: 'change' }
+				],
+				iban: [
+					{ required: true, message: 'Please enter your iban', trigger: 'change' }
+				],
+				swift: [
+					{ required: true, message: 'Please enter your bic/swift', trigger: 'change' }
+				],
+				bank_name: [
+					{ required: true, message: 'Please enter your bank name', trigger: 'change' }
+				],
+				bank_address: [
+					{ required: true, message: 'Please enter your bank adress', trigger: 'change' }
+				],
+			}
 		}
 	},
 	mounted() {
-		let data = {
-			token : localStorage.getItem("token"),
-			id : localStorage.getItem("current_team")
-		}
-		this.$store.dispatch("team/getMembers", data)
+		
 	},
 	methods: {
+		next(demande){
+			let data = {
+				token : localStorage.getItem("token"),
+				id : localStorage.getItem("current_team")
+			}
+			this.$refs[demande].validate(async (valid) => {
+				if (valid) {
+					this.$store.commit('setSplashScreen', true)
+					await axios.post(process.env.VUE_APP_API_PATH + `/editors/withdraw/team/` + data.id, this.demande , { headers: { 'x-access-token': data.token } })
+					.then((res) => {
+						this.$store.commit('setSplashScreen', false)
+						this.FormVisible = false
+						this.$notify({
+							title: res.data.message,
+          					type: 'success',
+							customClass: 'success-alert',
+						});
+					})
+					.catch((error) => {
+						this.$store.commit('setSplashScreen', false)
+						this.FormVisible = false
+						this.$notify({
+							title: 'something went wrong please try later',
+          					type: 'error',
+							customClass: 'error-alert',
+						});
+						return error.response;
+					});
+				} else {
+					return false;
+				}
+			})
+		},
 	}
 }
 </script>
@@ -156,6 +185,19 @@ export default {
 	width: 40px;
 	object-fit: cover;
 	border-radius: 50%;
+}
+
+.success-alert{
+	background-color: #f0f9eb;
+	color: #67c23a
+}
+.warning-alert{
+	background-color: #fdf6ec;
+	color: #e6a23c
+}
+.error-alert{
+	background-color: #fef0f0;
+	color: #f56c6c
 }
 
 // .card-date {

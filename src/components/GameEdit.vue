@@ -184,7 +184,7 @@ export default {
 							validator: (rule, value, callback, source, options) => {
 							console.log({value})
 							if(value === ''){
-								callback(new Error('Please upload an  '))
+								callback(new Error('Please upload an icon'))
 							} else {
 								callback();
 							}
@@ -237,26 +237,53 @@ export default {
 		next(currentGame) {
 			this.$refs[currentGame].validate(async (valid) => {
 			if (valid) {
+				console.log(this.active)
 				if (++this.active > 3) {
+					this.$store.commit('setSplashScreen', true)
 					let data = {
 						token : localStorage.getItem("token"),
 						id : localStorage.getItem("current_team")
 					}
+					console.log(this.action)
 					if(this.action == "Update"){
 						data.game_id = this.$route.params.id
-						await gamesService.updateGame(data, game)
+						await gamesService.updateGame(data, this.currentGame)
 						.then((res) => {
 							this.$router.replace('/management/games');
+							this.$store.commit('setSplashScreen', false)
+							this.$notify({
+								title: res.data.message,
+								type: 'success',
+								customClass: 'success-alert',
+							});
 						})
 						.catch((error) => {
+							this.$store.commit('setSplashScreen', false)
+							this.$notify({
+								title: 'something went wrong please try later',
+								type: 'error',
+								customClass: 'error-alert',
+							});
 							return error.response;
 						});
 					} else {
-						await gamesService.createGame(data, game)
+						await gamesService.createGame(data, this.currentGame)
 						.then((res) => {
 							this.$router.replace('/management/games');
+							this.$store.commit('setSplashScreen', false)
+							this.$notify({
+								title: res.data.message,
+								type: 'success',
+								customClass: 'success-alert',
+							});
 						})
 						.catch((error) => {
+							this.$store.commit('setSplashScreen', false)
+							this.$notify({
+								title: 'something went wrong please try later',
+								type: 'error',
+								customClass: 'error-alert',
+							});
 							return error.response;
 						});
 					}
