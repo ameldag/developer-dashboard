@@ -279,3 +279,30 @@ input,textarea{
 .el-loading-mask{
 	background-color: $loader-background-color;
 }
+
+.el-step__title {
+    font-size: 16px;
+    line-height: 25px;
+}
+.el-checkbox.is-bordered + .el-checkbox.is-bordered {
+    margin-left: 0px;
+}
+
+.el-radio.is-bordered + .el-radio.is-bordered {
+    margin-left: 0px;
+}
+@media (max-width: 768px) {
+	.el-step__title {
+		font-size: 11px;
+		line-height: 20px;
+	}
+	.el-step__icon {
+		width: 45px;
+		height: 45px;
+	}
+
+	.el-step.is-horizontal .el-step__line {
+		height: 3px;
+		top: 21px;
+	}
+}

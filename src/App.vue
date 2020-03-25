@@ -51,7 +51,7 @@
 			:position="navPos" 
 			:collapse-nav="collapseNav" 
 			:open-sidebar.sync="openSidebar" 
-			@collapse-nav-toggle="collapseNav = !collapseNav" 
+			@collapse-nav-toggle="collapseNav = collapseNav" 
 			@push-page="closeSidebar" 
 			v-if="navPos === 'right'"/>
 
@@ -110,7 +110,9 @@ export default {
 	methods: {
 		resizeOpenNav() {
 			this.innerWidth = window.innerWidth
-			if(window.innerWidth <= 768) {
+			if(window.innerWidth <= 1020 && window.innerWidth > 768) {
+				this.collapseNav = true	
+			} else {
 				this.collapseNav = false	
 			}
 		},
@@ -330,11 +332,11 @@ html:not(.ie) {
 			max-height: 100%;*/
 
 			.header {
-				height: 50px;
-				background: #fff;
-				box-shadow: 0px -20px 10px 20px rgba(0, 0, 0, 0.25);
-				margin: 0;
-				margin-bottom: 5px;
+				height: 60px;
+				margin-bottom: 0px;
+				margin-top: 10px;
+				margin-left: 12px;
+				margin-right: 12px;
 
 				.toggle-sidebar {
 					box-shadow: none !important;

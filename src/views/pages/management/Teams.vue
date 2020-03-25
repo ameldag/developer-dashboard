@@ -8,7 +8,7 @@
 				<el-breadcrumb-item>Team Members</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-button type="primary" class="text-truncate" style="float:right;" @click="centerDialogVisible = true" >Invite New Member</el-button>
+			<el-button type="primary" class="text-truncate add-button" @click="centerDialogVisible = true" >Invite New Member</el-button>
 			<el-dialog
 			:visible.sync="centerDialogVisible"
 			width="30%"
@@ -62,7 +62,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'createdAt'">
-						<span class="card-date">{{moment(props.row.createdAt).format('YYYY-MM-DD')}}</span>
+						<span>{{moment(props.row.createdAt).format('YYYY/MM/DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
@@ -122,7 +122,7 @@ export default {
 					filterable: true,
 				},
 				{
-					label: 'Registered At',
+					label: 'Registered',
 					field: 'createdAt',
 					type: 'string'
 				},
@@ -208,6 +208,17 @@ export default {
 .error-alert{
 	background-color: #fef0f0;
 	color: #f56c6c
+}
+
+.add-button{
+	float:right;
+}
+
+@media (max-width: 768px) {
+	.add-button{
+		float:left;
+	}
+	
 }
 // .card-date {
 // 	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);

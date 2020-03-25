@@ -108,8 +108,15 @@ export default {
 }
 
 
-@media (max-width: 768px) {
+@media screen and (min-width: 768px) and (max-width: 1020px) {
 	.box-logo {
+		.image-logo {
+			width: 120px;
+			// height: 30px;
+			margin-right: 10px;
+			filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.3));
+		}
+
 		.collapse-nav {
 			display: none;
 		}

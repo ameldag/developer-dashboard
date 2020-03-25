@@ -1,9 +1,7 @@
 <template>
 	<div class="toolbar flex align-center justify-space-between">
 		<div class="box-left box grow flex">
-			<button @click="toggleSidebar" v-if="menuBurger !== 'right'" class="toggle-sidebar card-base card-shadow--small">
-				<i class="mdi mdi-menu"></i>
-			</button>
+			<button class="collapse-nav" @click="toggleSidebar"><i class="mdi mdi-menu"></i></button>
 
 			<img class="logo-mini" src="@/assets/images/logo_seemba_white.png" alt="logo"/>
 
@@ -105,7 +103,7 @@ export default {
 	computed: {
 		...mapState({
 			user: state => this.$store.state.session.user
-		})
+		}),
 	},
 	components: {
 		NotificationBox,
@@ -114,10 +112,11 @@ export default {
 	async mounted() {
 		this.fullscreen = this.$fullscreen.getState()
 		this.resizePopoverWidth();
-		window.addEventListener('resize', this.resizePopoverWidth);
+		window.addEventListener('screenSize', () => {
+			console.log(window.innerWidth)
+		});
 	},
 	updated() {
-
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizePopoverWidth);
@@ -248,6 +247,32 @@ export default {
 			background-color: lighten($background-color, 20%);
 		}
 	}
+
+	.collapse-nav {
+		position: absolute;
+		top: 50%;
+		left: 10px;
+		height: 30px;
+		width: 30px;
+		margin-top: -15px;
+		opacity: 0;
+		box-shadow: 0px 0px 20px 10px $background-color;
+		cursor: pointer;
+		border: 1px solid $text-color-accent;
+		border-radius: 50%;
+		color: $text-color-accent;
+		outline: none;
+		background: $background-color;
+		transition: all .5s;
+	}
+
+	&.horizontal {
+		height: 100%;
+
+		.collapse-nav {
+			display: none;
+		}
+	}
 }
 
 @media (max-width: 650px) {
@@ -262,6 +287,12 @@ export default {
 	.toolbar {
 		padding: 0 10px;
 
+		.collapse-nav {
+			position: unset;
+			opacity: 1;
+			left: 20px;
+			margin-top: 2px;
+		}
 		.toggle-sidebar {
 			display: block;
 			opacity: 1;
@@ -272,7 +303,7 @@ export default {
 		}
 
 		.logo-mini {
-			display: inherit;
+			display: none;
 		}
 	}
 }

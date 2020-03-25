@@ -88,7 +88,7 @@
 			<el-col class="col-p">
 				<el-form-item>
 					<el-button @click="back" v-if="active!==0 ">Back</el-button>
-					<el-button type="primary"  style="margin-top: 12px; float:right;" @click="next('currentPromotion')">Next</el-button>
+					<el-button type="primary"  style="float:right;" @click="next('currentPromotion')">Next</el-button>
 				</el-form-item>
 			</el-col>
 		</div>

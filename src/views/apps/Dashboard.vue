@@ -4,7 +4,7 @@
 		
 
 		<el-row class="mt-0" :gutter="30">
-			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+			<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 						
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -16,14 +16,14 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">Played Duels This Month</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Played Duels This Month">Played Duels This Month</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.game_played_monthly }}</h2>
 							</div>
 						</div>
 					</div>
 				</div>
 			</el-col>
-			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+			<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -35,14 +35,14 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">Installs</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Installs">Installs</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.new_installs }}</h2>
 							</div>
 						</div>
 					</div>
 				</div>
 			</el-col>
-			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+			<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -54,14 +54,14 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">Seemba ARPDU</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Seemba ARPDU">Seemba ARPDU</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.arpdu }}</h2>
 							</div>
 						</div>
 					</div>
 				</div>
 			</el-col>
-			<el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+			<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					<div class="widget-header ph-20 pt-20 pb-20">
@@ -73,7 +73,7 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">Estimated Revenue</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Estimated Revenue">Estimated Revenue</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.revenue }}</h2>
 							</div>
 						</div>
@@ -87,7 +87,7 @@
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
 				<div class="card-base card-shadow--medium bg-gradiant p-20 " style="height:400px" v-loading="!loadingChart">
-					<h1 class="white-text mv-0 animated fadeInDown">NET INCOME</h1>
+					<h1 class="white-text mv-0 animated fadeInDown" title="NET INCOME">NET INCOME</h1>
 					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Total. {{ this.$store.state.analytics.monthly_income }}</h3>					
 					<TrendChart
 						v-if="netIncome ? netIncome.length : false "
@@ -98,7 +98,8 @@
 							data: netIncome,
 							smooth: true,
 							fill: true,
-							showPoints: true
+							showPoints: true,
+							className: 'income-chart'
 							}
 						]"
 						:grid="{
@@ -119,7 +120,7 @@
 		
 
 		<el-row class="mt-30 mb-15" :gutter="30">
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+			<el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					
@@ -129,7 +130,7 @@
 								<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">All Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="All Tournaments">All Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_tournaments }}</h2>
 							</div>
 						</div>
@@ -158,7 +159,7 @@
 				</div>
 			</el-col>
 			
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+			<el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					
@@ -168,7 +169,7 @@
 								<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">Free Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Free Tournaments">Free Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_tournaments }}</h2>
 							</div>
 						</div>
@@ -197,7 +198,7 @@
 				</div>
 			</el-col>
 			
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+			<el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
 				<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 					
@@ -207,7 +208,7 @@
 								<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10">Cash Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Cash Tournaments">Cash Tournaments</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_tournaments }}</h2>
 							</div>
 						</div>
@@ -235,28 +236,7 @@
 				</div>
 			</el-col>
 
-
-
-
-
-		</el-row>
-
-
-
-		<el-row class="mt-0 flex" :gutter="30">
-		 
-			<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
-				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%; box-sizing: border-box;" v-loading="!loadingChart">
-					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
-					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Returning and new users</h3>
-					<peity :type="'pie'" :options="{  width: '100%', height:'80%',  'radius': 40 }" :data="[$store.state.analytics.new_monthly,$store.state.analytics.returning_monthly].toString()"></peity>
-					<!-- <div id="piechart" style="height:300px; width:100%"></div> -->
-				</div>
-			</el-col>
-
-			
-			<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" style="padding-left: 0px;padding-right: 0px;">
-				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+<el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
 					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 						
@@ -266,7 +246,7 @@
 									<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
 								</div>
 								<div class="widget-info box grow text-truncate animated fadeInLeft">
-									<div class="m-0 widget-title text-truncate pt-5 pb-10">All Challenges</div>
+									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="All Challenges">All Challenges</div>
 									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_challenges }}</h2>
 								</div>
 							</div>
@@ -295,7 +275,7 @@
 					</div>
 				</el-col>
 				
-				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+				<el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
 					<div class="card-base card-shadow--medium mb-30 widget small-widget" v-loading="!loadingChart">
 
 						
@@ -305,7 +285,7 @@
 									<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
 								</div>
 								<div class="widget-info box grow text-truncate animated fadeInLeft">
-									<div class="m-0 widget-title text-truncate pt-5 pb-10">Free Challenges</div>
+									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Free Challenges">Free Challenges</div>
 									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_challenges }}</h2>
 								</div>
 							</div>
@@ -334,7 +314,7 @@
 					</div>
 				</el-col>
 				
-				<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+				<el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
 					<div class="card-base card-shadow--medium widget small-widget" v-loading="!loadingChart">
 
 						
@@ -344,7 +324,7 @@
 									<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
 								</div>
 								<div class="widget-info box grow text-truncate animated fadeInLeft">
-									<div class="m-0 widget-title text-truncate pt-5 pb-10">Cash Challenges</div>
+									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Cash Challenges">Cash Challenges</div>
 									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_challenges }}</h2>
 								</div>
 							</div>
@@ -372,7 +352,27 @@
 						
 					</div>
 				</el-col>
-			</el-col>
+
+
+
+		</el-row>
+
+
+
+		<el-row class="mt-30 mb-15" :gutter="30">
+		 
+			<!--<el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
+				<div class="card-base card-shadow--medium bg-gradiant p-20" style="height:100%; box-sizing: border-box;" v-loading="!loadingChart">
+					<h1 class="white-text mv-0 animated fadeInDown">Recurring Users</h1>
+					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp" title="Returning and new users">Returning and new users</h3>
+					<peity :type="'pie'" :options="{  width: '100%', height:'80%',  'radius': 40 }" :data="[$store.state.analytics.new_monthly,$store.state.analytics.returning_monthly].toString()"></peity>
+				</div>
+			</el-col>-->
+
+			
+			<!--<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" style="padding-left: 0px;padding-right: 0px;">-->
+				
+			<!--</el-col>-->
 		</el-row>
 
 
@@ -498,6 +498,13 @@ export default {
 			margin: -5px;
 			width: calc(100% + 10px) !important;
 		}
+	}
+	.x-labels .label text {
+		font-size: 9px;
+	}
+
+	.y-labels .label text {
+		font-size: 9px;
 	}
 
 	

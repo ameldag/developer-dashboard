@@ -8,7 +8,7 @@
 				<el-breadcrumb-item>Promotions</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-button type="primary" class="text-truncate" style="float:right;" @click="addPromotionPage" >Create Promotion</el-button>
+			<el-button type="primary" class="text-truncate add-button" @click="addPromotionPage" >Create Promotion</el-button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -45,15 +45,15 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'createdAt'">
-						<span class="card-date-promotions">{{moment(props.row.createdAt).format('YYYY-MM-DD')}}</span>
+						<span>{{moment(props.row.createdAt).format('YYYY/MM/DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'start_date'">
-						<span class="card-date-promotions">{{moment(props.row.start_date).format('YYYY-MM-DD')}}</span>
+						<span>{{moment(props.row.start_date).format('YYYY/MM/DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'end_date'">
-						<span class="card-date-promotions">{{moment(props.row.end_date).format('YYYY-MM-DD')}}</span>
+						<span>{{moment(props.row.end_date).format('YYYY/MM/DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'promotion_name'">
@@ -108,7 +108,7 @@ export default {
 					filterable: true,
 				},
 				{
-					label: 'Featured In',
+					label: 'Featured in',
 					field: 'channels',
 					filterable: true,
 				},
@@ -171,6 +171,10 @@ export default {
 	border-radius: 10px;
 }
 
+.add-button{
+	float:right;
+}
+
 .card-date-promotions {
 	// -webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
 	// box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
@@ -180,6 +184,13 @@ export default {
 	// margin: 10px 0px;
 	// padding: 10px 20px;
 	// font-weight: 900;
+}
+
+@media (max-width: 768px) {
+	.add-button{
+		float:left;
+	}
+	
 }
 </style>
 

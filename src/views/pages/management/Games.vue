@@ -8,7 +8,7 @@
 				<el-breadcrumb-item>Games</el-breadcrumb-item>
 				<el-breadcrumb-item>List</el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-button type="primary" class="text-truncate" style="float:right;" @click="addGamePage" >Add new game</el-button>
+			<el-button type="primary" class="text-truncate add-button" @click="addGamePage" >Add new game</el-button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -45,7 +45,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'createdAt'">
-						<span class="card-date">{{moment(props.row.createdAt).format('YYYY-MM-DD')}}</span>
+						<span>{{moment(props.row.createdAt).format('YYYY/MM/DD')}}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'name'">
@@ -80,7 +80,7 @@ export default {
 			loadingTableData: true,
 			columns: [
 				{
-					label: 'App Icon',
+					label: 'Icon',
 					field: 'icon',
 					filterable: false,
 				},
@@ -96,7 +96,7 @@ export default {
 					filterable: true,
 				},
 				{
-					label: 'Created On',
+					label: 'Created',
 					field: 'createdAt',
 					type: 'string'
 				},
@@ -144,6 +144,10 @@ export default {
 	border-radius: 5px;
 }
 
+.add-button{
+	float:right;
+}
+
 .card-date {
 	-webkit-box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
 	box-shadow: 0 3px 6px 0 rgba(40,40,90,.09), 0 1px 1px 0 rgba(0,0,0,.065);
@@ -153,6 +157,13 @@ export default {
 	margin: 10px 0px;
 	padding: 10px 20px;
 	font-weight: 900;
+}
+
+@media (max-width: 768px) {
+	.add-button{
+		float:left;
+	}
+	
 }
 </style>
 
