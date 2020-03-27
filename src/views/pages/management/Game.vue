@@ -29,7 +29,7 @@ export default {
 				description: '',
 				icon: '',
 				background_image: '',
-				p_12_file: '',
+				fcm_file: '',
 				p_12_password: '',
 				p_12_password_overwrite: '',
 				gcm_api_key: '',

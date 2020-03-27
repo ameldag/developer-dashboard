@@ -47,7 +47,7 @@
 					<el-form-item label="Engine" prop="engine">
 						<el-radio-group v-model="currentGame.engine">
 							<el-radio label="unity" border></el-radio>
-							<el-radio label="unreal" border></el-radio>
+							<el-radio label="unreal" border disabled ></el-radio>
 						</el-radio-group>
 					</el-form-item>
 				</el-col>
@@ -98,34 +98,10 @@
 				</el-col>
 			</div>
 			<div v-if="active===3">
-				<div v-if="currentGame.platforms.includes('IOS')">
-					<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20 ">
-						<h3 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">iOS Notifications</h3>
-						<p>Switch your notifications from sandbox to production. For any assistance in switching over your notifications, visit our <a href="https://www.google.com">Documentation</a>.</p>
-					</el-col>
+				<div >
 					<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="p12 file" prop="p_12_file">
-							<input name="fileinput" type="file" accept=".p12" @change="processP12" />
-						</el-form-item>
-					</el-col>
-
-					<el-col class="col-p">
-						<el-form-item label="p12 password" prop="p_12_password">
-							<el-input type="password" v-model="currentGame.p_12_password" autosize></el-input>
-						</el-form-item>
-					</el-col>
-				</div>
-				<div v-if="currentGame.platforms.includes('Android')">
-					<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<h3 class="tx-gray-800 tx-uppercase tx-bold tx-16 mg-t-30 mg-b-10">Android - GCM Notifications</h3>
-						<p>To get token, go to the <a href="https://developer.android.com/distribute/console">Developer Console</a>.</p>
-						<div class="mg-t-25 mg-l-20"><ul class="list-group"><li> APIs &amp; Auth </li> <li> Credentials </li> <li> Add Credentials </li> <li> Server Key </li> <li> Give it a name, leave "&nbsp;Accept requests from these server IP addresses&nbsp;" blank, click create </li> <li> You are given an API key </li></ul></div>
-					</el-col>
-					
-					
-					<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Enter this key" prop="gcm_api_key">
-							<el-input type="text" v-model="currentGame.gcm_api_key" autosize></el-input>
+						<el-form-item label="FCM file" prop="fcm_file">
+							<input name="fileinput" type="file" accept=".json" @change="processFCMfile" />
 						</el-form-item>
 					</el-col>
 				</div>
@@ -203,7 +179,7 @@ export default {
 					],
 				},
 				3: {
-					p_12_file: [
+					fcm_file: [
 						{
 							validator: (rule, value, callback, source, options) => {
 							console.log({value})
@@ -237,14 +213,12 @@ export default {
 		next(currentGame) {
 			this.$refs[currentGame].validate(async (valid) => {
 			if (valid) {
-				console.log(this.active)
 				if (++this.active > 3) {
 					this.$store.commit('setSplashScreen', true)
 					let data = {
 						token : localStorage.getItem("token"),
 						id : localStorage.getItem("current_team")
 					}
-					console.log(this.action)
 					if(this.action == "Update"){
 						data.game_id = this.$route.params.id
 						await gamesService.updateGame(data, this.currentGame)
@@ -267,7 +241,11 @@ export default {
 							return error.response;
 						});
 					} else {
-						await gamesService.createGame(data, this.currentGame)
+						const formData = new FormData();
+						await Object.keys(this.currentGame).forEach((key) => {
+							formData.append(key,this.currentGame[key])
+						})
+						await gamesService.createGame(data, formData)
 						.then((res) => {
 							this.$router.replace('/management/games');
 							this.$store.commit('setSplashScreen', false)
@@ -303,35 +281,17 @@ export default {
 		},
 		async processIcon($event){
 			if (event.target.files.length) {
-				gamesService.uploadIcon(event.target.files[0])
-				.then((res) => {
-					this.currentGame.icon = res.data.data
-				})
-				.catch((error) => {
-					return error.response;
-				});
+				this.currentGame.icon = event.target.files[0]
 			}
 		},
 		async processBackground($event){
 			if (event.target.files.length) {
-				gamesService.uploadIcon(event.target.files[0])
-				.then((res) => {
-					this.currentGame.background_image = res.data.data
-				})
-				.catch((error) => {
-					return error.response;
-				});
+				this.currentGame.background_image = event.target.files[0]
 			}
 		},
-		async processP12($event){
+		async processFCMfile($event){
 			if (event.target.files.length) {
-				gamesService.uploadIcon(event.target.files[0])
-				.then((res) => {
-					this.currentGame.p_12_file = res.data.data
-				})
-				.catch((error) => {
-					return error.response;
-				});
+				this.currentGame.fcm_file = event.target.files[0]
 			}
 		},
 
