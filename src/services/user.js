@@ -10,7 +10,7 @@ export default {
         return await axios.post(APIPATH + `/editors/picture/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
     },
     async updateUser(data, user) {
-        return await axios.put(APIPATH + `editors/` + data.id + '/personal' ,user ,{ headers: { "x-access-token": data.token } })
+        return await axios.put(APIPATH + `/editors/` + data.id + '/personal' ,user ,{ headers: { "x-access-token": data.token } })
         
     },
 
