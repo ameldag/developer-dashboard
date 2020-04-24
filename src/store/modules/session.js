@@ -1,7 +1,10 @@
 import session from '../../services/session';
+import router from '../../router';
 let state = {
     token: null,
-    user: {},
+    user: {
+        validated: true,
+    },
     errorMessage: ''
 };
 // mutations
@@ -76,6 +79,9 @@ const actions = {
                 await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
                 store.commit('setToken', data);
                 store.commit('clearMessage');
+                if(!store.state.user.validated){
+                    router.push('/confirm')
+                }
             }
         })
     },

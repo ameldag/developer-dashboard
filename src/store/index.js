@@ -30,6 +30,8 @@ export default new Vuex.Store({
 			roundedCorners: false, //true, false
 			viewAnimation: 'fade-top' // fade-left, fade-right, fade-top, fade-top-in-out, fade-bottom, fade-bottom-in-out, fade, false
 		},
+		confirmEmailTitle: '',
+		confirmEmailMsg: '',
 		splashScreen: true,
 		logged: true
 	},
@@ -63,6 +65,12 @@ export default new Vuex.Store({
 		},
 		setSplashScreen(state, payload) {
 			state.splashScreen = payload
+		},
+		setConfirmEmailMsg(state, payload) {
+			state.confirmEmailMsg = payload
+		},
+		setConfirmEmailTitle(state, payload) {
+			state.confirmEmailTitle = payload
 		}
 	},
 	actions: {

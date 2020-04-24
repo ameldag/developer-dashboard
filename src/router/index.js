@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { mapState } from 'vuex'
 
 //apps
 import Dashboard from '../views/apps/Dashboard.vue'
@@ -10,6 +11,8 @@ import Login2 from '../views/pages/authentication/Login2.vue'
 import Register from '../views/pages/authentication/Register.vue'
 import ForgotPassword from '../views/pages/authentication/ForgotPassword.vue'
 import ResetPassword from '../views/pages/authentication/ResetPassword'
+import Confirm from '../views/pages/authentication/Confirm'
+import EmailConfirmation from '../views/pages/authentication/EmailConfirmation'
 import Profile from '../views/pages/Profile.vue'
 import NotFound from '../views/pages/NotFound.vue'
 
@@ -22,6 +25,7 @@ import Statement from '../views/pages/Statements.vue'
 
 import layouts from '../layout'
 import store from '../store/index.js'
+import sessionStore from '../store/modules/session'
 
 Vue.use(Router)
 
@@ -151,6 +155,22 @@ const router = new Router({
 				layout: layouts.contenOnly
 			}
 		},
+		{
+			path: '/confirm',
+			name: 'confirm-email',
+			component: Confirm,
+			meta: {
+				layout: layouts.contenOnly
+			}
+		},
+		{
+			path: '/confirmation',
+			name: 'email-confirmation',
+			component: EmailConfirmation,
+			meta: {
+				layout: layouts.contenOnly
+			}
+		},
 		{ 
 			path: '/logout',
 			beforeEnter (to, from, next) {
@@ -187,6 +207,7 @@ const l = {
 		store.commit('setLayout', layouts.navBottom)
 	},
 	set(layout){
+		console.log({store})
 		store.commit('setLayout', layout)
 	}
 }
@@ -212,19 +233,25 @@ router.beforeEach((to, from, next) => {
 
 
 			var hasPermission = localStorage.getItem("token");
-
-			console.log({hasPermission});
-			console.log(to.name);
-			console.log(process.env.VUE_APP_API_PATH)
-			if(hasPermission != null){
-				if(to.name === 'login' || to.name === 'register'){
-					window.location.href = '/'
-					return false
+			console.log('store.state.session.user.validated',store.state.session.user.validated)
+			if(hasPermission != null ){
+				if(store.state.session.user.validated){
+					if(to.name === 'login' || to.name === 'register'){
+						window.location.href = '/'
+						return false
+					} else {
+						next()
+					}
 				} else {
-					next()
+					if(to.name !== 'login' && to.name !== 'register'){
+						window.location.href = '/confirm'
+						return false
+					} else {
+						next()
+					}
 				}
 			} else {
-				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password'){
+				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'confirm-email' || to.name === 'email-confirmation'){
 					next()
 				} else {
 					window.location.href = '/login'

@@ -1,7 +1,5 @@
 <template>
 	<vue-scroll class="page-dashboard">
-		
-		
 
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">

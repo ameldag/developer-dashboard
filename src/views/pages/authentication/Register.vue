@@ -11,7 +11,7 @@
 						<el-input type="text" placeholder="Lastname" v-model="user.last_name"></el-input>
 					</el-form-item>
 					<el-form-item class="styled" prop="email">
-						<el-input type="email" placeholder="E-mail" v-model="user.email"></el-input>
+						<el-input type="email" placeholder="E-mail" v-model="user.email" :disabled="emailDisabled"></el-input>
 					</el-form-item>
 					<el-form-item class="styled" v-if="!this.$route.query.code" prop="company_name">
 						<el-input type="text" placeholder="Team name" v-model="user.company_name"></el-input>
@@ -49,11 +49,12 @@ export default {
 				first_name:'',
 				last_name:'',
 				company_name:'',
-				email: '',
+				email: this.$route.query.email != null ? this.$route.query.email : '',
 				password: '',
 				pwConfirm:'',
 				checked: false,
 			},
+			emailDisabled: this.$route.query.email != null ? true : false,
 			rules: {
 				first_name: [
 					{ required: true, message: 'enter your firstname', trigger: 'change' }
