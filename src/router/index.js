@@ -13,6 +13,7 @@ import ForgotPassword from '../views/pages/authentication/ForgotPassword.vue'
 import ResetPassword from '../views/pages/authentication/ResetPassword'
 import Confirm from '../views/pages/authentication/Confirm'
 import EmailConfirmation from '../views/pages/authentication/EmailConfirmation'
+import Approval from '../views/pages/authentication/Approval'
 import Profile from '../views/pages/Profile.vue'
 import NotFound from '../views/pages/NotFound.vue'
 
@@ -171,6 +172,14 @@ const router = new Router({
 				layout: layouts.contenOnly
 			}
 		},
+		{
+			path: '/approval',
+			name: 'account-approval',
+			component: Approval,
+			meta: {
+				layout: layouts.contenOnly
+			}
+		},
 		{ 
 			path: '/logout',
 			beforeEnter (to, from, next) {
@@ -234,13 +243,18 @@ router.beforeEach((to, from, next) => {
 
 			var hasPermission = localStorage.getItem("token");
 			console.log('store.state.session.user.validated',store.state.session.user.validated)
+			console.log('store.state.session.user.approved',store.state.session.user.approved)
 			if(hasPermission != null ){
 				if(store.state.session.user.validated){
-					if(to.name === 'login' || to.name === 'register'){
-						window.location.href = '/'
-						return false
+					if(store.state.session.user.approved){
+						if(to.name === 'login' || to.name === 'register'){
+							window.location.href = '/'
+							return false
+						} else {
+							next()
+						}
 					} else {
-						next()
+						window.location.href = '/approval'
 					}
 				} else {
 					if(to.name !== 'login' && to.name !== 'register'){
@@ -251,7 +265,7 @@ router.beforeEach((to, from, next) => {
 					}
 				}
 			} else {
-				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'confirm-email' || to.name === 'email-confirmation'){
+				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'confirm-email' || to.name === 'email-confirmation' || to.name === 'account-approval'){
 					next()
 				} else {
 					window.location.href = '/login'

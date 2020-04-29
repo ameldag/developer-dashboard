@@ -4,6 +4,7 @@ let state = {
     token: null,
     user: {
         validated: true,
+        approved: true,
     },
     errorMessage: ''
 };
@@ -81,6 +82,10 @@ const actions = {
                 store.commit('clearMessage');
                 if(!store.state.user.validated){
                     router.push('/confirm')
+                } else {
+                    if(!store.state.user.approved){
+                        router.push('/approval')
+                    }
                 }
             }
         })
