@@ -22,67 +22,59 @@
 		<el-dialog
 			:visible.sync="FormVisible"
 			width="30%"
+			custom-class= "dialog"	
 			center>
-			<el-form ref="demande" :model="demande" :rules="rules">
-				<div class="card-base card-shadow--medium info" style="padding: 20px;">
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="First Name:" prop="firstname">
-							<el-input type="text" v-model="demande.firstname" />
-						</el-form-item>
-					</el-row>
+			<el-form label-position="top" ref="accountForm" :model="accountForm" :rules="rules">
 
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Last Name:" prop="lastname">
-							<el-input type="text" v-model="demande.lastname"/>
+						<el-form-item label="ACCOUNT HOLDER NAME:" prop="holder_name">
+							<el-input type="text" v-model="accountForm.holder_name"/>
 						</el-form-item>
-					</el-row>
 
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Company:" prop="company">
-							<el-input type="text" v-model="demande.company"/>
+						<el-form-item label="IBAN:" prop="iban">
+							<el-input type="text" style="height=40px;" v-model="accountForm.iban"/>
 						</el-form-item>
-					</el-row>
 
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="address:" prop="address" >
-							<el-input type="text" v-model="demande.address"/>
+						<el-form-item label="STRIPE ACCOUNT TYPE:" prop="account_type">
+							<el-select v-model="accountForm.account_type" placeholder="Select">
+								<el-option
+								v-for="item in account_types"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value">
+								</el-option>
+							</el-select>
 						</el-form-item>
-					</el-row>
 
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="IBAN:" prop="iban" >
-							<el-input type="text" v-model="demande.iban"/>
+						<el-form-item label="CURRENCY:" prop="currency">
+							<el-select v-model="accountForm.currency" placeholder="Select">
+								<el-option
+								v-for="item in currencies"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value">
+								</el-option>
+							</el-select>
 						</el-form-item>
-					</el-row>
 
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="BIC/SWIFT:" prop="swift" >
-							<el-input type="text" v-model="demande.swift"/>
+						<el-form-item label="BANK ACCOUNT TYPE:" prop="holder_type">
+							<el-select v-model="accountForm.holder_type" placeholder="Select">
+								<el-option
+								v-for="item in holder_types"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value">
+								</el-option>
+							</el-select>
 						</el-form-item>
-					</el-row>
 
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Bank Name:" prop="bank_name" >
-							<el-input type="text" v-model="demande.bank_name"/>
-						</el-form-item>
-					</el-row>
-
-					<el-row :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-						<el-form-item label="Bank Address:" prop="bank_address" >
-							<el-input type="text" v-model="demande.bank_address"/>
-						</el-form-item>
-					</el-row>
-					
-					<el-row slot="footer" class="dialog-footer">
 						<el-button class="test-truncate" @click="FormVisible = false">Annuler</el-button>
-						<el-button type="primary" class="test-truncate" @click="next('demande')">Confirmer</el-button>
-					</el-row>
-				</div>
+						<el-button type="primary" class="test-truncate" @click="createAccount('accountForm')">Confirmer</el-button>
 			</el-form>
 		</el-dialog>
 		<el-row :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8" style='margin: auto;	float: none; text-align: center;'>
-				<el-button type="primary" class="text-truncate" round @click="FormVisible = true">Withdraw</el-button>
+				<el-button type="primary" class="text-truncate" round @click="FormVisible = true" v-if="this.$store.state.session.user.payment_account_id">Withdraw</el-button>
+				<el-button type="primary" class="text-truncate" round @click="FormVisible = true" v-else>Create Account</el-button>
 			</el-col>
         </el-row>
     </div>
@@ -90,68 +82,113 @@
 
 <script>
 const axios = require('axios');
-
+import {loadStripe} from '@stripe/stripe-js';
+let stripe = Stripe('pk_test_A8fKBAogt5UIexspxnivPLGw00HslhmxSr');
 export default {
 	name: 'Games',
 	data(){
 		return {
 			FormVisible: false,
-			demande: {
-				firstname: '',
-				lastname: '',
-				company: '',
-				address: '',
+			account_types: [
+				{
+					value: 'individual',
+					label: 'Independent',
+				},
+				{
+					value: 'company',
+					label: 'Company',
+				},
+			],
+			holder_types: [
+				{
+					value: 'individual',
+					label: 'Independent',
+				},
+				{
+					value: 'company',
+					label: 'Company',
+				},
+			],
+			currencies: [
+				{
+					value: 'eur',
+					label: 'EUR',
+				},
+				{
+					value: 'usd',
+					label: 'USD',
+				},
+			],
+			accountForm: {
+				account_type: '',
 				iban: '',
-				swift:'',
-				bank_name: '',
-				bank_address: '',
+				currency: '',
+				holder_name: '',
+				holder_type:'',
 			},
 			rules: {
-				firstname: [
-					{ required: true, message: 'Please enter your first name', trigger: 'change' },
-				],
-				lastname: [
-					{ required: true, message: 'Please enter your last name', trigger: 'change' }
-				],
-				company: [
-					{ required: true, message: 'Please enter a company name', trigger: 'change' }
-				],
-				address: [
-					{ required: true, message: 'Please enter an adress', trigger: 'change' }
+				account_type: [
+					{ required: true, message: 'Please choose an account type', trigger: 'change' },
 				],
 				iban: [
-					{ required: true, message: 'Please enter your iban', trigger: 'change' }
+					{ required: true, message: 'Please enter your IBAN', trigger: 'change' }
 				],
-				swift: [
-					{ required: true, message: 'Please enter your bic/swift', trigger: 'change' }
+				currency: [
+					{ required: true, message: 'Please select currency', trigger: 'change' }
 				],
-				bank_name: [
-					{ required: true, message: 'Please enter your bank name', trigger: 'change' }
+				holder_name: [
+					{ required: true, message: 'Please enter the bank account holder name', trigger: 'change' }
 				],
-				bank_address: [
-					{ required: true, message: 'Please enter your bank adress', trigger: 'change' }
+				holder_type: [
+					{ required: true, message: 'Please select the bank account holder type', trigger: 'change' }
 				],
 			}
 		}
 	},
+	async created(){
+	},
 	mounted() {
-		
 	},
 	methods: {
-		next(demande){
+		createAccount(accountForm){
 			let data = {
 				token : localStorage.getItem("token"),
 				id : localStorage.getItem("current_team")
 			}
-			this.$refs[demande].validate(async (valid) => {
+			this.$refs[accountForm].validate(async (valid) => {
 				if (valid) {
 					this.$store.commit('setSplashScreen', true)
-					await axios.post(process.env.VUE_APP_API_PATH + `/editors/withdraw/team/` + data.id, this.demande , { headers: { 'x-access-token': data.token } })
+					const accountToken = await stripe
+											.createToken('account', {
+												account: {
+													business_type : this.accountForm.account_type,
+												},
+												tos_shown_and_accepted: true,
+											})
+					const bankAccountToken = await stripe
+													.createToken('bank_account', {
+														country: this.accountForm.iban.substring(0, 2),
+														currency: 'eur',
+														account_number: this.accountForm.iban,
+														account_holder_name: this.accountForm.holder_name,
+														account_holder_type: this.accountForm.holder_type,
+													})
+					console.log({accountToken, bankAccountToken});
+					
+					let body = {
+						country_code: 'FR',
+						ct: accountToken.token.id,
+						external_account: bankAccountToken.token.id,
+					}
+					console.log(body);
+					
+					await axios.post(process.env.VUE_APP_API_PATH + `/editors/create/connect_account` , body , { headers: { 'x-access-token': data.token } })
 					.then((res) => {
 						this.$store.commit('setSplashScreen', false)
 						this.FormVisible = false
+						console.log({res})
 						this.$notify({
-							title: res.data.message,
+							title: res,
           					type: 'success',
 							customClass: 'success-alert',
 						});
@@ -159,8 +196,9 @@ export default {
 					.catch((error) => {
 						this.$store.commit('setSplashScreen', false)
 						this.FormVisible = false
+						console.log({error})
 						this.$notify({
-							title: 'something went wrong please try later',
+							title: error,
           					type: 'error',
 							customClass: 'error-alert',
 						});
@@ -185,6 +223,11 @@ export default {
 	width: 40px;
 	object-fit: cover;
 	border-radius: 50%;
+}
+
+.dialog{
+	border-radius: 15px;
+	box-shadow: 0 0 10px rgba(1,1,1,0.7);
 }
 
 .success-alert{
