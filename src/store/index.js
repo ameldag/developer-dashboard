@@ -8,6 +8,7 @@ import games from './modules/games'
 import team from './modules/team'
 import analytics from './modules/analytics'
 import promotion from './modules/promotion'
+import payment from './modules/payment'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
 		games,
 		team,
 		analytics,
-		promotion
+		promotion,
+		payment,
     },
 	state: {
 		layout: {
