@@ -14,7 +14,7 @@
 							{{ this.$store.state.team.currentTeam.balance || 0 }} € </p>
 					</div>
 					<div class="p-20 text-center leading-none relative">
-						<div class="inline-block align-middle" v-if="account && account.capabilities.transfers == 'active'">
+						<div class="inline-block align-middle" v-if="this.account && this.account.payouts_enabled ">
 							<i class="text-green-600 shadow">&bull;</i> Verified Account
 						</div>
 						<div class="inline-block align-middle" v-else>
@@ -108,21 +108,42 @@
 
 		<!-- PROFILE VERIFIED DIALOG END -->
 
+		<!-- WITHDRAW DIALOG -->
 
+		<el-dialog :visible.sync="withdrawFormVisible" width="30%" custom-class="dialog" center>
+			<el-form label-position="top" ref="withdrawForm" :model="withdrawForm" :rules="rules">
+				<div class="grid grid-cols-1 text-gray-100 text-center">
+					<h2 class="text-2xl font-bold mb-10">WITHDRAW</h2>
+
+					<p class="mb-16">Enter the amount you want to withdraw</p>
+
+				</div>
+					<el-form-item label="AMOUNT:" prop="amount">
+						<el-input type="number" v-model="withdrawForm.amount" />
+					</el-form-item>
+			</el-form>
+
+				<div class="grid grid-cols-2 gap-2">
+					<button class="bg-gray-100 text-gray-800 rounded-md border-0 shadow py-3 font-bold hover:bg-gray-300" @click="withdrawFormVisible = false">Annuler</button>
+					<button class="bg-blue-400 text-white rounded-md border-0 shadow py-3 font-bold hover:bg-blue-500" @click="withdraw('withdrawForm')">Confirmer</button>
+				</div>
+		</el-dialog>
+
+		<!-- WITHDRAW DIALOG END -->
 
 		<el-row :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
 			<el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8" style='margin: auto;	float: none; text-align: center;'>
 
 				<el-button type="primary" class="uppercase bg-teal-600 font-bold" round @click="FormVisible = true"
-					v-if="account == null">Create Account
+					v-if="!this.account">Create Account
 				</el-button>
 
 				<el-button type="primary" class="uppercase bg-teal-600 font-bold" round @click="verifyAccountVisible = true"
-					v-else-if="(account.capabilities.transfers =='inactive' || account.capabilities.transfers =='pending') && account.requirements.currently_due.length > 0">verify your account
+					v-else-if="!this.account.payouts_enabled  && account.requirements.currently_due.length > 0">verify your account
 				</el-button>
 
-				<button class="uppercase bg-teal-600 font-bold py-2 px-4 rounded-full"
-					v-else-if="account.capabilities.transfers == 'active'">
+				<button class="uppercase bg-teal-600 font-bold py-2 px-4 rounded-full" @click="withdrawFormVisible = true"
+					v-else-if="this.account.capabilities.transfers == 'active'">
 					Withdraw
 				</button>
 
@@ -134,14 +155,18 @@
 <script>
 	const axios = require('axios');
 	import { loadStripe } from '@stripe/stripe-js';
-	import { mapState, mapMutations } from 'vuex'
-	let stripe = Stripe('pk_test_A8fKBAogt5UIexspxnivPLGw00HslhmxSr');
+	import { mapState, mapMutations, mapActions } from 'vuex'
+	let stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLIC_KEY);
 	export default {
-		name: 'Games',
+		name: 'Statements',
 		data() {
 			return {
 				FormVisible: false,
 				verifyAccountVisible: false,
+				withdrawFormVisible: false,
+				withdrawForm: {
+					amount: '',
+				},
 				account_types: [{
 						value: 'individual',
 						label: 'Independent',
@@ -202,6 +227,11 @@
 						message: 'Please select the bank account holder type',
 						trigger: 'change'
 					}],
+					amount: [{
+						required: true,
+						message: 'Please enter an amount',
+						trigger: 'change'
+					}],
 				}
 			}
 		},
@@ -236,12 +266,9 @@
 		},
 		methods: {
 
-			...mapMutations('session', [
-					'setUser',
-				]),
-			...mapMutations('payment', [
-					'setAccount',
-				]),
+			...mapMutations('session', ['setUser',]),
+			...mapMutations('payment', ['setAccount',]),
+			...mapActions('team',['setCurrentTeam']),
 			createAccount(accountForm) {
 				let data = {
 					token: localStorage.getItem("token"),
@@ -328,6 +355,65 @@
 					return error.response;
 				});
 			},
+			withdraw(withdrawForm){
+				this.$refs[withdrawForm].validate(async (valid) => {
+					if (valid) {
+						let body = {
+							account_id: this.account.id,
+							amount: this.withdrawForm.amount,
+						}
+						if(this.$store.state.team.currentTeam.balance && this.$store.state.team.currentTeam.balance > this.withdrawForm.amount){
+							
+							this.$store.commit('setSplashScreen', true)
+							await axios.post(process.env.VUE_APP_API_PATH + `/editors/payment/payout`,
+								body, {
+									headers: {
+										'x-access-token': localStorage.getItem("token"),
+									}
+								})
+							.then((res) => {
+								console.log({res})
+								if(res.data.success){
+									this.$store.commit('setSplashScreen', false)
+									this.withdrawFormVisible = false
+									this.setCurrentTeam(res.data.team)
+									this.$notify({
+										title: "Account successfully created",
+										type: 'success',
+										customClass: 'success-alert',
+									});
+								} else {
+									this.$store.commit('setSplashScreen', false)
+									this.withdrawFormVisible = false
+									this.$notify({
+										title: res.data.message,
+										type: 'error',
+										customClass: 'error-alert',
+									});
+								}
+							})
+							.catch((error) => {
+								this.$store.commit('setSplashScreen', false)
+								this.withdrawFormVisible = false
+								this.$notify({
+									title: error,
+									type: 'error',
+									customClass: 'error-alert',
+								});
+								return error.response;
+							});
+						} else {
+							this.$notify({
+									title: "insufficient balance",
+									type: 'error',
+									customClass: 'error-alert',
+								});
+						}
+					} else {
+						return false;
+					}
+				})
+			}
 		}
 	}
 </script>
