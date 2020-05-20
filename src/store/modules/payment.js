@@ -1,12 +1,24 @@
 
 const state = {
     account: null,
+    countries_codes: [],
+    countries: [],
+    currencies: [],
     errorMessage: '',
 };
 // mutations
 const mutations = {
     setAccount(state, account) {
         state.account = account;
+    },
+    setCountriesCodes(state, countries_codes) {
+        state.countries_codes = countries_codes;
+    },
+    setCountries(state, countries) {
+        state.countries = countries;
+    },
+    setCurrencies(state, currencies) {
+        state.currencies = currencies;
     },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
@@ -20,6 +32,15 @@ const getters = {
 
     account: state => {
         return state.account
+    },
+    countries_codes: state => {
+        return state.countries_codes
+    },
+    countries: state => {
+        return state.countries
+    },
+    currencies: state => {
+        return state.currencies
     },
 
 };

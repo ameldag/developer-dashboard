@@ -37,6 +37,14 @@
 					<el-input type="text" v-model="accountForm.holder_name" />
 				</el-form-item>
 
+				<el-form-item label="ACCOUNT HOLDER COUNTRY:" prop="holder_country">
+					<el-select v-model="accountForm.holder_country" placeholder="Select" class="w-full">
+						<el-option v-for="item in this.countries" :key="item.value" :label="item.label"
+							:value="item.value">
+						</el-option>
+					</el-select>
+				</el-form-item>
+
 				<el-form-item label="IBAN:" prop="iban">
 					<el-input type="text" style="height=40px;" v-model="accountForm.iban" />
 				</el-form-item>
@@ -51,7 +59,7 @@
 
 				<el-form-item label="CURRENCY:" prop="currency">
 					<el-select v-model="accountForm.currency" placeholder="Select" class="w-full">
-						<el-option v-for="item in currencies" :key="item.value" :label="item.label" :value="item.value">
+						<el-option v-for="item in currentCurrencies" :key="item.value" :label="item.label" :value="item.value">
 						</el-option>
 					</el-select>
 				</el-form-item>
@@ -185,21 +193,22 @@
 						label: 'Company',
 					},
 				],
-				currencies: [{
-						value: 'eur',
-						label: 'EUR',
-					},
-					{
-						value: 'usd',
-						label: 'USD',
-					},
-				],
+				// currencies: [{
+				// 		value: 'eur',
+				// 		label: 'EUR',
+				// 	},
+				// 	{
+				// 		value: 'usd',
+				// 		label: 'USD',
+				// 	},
+				// ],
 				accountForm: {
 					account_type: '',
 					iban: '',
 					currency: '',
 					holder_name: '',
 					holder_type: '',
+					holder_country: '',
 				},
 				rules: {
 					account_type: [{
@@ -227,6 +236,11 @@
 						message: 'Please select the bank account holder type',
 						trigger: 'change'
 					}],
+					holder_country: [{
+						required: true,
+						message: 'Please select country',
+						trigger: 'change'
+					}],
 					amount: [{
 						required: true,
 						message: 'Please enter an amount',
@@ -238,7 +252,8 @@
 		async created() {},
 		async mounted() {
 			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
-			console.log(this.user.payment_account_id)
+			console.log(this.user.payment_account_id);
+			
 			if(this.user.payment_account_id){
 				await axios.get(process.env.VUE_APP_API_PATH + `/editors/payment/retreiveAccount/` + this.user.payment_account_id, {
 					headers: {
@@ -258,16 +273,37 @@
 					});
 					return error.response;
 				});
+			} else {
+				console.log('countries...');
+				
+				await axios.get(process.env.VUE_APP_API_PATH + `/editors/payment/country_specs`, {
+					headers: {
+						'x-access-token': localStorage.getItem("token")
+					}
+				})
+				.then((res) => {
+					this.setCountriesCodes(res.data.countries_codes)
+					this.setCountries(res.data.countries)
+					this.setCurrencies(res.data.currencies)
+				})
+				.catch((error) => {
+					this.$store.commit('setSplashScreen', false)
+					return error.response;
+				});
 			}
 		},
 		computed: {
 			...mapState('session', ['user']),
-			...mapState('payment', ['account']),
+			...mapState('payment', ['account','countries','currencies','countries_codes']),
+
+			currentCurrencies(){
+				return this.currencies[this.countries_codes.indexOf(this.accountForm.holder_country)]
+			}
 		},
 		methods: {
 
 			...mapMutations('session', ['setUser',]),
-			...mapMutations('payment', ['setAccount',]),
+			...mapMutations('payment', ['setAccount','setCountries','setCurrencies','setCountriesCodes']),
 			...mapActions('team',['setCurrentTeam']),
 			createAccount(accountForm) {
 				let data = {
@@ -287,14 +323,14 @@
 						const bankAccountToken = await stripe
 							.createToken('bank_account', {
 								country: this.accountForm.iban.substring(0, 2),
-								currency: 'eur',
+								currency: this.accountForm.currency,
 								account_number: this.accountForm.iban,
 								account_holder_name: this.accountForm.holder_name,
 								account_holder_type: this.accountForm.holder_type,
 							})
 
 						let body = {
-							country_code: 'FR',
+							country_code: this.accountForm.holder_country,
 							ct: accountToken.token.id,
 							external_account: bankAccountToken.token.id,
 						}
@@ -378,7 +414,7 @@
 									this.withdrawFormVisible = false
 									this.setCurrentTeam(res.data.team)
 									this.$notify({
-										title: "Account successfully created",
+										title: "withdrawal successfully processed",
 										type: 'success',
 										customClass: 'success-alert',
 									});
