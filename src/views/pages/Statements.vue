@@ -119,7 +119,7 @@
 
 				</div>
 					<el-form-item label="AMOUNT:" prop="amount">
-						<el-input type="number" v-model="withdrawForm.amount" />
+						<el-input type="number" v-model="withdrawForm.amount"  />
 					</el-form-item>
 			</el-form>
 
