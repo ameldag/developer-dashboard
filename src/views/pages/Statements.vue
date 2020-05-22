@@ -147,7 +147,7 @@
 				</el-button>
 
 				<el-button type="primary" class="uppercase bg-teal-600 font-bold" round @click="verifyAccountVisible = true"
-					v-else-if="!this.account.payouts_enabled  && account.requirements.currently_due.length > 0">verify your account
+					v-else-if="!this.account.payouts_enabled">verify your account
 				</el-button>
 
 				<button class="uppercase bg-teal-600 font-bold py-2 px-4 rounded-full" @click="withdrawFormVisible = true"
@@ -429,10 +429,11 @@
 								}
 							})
 							.catch((error) => {
+								
 								this.$store.commit('setSplashScreen', false)
 								this.withdrawFormVisible = false
 								this.$notify({
-									title: error,
+									title: error.response.data.message.code,
 									type: 'error',
 									customClass: 'error-alert',
 								});
