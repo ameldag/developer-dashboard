@@ -4,6 +4,7 @@ const state = {
     countries_codes: [],
     countries: [],
     currencies: [],
+    continents: [],
     errorMessage: '',
 };
 // mutations
@@ -19,6 +20,9 @@ const mutations = {
     },
     setCurrencies(state, currencies) {
         state.currencies = currencies;
+    },
+    setContinents(state, continents) {
+        state.continents = continents;
     },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
@@ -41,6 +45,9 @@ const getters = {
     },
     currencies: state => {
         return state.currencies
+    },
+    continents: state => {
+        return state.continents
     },
 
 };

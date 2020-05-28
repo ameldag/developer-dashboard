@@ -45,10 +45,6 @@
 					</el-select>
 				</el-form-item>
 
-				<el-form-item label="IBAN:" prop="iban">
-					<el-input type="text" style="height=40px;" v-model="accountForm.iban" />
-				</el-form-item>
-
 				<el-form-item label="STRIPE ACCOUNT TYPE:" prop="account_type">
 					<el-select v-model="accountForm.account_type" placeholder="Select" class="w-full">
 						<el-option v-for="item in account_types" :key="item.value" :label="item.label"
@@ -57,11 +53,24 @@
 					</el-select>
 				</el-form-item>
 
-				<el-form-item label="CURRENCY:" prop="currency">
-					<el-select v-model="accountForm.currency" placeholder="Select" class="w-full">
-						<el-option v-for="item in currentCurrencies" :key="item.value" :label="item.label" :value="item.value">
+				<el-form-item label="BANK ACCOUNT COUNTRY:" prop="bank_account_country">
+					<el-select v-model="accountForm.bank_account_country" placeholder="Select" remote automatic-dropdown default-first-option @change="changeBankCountry" class="w-full">
+						<el-option v-for="item in this.countries" :key="item.value" :label="item.label"
+							:value="item.value">
 						</el-option>
 					</el-select>
+				</el-form-item>
+
+				<el-form-item :label="accountNumberLabel" prop="account_number">
+					<el-input type="text" style="height=40px;" v-model="accountForm.account_number" />
+				</el-form-item>
+
+				<el-form-item label="ROUTING NUMBER:" prop="routing_number" v-if="this.currentContinent != 'Europe'">
+					<el-input type="text" style="height=40px;" v-model="accountForm.routing_number" />
+				</el-form-item>
+
+				<el-form-item label="CURRENCY:" prop="currency">
+					<el-input type="text" v-model="accountForm.currency" disabled />
 				</el-form-item>
 
 				<el-form-item label="BANK ACCOUNT TYPE:" prop="holder_type">
@@ -193,32 +202,30 @@
 						label: 'Company',
 					},
 				],
-				// currencies: [{
-				// 		value: 'eur',
-				// 		label: 'EUR',
-				// 	},
-				// 	{
-				// 		value: 'usd',
-				// 		label: 'USD',
-				// 	},
-				// ],
 				accountForm: {
 					account_type: '',
-					iban: '',
+					account_number: '',
+					routing_number: '',
 					currency: '',
 					holder_name: '',
 					holder_type: '',
 					holder_country: '',
+					bank_account_country:'',
 				},
 				rules: {
 					account_type: [{
 						required: true,
 						message: 'Please choose an account type',
 						trigger: 'change'
-					}, ],
-					iban: [{
+					}],
+					account_number: [{
 						required: true,
-						message: 'Please enter your IBAN',
+						message: 'Please enter your account number',
+						trigger: 'change'
+					}],
+					routing_number: [{
+						required: true,
+						message: 'Please enter your routing number',
 						trigger: 'change'
 					}],
 					currency: [{
@@ -244,6 +251,11 @@
 					amount: [{
 						required: true,
 						message: 'Please enter an amount',
+						trigger: 'change'
+					}],
+					bank_account_country: [{
+						required: true,
+						message: 'Please enter your bank account country',
 						trigger: 'change'
 					}],
 				}
@@ -285,6 +297,7 @@
 					this.setCountriesCodes(res.data.countries_codes)
 					this.setCountries(res.data.countries)
 					this.setCurrencies(res.data.currencies)
+					this.setContinents(res.data.continents)
 				})
 				.catch((error) => {
 					this.$store.commit('setSplashScreen', false)
@@ -294,16 +307,19 @@
 		},
 		computed: {
 			...mapState('session', ['user']),
-			...mapState('payment', ['account','countries','currencies','countries_codes']),
+			...mapState('payment', ['account','countries','currencies','countries_codes','continents']),
 
-			currentCurrencies(){
-				return this.currencies[this.countries_codes.indexOf(this.accountForm.holder_country)]
+			currentContinent(){
+				return this.continents[this.countries_codes.indexOf(this.accountForm.bank_account_country)]
+			},
+			accountNumberLabel(){
+				return this.continents[this.countries_codes.indexOf(this.accountForm.bank_account_country)] == 'Europe' ? 'IBAN:' : 'ACCOUNT NUMBER:'
 			}
 		},
 		methods: {
 
 			...mapMutations('session', ['setUser',]),
-			...mapMutations('payment', ['setAccount','setCountries','setCurrencies','setCountriesCodes']),
+			...mapMutations('payment', ['setAccount','setCountries','setCurrencies','setCountriesCodes','setContinents']),
 			...mapActions('team',['setCurrentTeam']),
 			createAccount(accountForm) {
 				let data = {
@@ -313,29 +329,44 @@
 				this.$refs[accountForm].validate(async (valid) => {
 					if (valid) {
 						this.$store.commit('setSplashScreen', true)
-						const accountToken = await stripe
+						try{
+							const accountToken = await stripe
 							.createToken('account', {
 								account: {
 									business_type: this.accountForm.account_type,
 								},
 								tos_shown_and_accepted: true,
 							})
-						const bankAccountToken = await stripe
-							.createToken('bank_account', {
-								country: this.accountForm.iban.substring(0, 2),
+							let bankAccountToken = null
+							if(this.accountForm.routing_number){
+								bankAccountToken = await stripe
+								.createToken('bank_account', {
+									country: this.accountForm.bank_account_country,
+									currency: this.accountForm.currency,
+									account_number: this.accountForm.account_number,
+									routing_number: this.accountForm.routing_number,
+									account_holder_name: this.accountForm.holder_name,
+									account_holder_type: this.accountForm.holder_type,
+								})
+							} else {
+								bankAccountToken = await stripe
+								.createToken('bank_account', {
+									country: this.accountForm.bank_account_country,
+									currency: this.accountForm.currency,
+									account_number: this.accountForm.account_number,
+									account_holder_name: this.accountForm.holder_name,
+									account_holder_type: this.accountForm.holder_type,
+								})
+							}
+
+							let body = {
+								country_code: this.accountForm.holder_country,
+								ct: accountToken.token.id,
+								external_account: bankAccountToken.token.id,
 								currency: this.accountForm.currency,
-								account_number: this.accountForm.iban,
-								account_holder_name: this.accountForm.holder_name,
-								account_holder_type: this.accountForm.holder_type,
-							})
+							}
 
-						let body = {
-							country_code: this.accountForm.holder_country,
-							ct: accountToken.token.id,
-							external_account: bankAccountToken.token.id,
-						}
-
-						await axios.post(process.env.VUE_APP_API_PATH + `/editors/create/connect_account`,
+							await axios.post(process.env.VUE_APP_API_PATH + `/editors/create/connect_account`,
 								body, {
 									headers: {
 										'x-access-token': data.token
@@ -365,6 +396,14 @@
 								});
 								return error.response;
 							});
+						} catch(error){
+							this.$store.commit('setSplashScreen', false)
+							this.$notify({
+									title: 'Something went wrong. Please try later',
+									type: 'error',
+									customClass: 'error-alert',
+								});
+						}
 					} else {
 						return false;
 					}
@@ -450,6 +489,11 @@
 						return false;
 					}
 				})
+			},
+			changeBankCountry(){
+				this.accountForm.account_number = ''
+				this.accountForm.routing_number = ''
+				this.accountForm.currency = this.currencies[this.countries_codes.indexOf(this.accountForm.bank_account_country)]
 			}
 		}
 	}
