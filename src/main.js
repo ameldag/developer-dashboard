@@ -11,6 +11,8 @@ import Vuebar from 'vuebar'
 import vClickOutside from 'v-click-outside'
 import VueFloatLabel from 'vue-float-label'
 import VuePerfectScrollbar from './components/vue-ps'
+import * as Sentry from '@sentry/browser';
+import { Vue as VueIntegration } from '@sentry/integrations';
 
 
 /* ═ ═ ═ ═ ═ ═ ═ ═ ═ *\
@@ -65,6 +67,10 @@ Vue.component('Peity', Peity)
 // import moment from 'moment'
 Vue.prototype.moment = moment
 
+Sentry.init({
+	dsn: 'https://951b743878a4424881a166e1b028e968@crash.seemba.com/4',
+	integrations: [new VueIntegration({Vue, attachProps: true, logErrors: true})],
+  });
 
 /* ═ ═ ═ ═ ═ ═ ═ ═ *\
 |  CORE COMPONENTS  |
