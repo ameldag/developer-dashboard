@@ -34,7 +34,7 @@
 		</el-menu-item>
 
 		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Resources</span></div>
-		<el-menu-item index="">
+		<el-menu-item index="/resources">
 			<i class="mdi mdi-settings"></i><span slot="title">Resources</span>
 		</el-menu-item>
 

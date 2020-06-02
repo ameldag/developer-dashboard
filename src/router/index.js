@@ -23,10 +23,10 @@ import Promotions from '../views/pages/management/Promotions.vue'
 import Promotion from '../views/pages/management/Promotion.vue'
 import Game from '../views/pages/management/Game.vue'
 import Statement from '../views/pages/Statements.vue'
+import Resources from '../views/pages/Resources.vue'
 
 import layouts from '../layout'
 import store from '../store/index.js'
-import sessionStore from '../store/modules/session'
 
 Vue.use(Router)
 
@@ -117,6 +117,17 @@ const router = new Router({
 			path: '/statements',
 			name: 'statement',
 			component: Statement,
+			meta: {
+				auth: true,
+				layout: layouts.navLeft,
+				searchable: true,
+				tags: ['pages']
+			}
+		},
+		{
+			path: '/resources',
+			name: 'resources',
+			component: Resources,
 			meta: {
 				auth: true,
 				layout: layouts.navLeft,

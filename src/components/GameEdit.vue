@@ -86,14 +86,14 @@
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20 flex-display">
 					<el-form-item label="Icon" prop="icon">
 						<input type="file" accept=".jpg, .jpeg, .png" @change="processIcon" >
-						<img width="50px" heigth="50px" :src="currentGame.icon" v-if="currentGame.icon"></img>
+						<img width="50px" heigth="50px" :src="currentGame.icon" v-if="currentGame.icon"/>
 					</el-form-item>
 				</el-col>
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20 flex-display">
 					<el-form-item label="Background" prop="background_image">
 						<input name="backgrounginput" type="file"  accept=".jpg, .jpeg, .png" @change="processBackground" />
-						<img width="50px" heigth="50px" :src="currentGame.background_image" v-if="currentGame.background_image"></img>
+						<img width="50px" heigth="50px" :src="currentGame.background_image" v-if="currentGame.background_image"/>
 					</el-form-item>
 				</el-col>
 			</div>

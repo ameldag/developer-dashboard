@@ -1,65 +1,128 @@
 <template>
-	<div class="login-page flex">
-		<div class="box grow scrollable align-vertical side-box box-left">
-			<div class="align-vertical-middle wrapper text-center">
-				<img class="image-logo" src="@/assets/images/logo.png" alt="logo-left"/>
-				<h1 class="h-big"></h1>
-				<p class="p-50"></p>
-			</div>
-		</div>
-		<div class="box grow scrollable align-vertical side-box box-right">
-			<div class="align-vertical-middle wrapper">
-				
-				<el-form :model="user" class="form-box" :rules="rules" ref="user" >
-					<h2>Log in to your account</h2>
-					<p class="mb-40">Go to the dashboard</p>
+	<div class="page-vue-good-table scrollable only-y">
+		<div class="vue-good-table-box card-base card-shadow--medium">
+			<vue-good-table
+				:columns="columns"
+				:rows="this.assets"
+				:search-options="{
+					enabled: false,
+					placeholder: 'Search this table'
+				}"
+				:pagination-options="{
+					enabled: true,
+					mode: 'records',
+					perPage: 10,
+					perPageDropdown: [10, 20, 30, 40, 50],
+					nextLabel: 'Next',
+					prevLabel: 'Prev',
+					rowsPerPageLabel: 'Rows per page',
+					ofLabel: 'of',
+					pageLabel: 'page', // for 'pages' mode
+					allLabel: 'All',
+				}"
+				:lineNumbers="false"
+				class="styled">
+				<template slot="table-row" slot-scope="props">
+					<span v-if="props.column.field == 'icon'">
+						<span v-if="props.row.icon">
+							<img v-bind:src="props.row.icon" alt="icon" class="app-icon">
+						</span>
+						<span v-else>
+							<img src="http://via.placeholder.com/300x300" alt="icon" class="app-icon">
+						</span>
+					</span>
 					
-					<p class="text-center" style="color: red;">{{ error }}</p>
-					<el-form-item class="styled" prop="email" >
-						<el-input type="email" name="email" placeholder="Email" v-model="user.email"></el-input>
-					</el-form-item>
-					<el-form-item class="styled" prop="password" >
-						<el-input type="password" name="password" placeholder="Password" v-model="user.password"></el-input>
-					</el-form-item>
+					<span v-else-if="props.column.field == 'createdAt'">
+						<span>{{moment(props.row.createdAt).format('YYYY/MM/DD')}}</span>
+					</span>
+					
+					<span v-else-if="props.column.field == 'name'">
+						<el-button type="text" class="text-truncate" @click="GameProfile(props.row._id)">{{ props.row.name }}</el-button>
+					</span>
+					
+					<span v-else-if="props.column.field == 'game_status'">
+						<span v-if="props.row.game_status == 'Finished'">
+							<el-button type="success" class="text-truncate" round>{{ props.row.game_status }}</el-button>
+						</span>
+						<span v-else>
+							<el-button type="warning" class="text-truncate" round>{{ props.row.game_status }}</el-button>
+						</span>
+					</span>
 
-					<div class="flex">
-						<div class="box grow text-left"><router-link to="/forgot-password">Forgot password?</router-link></div>
-					</div>
-
-					<div class="flex text-center center pt-30 pb-10">
-						<el-button type="primary login-btn pulse animated themed" @click="login('user')">Login</el-button>
-					</div>
-
-					<div class="text-center login-box pt-10">
-						Don't have an account yet? <a href="/register">Signup</a>
-					</div>
-
-				</el-form>
-			</div>
-			
+					<span v-else>
+					{{props.formattedRow[props.column.field]}}
+					</span>
+				</template>
+			</vue-good-table>
 		</div>
-
 	</div>
 </template>
 
 <script>
+const axios = require('axios');
+import { mapState, mapMutations } from 'vuex'
 export default {
 	name: 'Resources',
 	data() {
 		return {
+			columns: [
+				{
+					label: 'Engine',
+					field: 'engine',
+					filterable: false,
+				},
+				{
+					label: 'Version',
+					field: 'version',
+					filterable: true,
+				},
+				{
+					label: 'Description',
+					field: 'description',
+					html: false,
+					filterable: true,
+				},
+				{
+					label: 'Changelog',
+					field: 'changelog',
+					type: 'string'
+				},
+				{
+					label: 'Link',
+					field: 'link',
+					html: false,
+				},
+			],
 		}
 	},
-	mounted(){
+	computed: {
+		...mapState('resources', ['assets']),
+	},
+	async mounted(){
+		await axios.get(process.env.VUE_APP_API_PATH + `/assets`, {
+			headers: {
+				'x-access-token': localStorage.getItem("token")
+			}
+		})
+		.then((res) => {
+			console.log(res.data.data);
+			this.setAssetes(res.data.data)
+		})
 	},
 	methods: {
+		...mapMutations('resources', ['setAssetes',]),
 	}
 }
 </script>
 
 <style lang="scss">
-@import '../../../assets/scss/_variables';
+@import '../../assets/scss/_variables';
 
-.login-page {
+.page-vue-good-table {
+	overflow: hidden;
+}
+
+.resources-page {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -76,15 +139,15 @@ export default {
 	}
 
 	.box-left {
-		background-image: url('https://images.pexels.com/photos/1293269/pexels-photo-1293269.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500');
-		background-size: cover;
-		background-position: 50% 50%;
+		background: $background-color;
+		color: var(--background-color);
 
 		.wrapper {
-			.image-logo {
-				width: 90%;
-				max-width: 300px;
-				margin-top: 25%;
+			.card-base{
+				.logo-unity {
+					width: 100px;
+					height: 100px;
+				}
 			}
 
 		}
@@ -138,7 +201,7 @@ export default {
 }
 
 @media (max-width: 1200px) {
-.login-page {
+.resources-page {
 	.box-left {
 		.wrapper {
 			.h-big {
@@ -149,7 +212,7 @@ export default {
 }
 }
 @media (max-width: 900px) {
-.login-page {
+.resources-page {
 	.box-left {
 		.wrapper {
 			.h-big {
@@ -160,7 +223,7 @@ export default {
 }
 }
 @media (max-width: 768px) {
-.login-page {
+.resources-page {
 	display: block;
 	overflow: auto;
 	
@@ -168,5 +231,16 @@ export default {
 		display: block;
 	}
 }
+}
+</style>
+
+<style scoped>
+.el-button{
+	background: transparent;
+	border-color: transparent;
+}.el-button.is-disabled:hover, .el-button.is-disabled:focus {
+	background: transparent;
+	border-color: transparent;
+    cursor: not-allowed;
 }
 </style>

@@ -9,6 +9,7 @@ import team from './modules/team'
 import analytics from './modules/analytics'
 import promotion from './modules/promotion'
 import payment from './modules/payment'
+import resources from './modules/resources'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
 		analytics,
 		promotion,
 		payment,
+		resources,
     },
 	state: {
 		layout: {
