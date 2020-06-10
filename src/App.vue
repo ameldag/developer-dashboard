@@ -133,15 +133,7 @@ export default {
 		}
 	},
 	created() {
-		axios.interceptors.request.use(
-		config => {
-			return config;
-		},
-		error => {
-			return Promise.reject(error);
-		}
 		
-		);
 		if(browser.name)
 			document.getElementsByTagName("html")[0].classList.add(browser.name)
 	},

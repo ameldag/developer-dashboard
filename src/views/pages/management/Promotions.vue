@@ -13,9 +13,9 @@
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table v-loading="loadingTableData"
-				v-if="this.$store.state.promotion.promotions ? this.$store.state.promotion.promotions.length : false "
+				v-if="this.promotions ? this.promotions.length : false "
 				:columns="columns"
-				:rows="this.$store.state.promotion.promotions"
+				:rows="this.promotions"
 				:search-options="{
 					enabled: false,
 					placeholder: 'Search this table'
@@ -61,7 +61,7 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'channels'">
-                        <span v-for="game in props.row.channels" class="el-tag mr-5" >{{ game.name }}</span>
+                        <span v-for="game in props.row.channels" :key="game._id" class="el-tag mr-5" >{{ game.name }}</span>
 					</span>
 					
 					<span v-else-if="props.column.field == 'status'">
@@ -83,8 +83,7 @@
 </template>
 
 <script>
-const axios = require('axios');
-
+import { mapActions, mapState } from 'vuex'
 export default {
 	name: 'Promotions',
 	data(){
@@ -136,8 +135,13 @@ export default {
 				},
 			],
 		}
-    },
+	},
+	computed:{
+		...mapState('promotion', ['promotions']),
+	},
     methods: {
+		...mapActions('promotion', ['getPromotions']),
+
         goToPromotion(id){
 			this.$router.replace('/promotions/' + id);
         },
@@ -153,7 +157,7 @@ export default {
 			id : localStorage.getItem("current_team")
 		}
 
-		await this.$store.dispatch("promotion/getPromotions", data)
+		await this.getPromotions(data)
 		this.loadingTableData = false
 	}
 }

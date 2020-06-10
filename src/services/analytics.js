@@ -1,91 +1,88 @@
-const axios = require('axios');
-
-// const APIPATH = "http://localhost:8000/api/dashboard/v1"
-const APIPATH = process.env.VUE_APP_API_PATH
+const axios = require('./axios').instance;
 
 export default {
     async game_played_monthly(data) {
-        return await axios.post(APIPATH + `/analytics/game-played-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/game-played-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
         .catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 
 
     async installs_monthly(data) {
-        return await axios.post(APIPATH + `/analytics/seemba-install-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/seemba-install-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
         .catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 
     async seembaARPDU(data){
-        return await axios.post(APIPATH + `/analytics/seemba-arpdau-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/seemba-arpdau-monthly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 
     async estimatedRevenue(data){
-        return await axios.post(APIPATH + `/analytics/estimated-gross-revenue-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/estimated-gross-revenue-monthly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 
     async allTournamentsWeekly(data){
-        return await axios.post(APIPATH + `/analytics/all-tournaments-weekly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/all-tournaments-weekly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     
     async freeTournamentsWeekly(data){
-        return await axios.post(APIPATH + `/analytics/free-tournaments-weekly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/free-tournaments-weekly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     
     async cashTournamentsWeekly(data){
-        return await axios.post(APIPATH + `/analytics/cash-tournaments-weekly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/cash-tournaments-weekly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     
     async allChallengesWeekly(data){
-        return await axios.post(APIPATH + `/analytics/all-challenges-weekly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/all-challenges-weekly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     
     async freeChallengesWeekly(data){
-        return await axios.post(APIPATH + `/analytics/free-challenges-weekly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/free-challenges-weekly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     
     async cashChallengesWeekly(data){
-        return await axios.post(APIPATH + `/analytics/cash-challenges-weekly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/cash-challenges-weekly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     
     async netIncomeMonthly(data){
-        return await axios.post(APIPATH + `/analytics/net-income-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/net-income-monthly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 
     async newReturningMonthly(data){
-        return await axios.post(APIPATH + `/analytics/new-returning-monthly/` + data.id,{ headers: { 'x-access-token': data.token }})
+        return await axios.post( `/analytics/new-returning-monthly/${data.id}`, { headers: { 'x-access-token': data.token }})
 		.catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 

@@ -1,16 +1,19 @@
-const axios = require('axios');
-
-// const APIPATH = "http://localhost:8000/api/dashboard/v1"
-const APIPATH = process.env.VUE_APP_API_PATH
+const axios = require('./axios').instance;
 
 export default {
     async uploadAvatar(avatar) {
         const formData = new FormData();
         formData.append('image',avatar)
-        return await axios.post(APIPATH + `/editors/picture/upload` ,formData ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+        return await axios.post(`/editors/picture/upload` , formData, { headers: { "x-access-token": localStorage.getItem('token') } })
+        .catch((error) => {
+            throw error;
+        })
     },
     async updateUser(data, user) {
-        return await axios.put(APIPATH + `/editors/` + data.id + '/personal' ,user ,{ headers: { "x-access-token": data.token } })
+        return await axios.put(`/editors/${data.id}/personal`, user, { headers: { "x-access-token": data.token } })
+        .catch((error) => {
+            throw error;
+        })
         
     },
 

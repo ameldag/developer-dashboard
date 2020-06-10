@@ -37,11 +37,9 @@ const getters = {
 // actions
 const actions = {
     async login(store, data) {
-        await session.login(data).then(async res => {
-            if (res.data.success == false) {
-                store.commit('setErrorMessage', res.data.message);
-            }
-            else {
+        await session.login(data)
+        .then(async res => {
+            if (res.data.success) {
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("current_team", res.data.editor.teams[0]._id)
                 await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
@@ -49,8 +47,15 @@ const actions = {
                 store.commit('setUser', res.data.editor);
                 store.commit('clearMessage');
             }
+            else {
+                store.commit('setErrorMessage', res.data.message);
+            }
             return res
-        });
+        })
+        .catch( err => {
+            console.log({err});
+            
+        })
     },
 
     async signup(store, data) {

@@ -1,13 +1,34 @@
-const axios = require('axios');
+import { updateLocale } from 'moment';
 
-// const APIPATH = "http://localhost:8000/api/dashboard/v1"
-const APIPATH = process.env.VUE_APP_API_PATH
+const axios = require('./axios').instance;
 
 export default {
-    async promotions(data) {
-        return await axios.get(APIPATH + `/promotions/teams/` + data.id , { headers: { 'x-access-token': data.token } })
+
+    async add(data){
+        await axios.post(`/promotions/${localStorage.getItem('current_team')}` ,data ,{ headers: { "x-access-token": localStorage.getItem('token') } })
         .catch((error) => {
-        return error.response;
+            throw error;
+        })
+    },
+
+    async update(id, data){
+        await axios.put(`/promotions/${id}` ,data ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+        .catch((error) => {
+            throw error;
+        })
+    },
+
+    async retreiveAll(data) {
+        return await axios.get(`/promotions/teams/${data.id}`, { headers: { 'x-access-token': localStorage.getItem('token') } })
+        .catch((error) => {
+            throw error;
+        });
+    },
+
+    async retreive(id) {
+        return await axios.get(`/promotions/${id}`, { headers: { 'x-access-token': localStorage.getItem('token') } })
+        .catch((error) => {
+            throw error;
         });
     },
 };

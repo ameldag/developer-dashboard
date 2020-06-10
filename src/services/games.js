@@ -1,25 +1,22 @@
-const axios = require('axios');
-
-// const APIPATH = "http://localhost:8000/api/dashboard/v1"
-const APIPATH = process.env.VUE_APP_API_PATH
+const axios = require('./axios').instance;
 
 export default {
     async myGames(data) {
-        return await axios.get(APIPATH + `/games/` + data.id , { headers: { "x-access-token": data.token } })
+        return await axios.get(`/games/${data.id}`, { headers: { "x-access-token": data.token } })
         .catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     async createGame(data, game) {
-        return await axios.post(APIPATH + `/games/` + data.id , game, { headers: { "x-access-token": data.token } })
+        return await axios.post(`/games/${data.id}` , game, { headers: { "x-access-token": data.token } })
         .catch((error) => {
-            return error.response;
+            throw error;
         });
     },
     async updateGame(data, game) {
-        return await axios.put(APIPATH + `/games/` + data.id + '/' + data.game_id, game, { headers: { "x-access-token": data.token } })
+        return await axios.put(`/games/${data.id}/${data.game_id}`, game, { headers: { "x-access-token": data.token } })
         .catch((error) => {
-            return error.response;
+            throw error;
         });
     },
 };

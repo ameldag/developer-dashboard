@@ -72,8 +72,9 @@ export default {
 					this.$store.commit('setSplashScreen', true)
 					await this.$store.dispatch("session/login", this.user)
 					.then((res) => {
-						if(this.$store.state.session.errorMessage == '')
+						if(this.$store.state.session.errorMessage == ''){
 							this.$router.push('/')
+						}
 						else{
 							this.error = 'Authentication failed.';
 							this.$store.commit('setSplashScreen', false)

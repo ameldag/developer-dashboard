@@ -27,7 +27,7 @@
 					<el-form-item label="Select Game :" prop="game">
 						<el-select v-model="currentPromotion.game" placeholder="Select">
 							<el-option
-							v-for="item in games"
+							v-for="item in this.games"
 							:key="item.value"
 							:label="item.name"
 							:value="item._id">
@@ -97,13 +97,12 @@
 </template>
 
 <script>
-const axios = require('axios');
+import { mapState, mapActions } from 'vuex'
 export default {
 	name: 'GameEdit',
 	props: ['action', 'currentPromotion'],
 	data() {
 		return {
-			games: this.$store.getters['games/games'],
 			active: 0,
 			labelPosition: 'left', //left, right, or top
 			rules: {
@@ -132,6 +131,8 @@ export default {
 		};
 	},
 	computed: {
+		...mapState('games', ['games']),
+
 		getAvailablesGames: function() {
 			return this.games.filter( e => e._id != this.currentPromotion.game)
 		},
@@ -144,6 +145,8 @@ export default {
 		currentPromotion : Object
 	},
 	methods: {
+		...mapActions('promotion', ['add', 'update']),
+
 		back(){
 			this.active--
 		},
@@ -157,24 +160,24 @@ export default {
 						id : localStorage.getItem("current_team")
 					}
 					if(this.action == "Update"){
-						await axios.put(process.env.VUE_APP_API_PATH + `/promotions/` + this.$route.params.id ,this.currentPromotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+						await this.update(this.$route.params.id, this.currentPromotion)
 						.then((res) => {
-							this.$router.replace('/management/promotions');
-							this.$store.commit('setSplashScreen', false)
+								this.$router.replace('/management/promotions');
+								this.$store.commit('setSplashScreen', false)
 						})
 						.catch((error) => {
-							return error.response;
-							this.$store.commit('setSplashScreen', false)
+								return error.response;
+								this.$store.commit('setSplashScreen', false)
 						});
 					} else {
-						await axios.post(process.env.VUE_APP_API_PATH + `/promotions/` + data.id ,this.currentPromotion ,{ headers: { "x-access-token": localStorage.getItem('token') } })
+						await this.add(this.currentPromotion)
 						.then((res) => {
-							this.$router.replace('/management/promotions');
-							this.$store.commit('setSplashScreen', false)
+								this.$router.replace('/management/promotions');
+								this.$store.commit('setSplashScreen', false)
 						})
 						.catch((error) => {
-							this.$store.commit('setSplashScreen', false)
-							return error.response;
+								this.$store.commit('setSplashScreen', false)
+								return error.response;
 						});
 					}
 				}
