@@ -14,8 +14,7 @@
 </template>
 
 <script>
-import axios from'axios'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
 	name: 'email-confirmation',
 	data() {
@@ -34,20 +33,11 @@ export default {
         }),
     },
     async beforeCreate(){
-        await axios.post(process.env.VUE_APP_API_PATH + `/editors/confirmation` ,{token: this.$route.query.token} ,{})
-        .then((res) => {
-            if(res.data.success){
-                this.$store.commit('setConfirmEmailTitle', 'Email confirmed')
-            } else {
-                this.$store.commit('setConfirmEmailTitle', 'Sorry')
-            }
-            this.$store.commit('setConfirmEmailMsg', res.data.message)
-        })
-        .catch((error) => {
-            console.log(error)
-            this.$store.commit('setConfirmEmailMsg', error)
-        });
-    },
+        await this.confirmEmail(this.$route.query.token)
+	},
+	methods: {
+		...mapActions(['confirmEmail'])
+	},
 	mounted(){
 	}
 }

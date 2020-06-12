@@ -1,20 +1,26 @@
 const axios = require('./axios').instance;
 
 export default {
-    async myGames(data) {
-        return await axios.get(`/games/${data.id}`, { headers: { "x-access-token": data.token } })
+    async retreiveAll() {
+        return await axios.get(`/games/${localStorage.getItem("current_team")}`, { headers: { "x-access-token": localStorage.getItem("token") } })
         .catch((error) => {
             throw error;
         });
     },
-    async createGame(data, game) {
-        return await axios.post(`/games/${data.id}` , game, { headers: { "x-access-token": data.token } })
+    async retreive(id) {
+        return await axios.get(`/games/${localStorage.getItem("current_team")}/${id}`)
         .catch((error) => {
             throw error;
         });
     },
-    async updateGame(data, game) {
-        return await axios.put(`/games/${data.id}/${data.game_id}`, game, { headers: { "x-access-token": data.token } })
+    async create(data) {
+        return await axios.post(`/games/${localStorage.getItem("current_team")}` , data, { headers: { "x-access-token": localStorage.getItem("token") } })
+        .catch((error) => {
+            throw error;
+        });
+    },
+    async update(id, data)  {
+        return await axios.put(`/games/${localStorage.getItem("current_team")}/${id}`, data, { headers: { "x-access-token": localStorage.getItem("token") } })
         .catch((error) => {
             throw error;
         });

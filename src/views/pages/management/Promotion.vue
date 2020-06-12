@@ -8,7 +8,6 @@
 
 <script>
 import PromotionEdit from '@/components/PromotionEdit'
-import axios from 'axios'
 import { mapState, mapActions } from 'vuex'
 export default {
 	name: 'Promotion-Page',

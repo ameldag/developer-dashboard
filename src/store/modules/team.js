@@ -33,9 +33,9 @@ const getters = {
 // actions
 const actions = {
 
-    async getMembers(store, data) {
+    async retreiveMembers(store) {
 
-        await team.team_members(data).then(res => {
+        await team.team_members().then(res => {
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {

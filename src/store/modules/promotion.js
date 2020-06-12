@@ -19,10 +19,11 @@ const mutations = {
         state.currentPromotion = promotion;
     },
     addPromotion(state, promotion) {
-        state.promotions.push(promotion);
+        state.promotions.unshift(promotion);
     },
     updatePromotion(state, promotion) {
-        //TODO
+        var ids = state.promotions.map( element => element._id)
+        state.promotions[ids.indexOf(promotion._id)] = promotion
     },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
@@ -42,11 +43,11 @@ const getters = {
 // actions
 const actions = {
 
-    async getPromotions({commit}, data) {
+    async getPromotions({commit}) {
 
-        await promotion.retreiveAll(data)
+        await promotion.retreiveAll()
         .then(res => {
-            if (res.data.success == false) {
+            if (!res.data.success) {
                 commit('setErrorMessage', res.data.error);
             } else {
                 commit('setPromotions', res.data.data);
@@ -73,7 +74,7 @@ const actions = {
         })
     },
 
-    async update({commit}, id, data){
+    async update({commit}, {id, data}){
         await promotion.update(id, data)
         .then( res => {
             if(!res.data.success){
@@ -94,7 +95,6 @@ const actions = {
             if(!res.data.success){
                 commit('setErrorMessage', res.data.error);
             } else {
-                console.log(res.data.data)
                 commit('setCurrentPromotion', res.data.data);
                 commit('clearMessage');
             }

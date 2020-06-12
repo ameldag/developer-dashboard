@@ -379,9 +379,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import echarts from 'echarts'
-import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
 import { mapMutations, mapActions, mapState } from "vuex";
 export default {
 	name: 'Dashboard',
@@ -420,9 +417,6 @@ export default {
 	},
 	async mounted() {
 		this.loadingChart = false
-		if(localStorage.getItem('token')) {
-			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
-		}
 		let data = {
 			token : localStorage.getItem("token"),
 			id : localStorage.getItem("current_team")
@@ -465,9 +459,6 @@ export default {
 	beforeDestroy() {
 	},
 	components: {
-		Timeline,
-		TimelineItem,
-		TimelineTitle
 	}
 }
 </script>

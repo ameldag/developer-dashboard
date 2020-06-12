@@ -152,12 +152,7 @@ export default {
     },
 	async mounted() {
 		this.loadingTableData = true;
-		let data = {
-			token : localStorage.getItem("token"),
-			id : localStorage.getItem("current_team")
-		}
-
-		await this.getPromotions(data)
+		await this.getPromotions()
 		this.loadingTableData = false
 	}
 }

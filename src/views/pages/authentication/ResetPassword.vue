@@ -19,7 +19,8 @@
 </template>
 
 <script>
-const axios = require('axios');
+import userService from '../../../services/user'
+import { mapActions } from 'vuex';
 export default {
 	name: 'ResetPassword',
 	data() {
@@ -29,7 +30,11 @@ export default {
 	},
 	methods: {
 		async resetPassword() {
-			await axios.put(process.env.VUE_APP_API_PATH + `/editors/password/new` ,{token: this.$route.params.token, new: this.password} ,{ })
+			await userService.resetPasswordEmail({
+				token: this.$route.params.token, 
+				new: this.password
+			
+			})
 			.then((res) => {
 				this.$router.replace('/login');
 			})

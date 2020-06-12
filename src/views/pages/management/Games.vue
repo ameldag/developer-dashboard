@@ -13,9 +13,9 @@
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table v-loading="loadingTableData"
-				v-if="this.$store.state.games.games ? this.$store.state.games.games.length : false "
+				v-if="this.games ? this.games.length : false "
 				:columns="columns"
-				:rows="this.$store.state.games.games"
+				:rows="this.games"
 				:search-options="{
 					enabled: false,
 					placeholder: 'Search this table'
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-const axios = require('axios');
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	name: 'Games',
@@ -108,7 +108,12 @@ export default {
 			],
 		}
 	},
+	computed: {
+		...mapState('games', ['games'])
+	},
     methods: {
+		...mapActions('games', ['getGames']),
+
         GameProfile(id){
 			this.$router.replace('/games/' + id);
         },
@@ -121,11 +126,7 @@ export default {
 		this.loadingTableData = true;
 	},
 	async mounted() {
-		let data = {
-			token : localStorage.getItem("token"),
-			id : localStorage.getItem("current_team")
-		}
-		await this.$store.dispatch("games/getGames", data)
+		await this.getGames()
 		this.loadingTableData= false;
 	}
 }

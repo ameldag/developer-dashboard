@@ -9,12 +9,26 @@ export default {
             throw error;
         })
     },
+
     async updateUser(data, user) {
-        return await axios.put(`/editors/${data.id}/personal`, user, { headers: { "x-access-token": data.token } })
+        return await axios.put(`/editors/${data.id}/personal`, user, { headers: { "x-access-token": localStorage.getItem('token') } })
         .catch((error) => {
             throw error;
         })
-        
+    },
+    
+    async confirmEmail(token) {
+        return await axios.post(`/editors/confirmation`, { token: token }, null)
+        .catch((error) => {
+            throw error;
+        })
+    },
+    
+    async resetPasswordEmail(data) {
+        return await axios.post(`/editors/password/reset`, data, null)
+        .catch((error) => {
+            throw error;
+        })
     },
 
 };

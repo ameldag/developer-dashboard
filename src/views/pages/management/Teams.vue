@@ -30,9 +30,9 @@
 		</div>
 		<div class="vue-good-table-box card-base card-shadow--medium">
 			<vue-good-table v-loading="loadingTableData"
-				v-if="this.$store.state.team.members ? this.$store.state.team.members.length : false "
+				v-if="this.members ? this.members.length : false "
 				:columns="columns"
-				:rows="this.$store.state.team.members"
+				:rows="this.members"
 				:search-options="{
 					enabled: false,
 					placeholder: 'Search this table'
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-const axios = require('axios');
+import { mapActions, mapState } from 'vuex'
 import teamsService from '../../../services/team'
 export default {
 	name: 'Games',
@@ -136,28 +136,27 @@ export default {
 	},
 	async mounted() {
 		this.loadingTableData = true
-		let data = {
-			token : localStorage.getItem("token"),
-			id : localStorage.getItem("current_team")
-		}
-		await this.$store.dispatch("team/getMembers", data)
+		await this.retreiveMembers()
 		this.loadingTableData = false
 	},
+	computed: {
+		...mapState('team', ['members'])
+	},
 	methods: {
+		...mapActions('team', ['retreiveMembers']),
+
 		async sendInvitation() {
 			if(this.email != ''){
 				this.sendInvitationLoader = true
-				let data = {
-					token : localStorage.getItem("token"),
-					id : localStorage.getItem("current_team")
-				}
-				await teamsService.inviteTeamMember(data, this.email)
+				await teamsService.inviteTeamMember({ 
+					email: this.email
+					})
 				.then((res) => {
 					this.sendInvitationLoader = false
 					this.centerDialogVisible = false
 					if(res.data.success){
 						this.$notify({
-							title: 'Invitation send',
+							title: 'Invitation sent',
           					type: 'success',
 							customClass: 'success-alert',
 						});

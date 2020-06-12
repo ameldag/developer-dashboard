@@ -10,6 +10,7 @@ import analytics from './modules/analytics'
 import promotion from './modules/promotion'
 import payment from './modules/payment'
 import resources from './modules/resources'
+import userService from '../services/user'
 
 Vue.use(Vuex)
 
@@ -78,7 +79,20 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-
+		async confirmEmail({ commit }, token){
+			await userService.confirmEmail(token)
+			.then((res) => {
+				if(res.data.success){
+					commit('setConfirmEmailTitle', 'Email confirmed')
+				} else {
+					commit('setConfirmEmailTitle', 'Sorry')
+				}
+				commit('setConfirmEmailMsg', res.data.message)
+			})
+			.catch((error) => {
+				commit('setConfirmEmailMsg', error)
+			});
+		}
 	},
 	getters: {
 		layout(state, getters) {

@@ -59,8 +59,7 @@
 </template>
 
 <script>
-const axios = require('axios');
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
 	name: 'Resources',
 	data() {
@@ -99,18 +98,10 @@ export default {
 		...mapState('resources', ['assets']),
 	},
 	async mounted(){
-		await axios.get(process.env.VUE_APP_API_PATH + `/assets`, {
-			headers: {
-				'x-access-token': localStorage.getItem("token")
-			}
-		})
-		.then((res) => {
-			console.log(res.data.data);
-			this.setAssetes(res.data.data)
-		})
+		await this.retreiveAssets()
 	},
 	methods: {
-		...mapMutations('resources', ['setAssetes',]),
+		...mapActions('resources', ['retreiveAssets',]),
 	}
 }
 </script>

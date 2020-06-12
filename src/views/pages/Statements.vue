@@ -170,9 +170,9 @@
 </template>
 
 <script>
-	const axios = require('axios');
+	import paymentService from '../../services/payment'
 	import { loadStripe } from '@stripe/stripe-js';
-	import { mapState, mapMutations, mapActions } from 'vuex'
+	import { mapState, mapActions } from 'vuex'
 	let stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLIC_KEY);
 	export default {
 		name: 'Statements',
@@ -263,19 +263,10 @@
 		},
 		async created() {},
 		async mounted() {
-			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
-			console.log(this.user.payment_account_id);
+			await this.getMe();
 			
 			if(this.user.payment_account_id){
-				await axios.get(process.env.VUE_APP_API_PATH + `/editors/payment/retreiveAccount/` + this.user.payment_account_id, {
-					headers: {
-						'x-access-token': localStorage.getItem("token")
-					}
-				})
-				.then((res) => {
-					console.log(res.data)
-					this.setAccount(res.data)
-				})
+				await this.retreiveAccount(this.user.payment_account_id)
 				.catch((error) => {
 					this.$store.commit('setSplashScreen', false)
 					this.$notify({
@@ -286,22 +277,9 @@
 					return error.response;
 				});
 			} else {
-				console.log('countries...');
-				
-				await axios.get(process.env.VUE_APP_API_PATH + `/editors/payment/country_specs`, {
-					headers: {
-						'x-access-token': localStorage.getItem("token")
-					}
-				})
-				.then((res) => {
-					this.setCountriesCodes(res.data.countries_codes)
-					this.setCountries(res.data.countries)
-					this.setCurrencies(res.data.currencies)
-					this.setContinents(res.data.continents)
-				})
+				await this.getCountriesSpecs()
 				.catch((error) => {
 					this.$store.commit('setSplashScreen', false)
-					return error.response;
 				});
 			}
 		},
@@ -318,14 +296,9 @@
 		},
 		methods: {
 
-			...mapMutations('session', ['setUser',]),
-			...mapMutations('payment', ['setAccount','setCountries','setCurrencies','setCountriesCodes','setContinents']),
-			...mapActions('team',['setCurrentTeam']),
+			...mapActions('payment',['retreiveAccount', 'getCountriesSpecs', 'createAccount', 'withdraw']),
+			...mapActions('session',['getMe']),
 			createAccount(accountForm) {
-				let data = {
-					token: localStorage.getItem("token"),
-					id: localStorage.getItem("current_team")
-				}
 				this.$refs[accountForm].validate(async (valid) => {
 					if (valid) {
 						this.$store.commit('setSplashScreen', true)
@@ -359,24 +332,15 @@
 								})
 							}
 
-							let body = {
+							await this.createAccount({
 								country_code: this.accountForm.holder_country,
 								ct: accountToken.token.id,
 								external_account: bankAccountToken.token.id,
 								currency: this.accountForm.currency,
-							}
-
-							await axios.post(process.env.VUE_APP_API_PATH + `/editors/create/connect_account`,
-								body, {
-									headers: {
-										'x-access-token': data.token
-									}
-								})
+							})
 							.then((res) => {
 								this.FormVisible = false
-								this.setUser(res.data.editor)
 								this.$store.commit('setSplashScreen', false)
-								this.setAccount(res.data.account)
 								this.$notify({
 									title: "Account successfully created",
 									type: 'success',
@@ -386,9 +350,6 @@
 							.catch((error) => {
 								this.$store.commit('setSplashScreen', false)
 								this.FormVisible = false
-								console.log({
-									error
-								})
 								this.$notify({
 									title: error,
 									type: 'error',
@@ -410,11 +371,8 @@
 				})
 			},
 			async verification(){
-				await axios.post(process.env.VUE_APP_API_PATH + `/editors/payment/links`,
-				{account: this.user.payment_account_id}, {
-					headers: {
-						'x-access-token': localStorage.getItem("token")
-					}
+				await paymentService.verificationLinks({
+					account: this.user.payment_account_id
 				})
 				.then((res) => {
 						window.open(res.data.url, "_self"); 
@@ -423,7 +381,7 @@
 					this.$store.commit('setSplashScreen', false)
 					this.verifyAccountVisible = false
 					this.$notify({
-						title: error,
+						title: error.response,
 						type: 'error',
 						customClass: 'error-alert',
 					});
@@ -433,50 +391,31 @@
 			withdraw(withdrawForm){
 				this.$refs[withdrawForm].validate(async (valid) => {
 					if (valid) {
-						let body = {
-							account_id: this.account.id,
-							amount: this.withdrawForm.amount,
-						}
 						if(this.$store.state.team.currentTeam.balance && this.$store.state.team.currentTeam.balance > this.withdrawForm.amount){
 							
 							this.$store.commit('setSplashScreen', true)
-							await axios.post(process.env.VUE_APP_API_PATH + `/editors/payment/payout`,
-								body, {
-									headers: {
-										'x-access-token': localStorage.getItem("token"),
-									}
-								})
+							await this.withdraw({
+								account_id: this.account.id,
+								amount: this.withdrawForm.amount,
+							})
 							.then((res) => {
-								console.log({res})
-								if(res.data.success){
 									this.$store.commit('setSplashScreen', false)
 									this.withdrawFormVisible = false
-									this.setCurrentTeam(res.data.team)
 									this.$notify({
 										title: "withdrawal successfully processed",
 										type: 'success',
 										customClass: 'success-alert',
 									});
-								} else {
-									this.$store.commit('setSplashScreen', false)
-									this.withdrawFormVisible = false
-									this.$notify({
-										title: res.data.message,
-										type: 'error',
-										customClass: 'error-alert',
-									});
-								}
 							})
 							.catch((error) => {
 								
 								this.$store.commit('setSplashScreen', false)
 								this.withdrawFormVisible = false
 								this.$notify({
-									title: error.response.data.message.code,
+									title: error.response ? error.response.data.message.code : error.data.message,
 									type: 'error',
 									customClass: 'error-alert',
 								});
-								return error.response;
 							});
 						} else {
 							this.$notify({

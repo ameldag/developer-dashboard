@@ -21,9 +21,9 @@
 			:open-sidebar.sync="openSidebar" 
 			@collapse-nav-toggle="collapseNav = !collapseNav" 
 			@push-page="closeSidebar" 
-			v-if="navPos === 'left'"/>
+			v-if="navPos === 'left' && dataLoaded"/>
 
-		<div class="container flex column box grow">
+		<div class="container flex column box grow" v-if='dataLoaded'>
 
 			<div class="header" v-if="toolbar === 'top'">
 				<Toolbar @toggle-sidebar="openSidebar = !openSidebar" :menu-burger="navPos"/>
@@ -53,7 +53,7 @@
 			:open-sidebar.sync="openSidebar" 
 			@collapse-nav-toggle="collapseNav = collapseNav" 
 			@push-page="closeSidebar" 
-			v-if="navPos === 'right'"/>
+			v-if="navPos === 'right' && dataLoaded"/>
 
 	</div>
 </template>
@@ -68,17 +68,21 @@ import VerticalNav from '@/core/vertical-nav.vue'
 import Toolbar from '@/core/toolbar.vue'
 import Footer from '@/core/footer.vue'
 import LayoutPicker from '@/components/layout-picker.vue'
-const axios = require('axios')
+import { mapActions } from 'vuex'
 export default {
 	name: 'App',
 	data() {
 		return {
+			isDataLoaded: false,
 			collapseNav: false,
 			openSidebar: false,
 			innerWidth: 0
 		}
 	},
 	computed: {
+		dataLoaded() {
+			return this.isDataLoaded
+		},
 		navPos() {
 			if(this.innerWidth <= 768 && (this.$store.getters.navPos === 'top' || this.$store.getters.navPos === 'bottom')) {
 				return 'left'	
@@ -108,6 +112,7 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions('session', ['getMe']),
 		resizeOpenNav() {
 			this.innerWidth = window.innerWidth
 			if(window.innerWidth <= 1020 && window.innerWidth > 768) {
@@ -128,12 +133,13 @@ export default {
 		LayoutPicker
 	},
 	async beforeCreate() {
-		if(localStorage.getItem('token')) {
-			await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
-		}
-	},
-	created() {
 		
+	},
+	async created() {
+		if(localStorage.getItem('token')) {
+			await this.getMe()
+		}
+		this.isDataLoaded = true
 		if(browser.name)
 			document.getElementsByTagName("html")[0].classList.add(browser.name)
 	},

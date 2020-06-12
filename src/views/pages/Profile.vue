@@ -14,11 +14,9 @@
 					<input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" @change="profileImage" />
 					<label for="imageUpload"></label>
 				</div>
-			</div>
-				
-    </div>
+			</div>		
+    	</div>
 		
-		</div>
 		<div class="page-profile card-base card-shadow--medium" style="padding: 20px;" id="boundary">
 			<el-form ref="form" label-width="120px">
 			
@@ -70,7 +68,6 @@
 <script>
 import ColorThief from 'color-thief-browser'
 import Affix from '@/components/Affix'
-const axios = require('axios');
 import userServices from '../../services/user'
 export default {
 	name: 'Profile',

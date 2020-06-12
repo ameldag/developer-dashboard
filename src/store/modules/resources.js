@@ -1,5 +1,6 @@
+import resourcesService from '../../services/resources'
 const state = {
-    assets: null,
+    assets: [],
     errorMessage: ''
 };
 // mutations
@@ -24,7 +25,19 @@ const getters = {
 };
 // actions
 const actions = {
-
+    async retreiveAssets({ commit }){
+        await resourcesService.retreiveAssets()
+        .then((res) => {
+            if(res.data.success){
+                commit('setAssets', res.data.data)
+            } else {
+                commit('setErrorMessage', res.data.error);
+            }
+        })
+        .catch((error) => {
+            throw error
+        })
+    }
 };
 export default {
     namespaced: true,

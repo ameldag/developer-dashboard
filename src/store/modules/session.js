@@ -36,21 +36,20 @@ const getters = {
 };
 // actions
 const actions = {
-    async login(store, data) {
+    async login({ commit, dispatch }, data) {
         await session.login(data)
         .then(async res => {
             if (res.data.success) {
+                
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("current_team", res.data.editor.teams[0]._id)
-                await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
-                store.commit('setToken', res.data.token);
-                store.commit('setUser', res.data.editor);
-                store.commit('clearMessage');
+                await dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
+                commit('setToken', res.data.token);
+                commit('setUser', res.data.editor);
+                commit('clearMessage');
+            } else {
+                commit('setErrorMessage', res.data.message);
             }
-            else {
-                store.commit('setErrorMessage', res.data.message);
-            }
-            return res
         })
         .catch( err => {
             console.log({err});
@@ -58,37 +57,39 @@ const actions = {
         })
     },
 
-    async signup(store, data) {
-        await session.signup(data).then(async res => {
-            if (res.data.success == false) {
-                store.commit('setErrorMessage', res.data.message);
+    async signup({ commit, dispatch }, data) {
+        await session.signup(data)
+        .then(async res => {
+            if (!res.data.success) {
+                commit('setErrorMessage', res.data.message);
             }
             else {
-                console.log(res.data)
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("current_team", res.data.editor.teams[0]._id)
-                await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
-                store.commit('setToken', res.data.token);
-                store.commit('setUser', res.data.editor);
-                store.commit('clearMessage');
+                await dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
+                commit('setToken', res.data.token);
+                commit('setUser', res.data.editor);
+                commit('clearMessage');
             }
         });
     },
 
-    async getMe(store, data) {
+    async getMe({ commit, dispatch }) {
         
-        await session.getMe(data).then(async res => {
-            if (res.data.success == false) {
-                store.commit('setErrorMessage', res.data.message);
+        await session.getMe()
+        .then(async res => {
+            if (!res.data.success) {
+                commit('setErrorMessage', res.data.message);
             } else {
-                store.commit('setUser', res.data.editor);
-                await store.dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
-                store.commit('setToken', data);
-                store.commit('clearMessage');
-                if(!store.state.user.validated){
+                commit('setUser', res.data.editor);
+                await dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
+                console.log('token',res.data.token);
+                commit('setToken', res.data.token);
+                commit('clearMessage');
+                if(!state.user.validated){
                     router.push('/confirm')
                 } else {
-                    if(!store.state.user.approved){
+                    if(!state.user.approved){
                         router.push('/approval')
                     }
                 }

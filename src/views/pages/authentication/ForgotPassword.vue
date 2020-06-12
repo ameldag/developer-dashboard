@@ -19,7 +19,7 @@
 </template>
 
 <script>
-const axios = require('axios');
+import userService from '../../../services/user'
 export default {
 	name: 'ForgotPassword',
 	data() {
@@ -29,8 +29,9 @@ export default {
 	},
 	methods: {
 		async sendResetMail() {
-			console.log(this.email)
-			await axios.post(process.env.VUE_APP_API_PATH + `/editors/password/reset` ,{email: this.email} ,{ })
+			await userService.resetEmail({
+				email: this.email
+			})
 			.then((res) => {
 				this.$router.replace('/login');
 			})

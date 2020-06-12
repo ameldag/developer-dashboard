@@ -4,7 +4,7 @@
 		<div class="page-header">
 			<h1>{{action}} promotion </h1>
 		</div>
-		<el-form ref="currentPromotion" :rules="currentRules" :model="currentPromotion" label-width="120px" :label-position="labelPosition">
+		<el-form ref="promotion" :rules="currentRules" :model="promotion" label-width="120px" :label-position="labelPosition">
 		<div class="card-base card-shadow--medium info" style="padding: 20px;">
 			<el-steps :active="active" finish-status="success" style="padding-bottom: 30px" align-center>
 				<el-step title="Informations"></el-step>
@@ -19,13 +19,13 @@
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="Promo Name :" prop="promotion_name">
-						<el-input type="text" v-model="currentPromotion.promotion_name"/>
+						<el-input type="text" v-model="promotion.promotion_name"/>
 					</el-form-item>
 				</el-col>
 				
 				<el-col class="col-p">
 					<el-form-item label="Select Game :" prop="game">
-						<el-select v-model="currentPromotion.game" placeholder="Select">
+						<el-select v-model="promotion.game" placeholder="Select">
 							<el-option
 							v-for="item in this.games"
 							:key="item.value"
@@ -44,7 +44,7 @@
 
 				<el-col :span="12" :md="24" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="Platform" prop="channels">
-						<el-checkbox-group v-model="currentPromotion.channels">
+						<el-checkbox-group v-model="promotion.channels">
 							<el-checkbox-button 
 								v-for="item in getAvailablesGames"
 								:key="item.value"
@@ -68,7 +68,7 @@
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="Beginging of Promotion :" prop="start_date">
 						<el-date-picker
-						v-model="currentPromotion.start_date"
+						v-model="promotion.start_date"
 						type="date"
 						placeholder="pick a date">
 						</el-date-picker>
@@ -78,7 +78,7 @@
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="End of Promotion :" prop="end_date">
 						<el-date-picker
-						v-model="currentPromotion.end_date"
+						v-model="promotion.end_date"
 						type="date"
 						placeholder="pick a date">
 						</el-date-picker>
@@ -88,7 +88,7 @@
 			<el-col class="col-p">
 				<el-form-item>
 					<el-button @click="back" v-if="active!==0 ">Back</el-button>
-					<el-button type="primary"  style="float:right;" @click="next('currentPromotion')">Next</el-button>
+					<el-button type="primary" style="float:right;" @click="next('promotion')">Next</el-button>
 				</el-form-item>
 			</el-col>
 		</div>
@@ -99,12 +99,26 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-	name: 'GameEdit',
+	name: 'PromotionEdit',
 	props: ['action', 'currentPromotion'],
+	watch: { 
+		currentPromotion: function(newVal, oldVal) { // watch it
+			console.log({newVal})
+			console.log(this.promotion)
+			Object.assign(this.promotion, newVal)
+		}
+	},
 	data() {
 		return {
 			active: 0,
 			labelPosition: 'left', //left, right, or top
+			promotion: {
+				promotion_name: '',
+				game: '',
+				channels: [],
+				start_date: '',
+				end_date: '',
+			},
 			rules: {
 				0: {
 					promotion_name: [
@@ -150,17 +164,16 @@ export default {
 		back(){
 			this.active--
 		},
-		next(currentPromotion){
-			this.$refs[currentPromotion].validate(async (valid) => {
+		next(promotion){
+			this.$refs[promotion].validate(async (valid) => {
 			if (valid) {
-				if (++this.active > 2){
+				if (this.active == 2){
 					this.$store.commit('setSplashScreen', true)
-					let data = {
-						token : localStorage.getItem("token"),
-						id : localStorage.getItem("current_team")
-					}
 					if(this.action == "Update"){
-						await this.update(this.$route.params.id, this.currentPromotion)
+						await this.update({
+							id: this.$route.params.id, 
+							data: this.promotion
+						})
 						.then((res) => {
 								this.$router.replace('/management/promotions');
 								this.$store.commit('setSplashScreen', false)
@@ -170,16 +183,22 @@ export default {
 								this.$store.commit('setSplashScreen', false)
 						});
 					} else {
-						await this.add(this.currentPromotion)
+						await this.add(this.promotion)
 						.then((res) => {
+								console.log("here");
+								
 								this.$router.replace('/management/promotions');
 								this.$store.commit('setSplashScreen', false)
 						})
 						.catch((error) => {
+								console.error(error);
+								
 								this.$store.commit('setSplashScreen', false)
 								return error.response;
 						});
 					}
+				} else {
+					this.active++
 				}
 			} else {
 				return false;
