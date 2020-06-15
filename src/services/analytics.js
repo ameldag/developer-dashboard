@@ -1,86 +1,86 @@
 const axios = require('./axios').instance;
 
 export default {
-    async game_played_monthly(data) {
-        return await axios.post( `/analytics/game-played-monthly/` + data.id,{ headers: { 'x-access-token': localStorage.getItem("token") }})
+    async game_played_monthly() {
+        return await axios.post( `/analytics/game-played-monthly/` + localStorage.getItem("current_team"),{ headers: { 'x-access-token': localStorage.getItem("token") }})
         .catch((error) => {
             throw error;
         });
     },
 
 
-    async installs_monthly(data) {
-        return await axios.post( `/analytics/seemba-install-monthly/` + data.id,{ headers: { 'x-access-token': localStorage.getItem("token") }})
+    async installs_monthly() {
+        return await axios.post( `/analytics/seemba-install-monthly/` + localStorage.getItem("current_team"),{ headers: { 'x-access-token': localStorage.getItem("token") }})
         .catch((error) => {
             throw error;
         });
     },
 
-    async seembaARPDU(data){
-        return await axios.post( `/analytics/seemba-arpdau-monthly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async seembaARPDU(){
+        return await axios.post( `/analytics/seemba-arpdau-monthly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
 
-    async estimatedRevenue(data){
-        return await axios.post( `/analytics/estimated-gross-revenue-monthly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async estimatedRevenue(){
+        return await axios.post( `/analytics/estimated-gross-revenue-monthly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
 
-    async allTournamentsWeekly(data){
-        return await axios.post( `/analytics/all-tournaments-weekly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async allTournamentsWeekly(){
+        return await axios.post( `/analytics/all-tournaments-weekly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
     
-    async freeTournamentsWeekly(data){
-        return await axios.post( `/analytics/free-tournaments-weekly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async freeTournamentsWeekly(){
+        return await axios.post( `/analytics/free-tournaments-weekly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
     
-    async cashTournamentsWeekly(data){
-        return await axios.post( `/analytics/cash-tournaments-weekly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async cashTournamentsWeekly(){
+        return await axios.post( `/analytics/cash-tournaments-weekly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
     
-    async allChallengesWeekly(data){
-        return await axios.post( `/analytics/all-challenges-weekly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async allChallengesWeekly(){
+        return await axios.post( `/analytics/all-challenges-weekly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
     
-    async freeChallengesWeekly(data){
-        return await axios.post( `/analytics/free-challenges-weekly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async freeChallengesWeekly(){
+        return await axios.post( `/analytics/free-challenges-weekly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
     
-    async cashChallengesWeekly(data){
-        return await axios.post( `/analytics/cash-challenges-weekly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async cashChallengesWeekly(){
+        return await axios.post( `/analytics/cash-challenges-weekly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
     
-    async netIncomeMonthly(data){
-        return await axios.post( `/analytics/net-income-monthly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async netIncomeMonthly(){
+        return await axios.post( `/analytics/net-income-monthly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });
     },
 
-    async newReturningMonthly(data){
-        return await axios.post( `/analytics/new-returning-monthly/${data.id}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
+    async newReturningMonthly(){
+        return await axios.post( `/analytics/new-returning-monthly/${localStorage.getItem("current_team")}`, { headers: { 'x-access-token': localStorage.getItem("token") }})
 		.catch((error) => {
             throw error;
         });

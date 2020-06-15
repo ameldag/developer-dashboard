@@ -181,7 +181,6 @@ const actions = {
     async game_played_monthly(store, data) {
 
         await analytics.game_played_monthly(data).then(res => {
-            console.log({res})
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -195,7 +194,6 @@ const actions = {
     async newInstalls(store, data) {
 
         await analytics.installs_monthly(data).then(res => {
-            console.log({res})
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -209,7 +207,7 @@ const actions = {
     async ARPDU(store, data) {
 
         await analytics.seembaARPDU(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -223,7 +221,7 @@ const actions = {
     async revenue(store, data) {
 
         await analytics.estimatedRevenue(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -237,7 +235,7 @@ const actions = {
     async allTournaments(store, data) {
 
         await analytics.allTournamentsWeekly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -252,7 +250,7 @@ const actions = {
     async freeTournaments(store, data) {
 
         await analytics.freeTournamentsWeekly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -266,7 +264,7 @@ const actions = {
     async cashTournaments(store, data) {
 
         await analytics.cashTournamentsWeekly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -280,7 +278,7 @@ const actions = {
     async allChallenges(store, data) {
 
         await analytics.allChallengesWeekly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -294,7 +292,7 @@ const actions = {
     async freeChallenges(store, data) {
 
         await analytics.freeChallengesWeekly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -308,7 +306,7 @@ const actions = {
     async cashChallenges(store, data) {
 
         await analytics.cashChallengesWeekly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -322,7 +320,7 @@ const actions = {
     async netIncomeMonthly(store, data) {
 
         await analytics.netIncomeMonthly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {
@@ -336,7 +334,7 @@ const actions = {
     async newReturningMonthly(store, data) {
 
         await analytics.newReturningMonthly(data).then(res => {
-            console.log({res})
+            
             if (res.data.success == false) {
                 store.commit('setErrorMessage', res.data.error);
             } else {

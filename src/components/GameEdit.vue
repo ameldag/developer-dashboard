@@ -180,7 +180,6 @@ export default {
 					icon: [
 						{
 							validator: (rule, value, callback, source, options) => {
-							console.log({value})
 							if(value === ''){
 								callback(new Error('Please upload an icon'))
 							} else {
@@ -191,7 +190,6 @@ export default {
 					background_image: [
 						{
 							validator: (rule, value, callback, source, options) => {
-							console.log({value})
 							if(value === ''){
 								callback(new Error('check this box to continue'))
 							} else {
@@ -204,7 +202,6 @@ export default {
 					fcm_file: [
 						{
 							validator: (rule, value, callback, source, options) => {
-							console.log({value})
 							if(value === '' || value === null){
 								callback(new Error('Please upload an icon'))
 							} else {
@@ -234,13 +231,11 @@ export default {
 	methods: {
 		...mapActions('games', ['create', 'update']),
 		next(currentGame) {
-			console.log(this.$refs)
 			this.$refs['currentGame'].validate(async (valid) => {
 			if (valid) {
 				if (++this.active > 3) {
 					this.$store.commit('setSplashScreen', true)
 					if(this.action == "Update"){
-						console.log(this.game.name);
 						
 						await this.update({
 							id: this.$route.params.id,

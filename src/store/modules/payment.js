@@ -57,14 +57,14 @@ const actions = {
         await paymentService.retreiveAccount(id)
         .then((res) => {
             if(res.data.success){
-                commit.setAccount(res.data.data)
-                commit.clearMessage()
+                commit('setAccount', res.data.data)
+                commit('clearMessage')
             } else {
-                commit.setErrorMessage(res.data.message)
+                commit('setErrorMessage', res.data.message)
             }
         })
         .catch((error) => {
-            commit.setErrorMessage(error.response)    
+            commit('setErrorMessage', error.response)    
         })
     },
     
@@ -72,17 +72,17 @@ const actions = {
         await paymentService.countriesSpecs()
         .then((res) => {
             if(res.data.success){
-                commit.setCountriesCodes(res.data.countries_codes)
-                commit.setCountries(res.data.countries)
-                commit.setCurrencies(res.data.currencies)
-                commit.setContinents(res.data.continents)
-                commit.clearMessage()
+                commit('setCountriesCodes', res.data.countries_codes)
+                commit('setCountries', res.data.countries)
+                commit('setCurrencies', res.data.currencies)
+                commit('setContinents', res.data.continents)
+                commit('clearMessage')
             } else {
-                commit.setErrorMessage(res.data.message)
+                commit('setErrorMessage', res.data.message)
             }
         })
         .catch((error) => {
-            commit.setErrorMessage(error.response)    
+            commit('setErrorMessage', error.response)    
         })
     },
     
@@ -91,14 +91,14 @@ const actions = {
         .then(async (res) => {
             if(res.data.success){
                 await dispatch('session/setUser', res.data.editor)
-                commit.setAccount(res.data.account)
-                commit.clearMessage()
+                commit('setAccount', res.data.account)
+                commit('clearMessage')
             } else {
-                commit.setErrorMessage(res.data.message)
+                commit('setErrorMessage', res.data.message)
             }
         })
         .catch((error) => {
-            commit.setErrorMessage(error.response)    
+            commit('setErrorMessage', error.response)    
         })
     },
     
@@ -107,14 +107,14 @@ const actions = {
         .then(async (res) => {
             if(res.data.success){
                 await dispatch('team/setCurrentTeam', res.data.team)
-                commit.clearMessage()
+                commit('clearMessage')
             } else {
-                commit.setErrorMessage(res.data.message)
+                commit('setErrorMessage', res.data.message)
                 throw res
             }
         })
         .catch((error) => {
-            commit.setErrorMessage(error.response)    
+            commit('setErrorMessage', error.response)    
         })
     },
     

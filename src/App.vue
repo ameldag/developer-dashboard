@@ -136,8 +136,12 @@ export default {
 		
 	},
 	async created() {
-		if(localStorage.getItem('token')) {
-			await this.getMe()
+		try {
+			if(localStorage.getItem('token')) {
+				await this.getMe()
+			}
+		} catch (error) {
+			
 		}
 		this.isDataLoaded = true
 		if(browser.name)

@@ -52,8 +52,7 @@ const actions = {
             }
         })
         .catch( err => {
-            console.log({err});
-            
+            commit('setErrorMessage', err);
         })
     },
 
@@ -82,9 +81,8 @@ const actions = {
                 commit('setErrorMessage', res.data.message);
             } else {
                 commit('setUser', res.data.editor);
-                await dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
-                console.log('token',res.data.token);
                 commit('setToken', res.data.token);
+                await dispatch("team/setCurrentTeam", res.data.editor.teams[0], {root:true})
                 commit('clearMessage');
                 if(!state.user.validated){
                     router.push('/confirm')

@@ -40,7 +40,7 @@
 				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="/profile"><i class="mdi mdi-account mr-10"></i> Profile</el-dropdown-item>
-					<span v-for="(team, index) in this.$store.state.session.user.teams">
+					<span v-for="team in this.$store.state.session.user.teams" :key="team._id">
 						<el-dropdown-item @click.native="changeTeam(team._id)" divided><i class="mdi mdi-account mr-10"></i> {{ team.company_name }}</el-dropdown-item>
 					</span>
 					<el-dropdown-item command="/logout" divided><i class="mdi mdi-logout mr-10"></i> Logout</el-dropdown-item>

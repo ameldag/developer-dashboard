@@ -5,7 +5,7 @@ const state = {
 };
 // mutations
 const mutations = {
-    setAssetes(state, assets) {
+    setAssets(state, assets) {
         state.assets = assets;
     },
     setErrorMessage(state, msg) {

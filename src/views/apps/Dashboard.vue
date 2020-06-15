@@ -413,44 +413,40 @@ export default {
 	},
 
 	methods: {
-
+		...mapActions('analytics', ['game_played_monthly', 'newInstalls', 'ARPDU', 'revenue', 'allTournaments', 
+									'freeTournaments', 'cashTournaments', 'allChallenges', 'freeChallenges', 
+									'cashChallenges', 'netIncomeMonthly', 'newReturningMonthly'])
 	},
 	async mounted() {
 		this.loadingChart = false
-		let data = {
-			token : localStorage.getItem("token"),
-			id : localStorage.getItem("current_team")
-		}
 		
 		//played duels this month
-		await this.$store.dispatch("analytics/game_played_monthly", data)
+		await this.game_played_monthly()
 
 		//seemba installs this month
-		await this.$store.dispatch("analytics/newInstalls", data)
+		await this.newInstalls()
 
 		//seemba ARPDU this month
-		await this.$store.dispatch("analytics/ARPDU", data)
+		await this.ARPDU()
 
 		//seemba revenue this month
-		await this.$store.dispatch("analytics/revenue", data)
+		await this.revenue()
 
-		await this.$store.dispatch("analytics/allTournaments", data)
+		await this.allTournaments()
 
-		await this.$store.dispatch("analytics/freeTournaments", data)
+		await this.freeTournaments()
 
-		await this.$store.dispatch("analytics/cashTournaments", data)
+		await this.cashTournaments()
 
-		await this.$store.dispatch("analytics/allChallenges", data)
+		await this.allChallenges()
 
-		await this.$store.dispatch("analytics/freeChallenges", data)
+		await this.freeChallenges()
 
-		await this.$store.dispatch("analytics/cashChallenges", data)
+		await this.cashChallenges()
 
-		await this.$store.dispatch("analytics/netIncomeMonthly", data)
+		await this.netIncomeMonthly()
 
-		await this.$store.dispatch("analytics/newReturningMonthly", data)
-		
-		await this.$store.dispatch("games/getGames", data)
+		await this.newReturningMonthly()
 
 		
 		this.$store.commit('setSplashScreen', false)

@@ -103,8 +103,6 @@ export default {
 	props: ['action', 'currentPromotion'],
 	watch: { 
 		currentPromotion: function(newVal, oldVal) { // watch it
-			console.log({newVal})
-			console.log(this.promotion)
 			Object.assign(this.promotion, newVal)
 		}
 	},
@@ -160,6 +158,7 @@ export default {
 	},
 	methods: {
 		...mapActions('promotion', ['add', 'update']),
+		...mapActions('games', ['getGames']),
 
 		back(){
 			this.active--
@@ -185,8 +184,6 @@ export default {
 					} else {
 						await this.add(this.promotion)
 						.then((res) => {
-								console.log("here");
-								
 								this.$router.replace('/management/promotions');
 								this.$store.commit('setSplashScreen', false)
 						})
@@ -212,7 +209,8 @@ export default {
 		},
 
 	},
-	mounted() {
+	async mounted() {
+		await this.getGames()
 		this.resizeLabelPosition();
         window.addEventListener('resize', this.resizeLabelPosition);
 	},

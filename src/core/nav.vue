@@ -77,19 +77,15 @@ export default {
 	},
 	
 	async beforeCreate() {
-		console.log("before create nav")
 		},
 	created() {
-		console.log("nav created")
 		if(browser.name !== 'ie') this.isIe = false
 		if(browser.name !== 'edge') this.isEdge = false
 
 		this.setLink(this.$router.currentRoute.path)
 		this.$router.afterEach((to, from) => {
 			this.setLink(this.$router.currentRoute.path)
-			//console.log('afterEach', to, from)
 		})
-		//console.log('this.$router.currentRoute.path', this.$router.currentRoute.path)
 	},
 	mounted() {		
 	}

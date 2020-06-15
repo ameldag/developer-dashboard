@@ -17,8 +17,5 @@ export default {
 
     async getMe() {
         return await axios.get(`/editors/me`, { headers: { 'x-access-token': localStorage.getItem('token') } })
-        .catch((error) => {
-            throw error;
-        });
     }
 };

@@ -83,7 +83,6 @@ export default {
 				],
 				checked: [
 					{validator: (rule, value, callback, source, options) => {
-						console.log(value)
 						if(!value ){
 							callback(new Error('check this box to continue'))
 						} else {

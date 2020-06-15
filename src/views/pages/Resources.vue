@@ -97,12 +97,12 @@ export default {
 	computed: {
 		...mapState('resources', ['assets']),
 	},
+	methods: {
+		...mapActions('resources', ['retreiveAssets',]),
+	},
 	async mounted(){
 		await this.retreiveAssets()
 	},
-	methods: {
-		...mapActions('resources', ['retreiveAssets',]),
-	}
 }
 </script>
 

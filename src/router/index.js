@@ -227,7 +227,6 @@ const l = {
 		store.commit('setLayout', layouts.navBottom)
 	},
 	set(layout){
-		console.log({store})
 		store.commit('setLayout', layout)
 	}
 }
@@ -249,12 +248,9 @@ let auth = {
 }
 
 router.beforeEach((to, from, next) => {
-		// console.log('loggedin',auth.loggedIn());
 
 
 			var hasPermission = localStorage.getItem("token");
-			console.log('store.state.session.user.validated',store.state.session.user.validated)
-			console.log('store.state.session.user.approved',store.state.session.user.approved)
 			if(hasPermission != null ){
 				if(store.state.session.user.validated){
 					if(store.state.session.user.approved){

@@ -148,7 +148,7 @@
 
 		<!-- WITHDRAW DIALOG END -->
 
-		<el-row :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+		<el-row :xs="24" :sm="24" :md="24" :lg="24" :xl="24" v-if="dataLoaded">
 			<el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8" style='margin: auto;	float: none; text-align: center;'>
 
 				<el-button type="primary" class="uppercase bg-teal-600 font-bold" round @click="FormVisible = true"
@@ -179,6 +179,7 @@
 		data() {
 			return {
 				FormVisible: false,
+				isDataLoaded: false,
 				verifyAccountVisible: false,
 				withdrawFormVisible: false,
 				withdrawForm: {
@@ -267,6 +268,9 @@
 			
 			if(this.user.payment_account_id){
 				await this.retreiveAccount(this.user.payment_account_id)
+				.then(() => {
+					this.isDataLoaded = true
+				})
 				.catch((error) => {
 					this.$store.commit('setSplashScreen', false)
 					this.$notify({
@@ -287,6 +291,9 @@
 			...mapState('session', ['user']),
 			...mapState('payment', ['account','countries','currencies','countries_codes','continents']),
 
+			dataLoaded(){
+				return this.isDataLoaded
+			},
 			currentContinent(){
 				return this.continents[this.countries_codes.indexOf(this.accountForm.bank_account_country)]
 			},

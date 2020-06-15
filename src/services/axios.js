@@ -1,4 +1,5 @@
 const axios = require('axios');
+import Router from '../router/index'
 
 const instance = axios.create({
     baseURL: process.env.VUE_APP_API_PATH,
@@ -7,10 +8,13 @@ const instance = axios.create({
   });
 
   instance.interceptors.response.use(function (response) {
-      console.log({response});
     return response;
   }, function (error) {
-    return Promise.reject(error);
+  
+    if( error.response.status == 403){
+      Router.push('/logout')
+    }
+    throw error
   });
 
   export {
