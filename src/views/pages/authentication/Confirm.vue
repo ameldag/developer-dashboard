@@ -5,12 +5,16 @@
 				<img class="image-logo" src="@/assets/images/logo_seemba_white.png" alt="logo"/>
 				<h1>Confirm your Email</h1>
 				<p>Your account has been successfully registred. To complete the process please check your email for a validation request.</p>
+				<div class="flex text-center center pt-30 pb-20">
+					<el-button type="primary signin-btn tada animated" @click="resent()">RESENT</el-button>
+				</div>
 			</div>
 		</div>
 	</vue-scroll>
 </template>
 
 <script>
+  import userService from '../../../services/user' 
 export default {
 	name: 'confirm-email',
 	data() {
@@ -18,10 +22,25 @@ export default {
 		}
 	},
 	methods: {
+		async resent(){
+			await userService.resentConfirmationEmail()
+			.then(() => {
+				this.$notify({
+					title: 'email sent',
+					type: 'success',
+					customClass: 'success-alert',
+				});
+			})
+			.catch((error) => {
+				this.$notify({
+					title: res.data.message,
+					type: 'error',
+					customClass: 'error-alert',
+				});
+			})
+		}
 	},
 	mounted(){
-		localStorage.removeItem('token')
-		localStorage.removeItem('current_team')
 	}
 }
 </script>
@@ -79,6 +98,18 @@ export default {
 			font-size: 14px;
 		}
 	}
+}
+.success-alert{
+	background-color: #f0f9eb;
+	color: #67c23a
+}
+.warning-alert{
+	background-color: #fdf6ec;
+	color: #e6a23c
+}
+.error-alert{
+	background-color: #fef0f0;
+	color: #f56c6c
 }
 
 @media (max-width: 768px) {

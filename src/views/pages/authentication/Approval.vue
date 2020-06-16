@@ -20,8 +20,6 @@ export default {
 	methods: {
 	},
 	mounted(){
-		localStorage.removeItem('token')
-		localStorage.removeItem('current_team')
 	}
 }
 </script>

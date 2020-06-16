@@ -6,7 +6,7 @@
 				<h1>{{title}}</h1>
 				<p>{{message}}</p>
 				<div class="flex text-center center pt-30 pb-20">
-                	<el-button class="dashboard-btn" @click="goToDashboard"><b>Go to dashboard</b></el-button>
+                	<el-button class="dashboard-btn" @click="goToDashboard()"><b>Go to dashboard</b></el-button>
 				</div>
 			</div>
 		</div>
@@ -22,7 +22,11 @@ export default {
 		}
 	},
 	methods: {
-		goToDashboard(){
+		...mapActions('session', ['getMe']),
+		...mapActions(['confirmEmail']),
+		
+		async goToDashboard(){
+			await this.getMe();
 			this.$router.push('/')
 		}
 	},
@@ -32,11 +36,8 @@ export default {
             title: state => state.confirmEmailTitle,
         }),
     },
-    async beforeCreate(){
+    async created(){
         await this.confirmEmail(this.$route.query.token)
-	},
-	methods: {
-		...mapActions(['confirmEmail'])
 	},
 	mounted(){
 	}

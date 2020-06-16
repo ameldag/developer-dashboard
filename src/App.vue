@@ -137,7 +137,7 @@ export default {
 	},
 	async created() {
 		try {
-			if(localStorage.getItem('token')) {
+			if(localStorage.getItem('token') && this.$route.name != 'email-confirmation') {
 				await this.getMe()
 			}
 		} catch (error) {

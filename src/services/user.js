@@ -24,6 +24,13 @@ export default {
         })
     },
     
+    async resentConfirmationEmail() {
+        return await axios.post(`/editors/confirmation/resent`, null, { headers: { "x-access-token": localStorage.getItem('token') } })
+        .catch((error) => {
+            throw error;
+        })
+    },
+    
     async resetPasswordEmail(data) {
         return await axios.post(`/editors/password/reset`, data, null)
         .catch((error) => {

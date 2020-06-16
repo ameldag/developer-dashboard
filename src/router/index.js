@@ -251,7 +251,7 @@ router.beforeEach((to, from, next) => {
 
 
 			var hasPermission = localStorage.getItem("token");
-			if(hasPermission != null ){
+			if(hasPermission != null && to.name != 'email-confirmation'){
 				if(store.state.session.user.validated){
 					if(store.state.session.user.approved){
 						if(to.name === 'login' || to.name === 'register'){
@@ -272,7 +272,7 @@ router.beforeEach((to, from, next) => {
 					}
 				}
 			} else {
-				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'confirm-email' || to.name === 'email-confirmation' || to.name === 'account-approval'){
+				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'email-confirmation' ||   to.name === 'account-approval'){
 					next()
 				} else {
 					window.location.href = '/login'
