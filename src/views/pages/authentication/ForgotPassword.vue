@@ -29,7 +29,7 @@ export default {
 	},
 	methods: {
 		async sendResetMail() {
-			await userService.resetEmail({
+			await userService.resetPasswordEmail({
 				email: this.email
 			})
 			.then((res) => {

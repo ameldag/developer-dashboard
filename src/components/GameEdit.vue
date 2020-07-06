@@ -236,10 +236,17 @@ export default {
 				if (++this.active > 3) {
 					this.$store.commit('setSplashScreen', true)
 					if(this.action == "Update"){
+						const formData = new FormData();
+						await Object.keys(this.game).forEach((key) => {
+							if(key == 'platforms' || key == 'brackets' || key == 'tournaments')
+								formData.append(key, JSON.stringify(this.game[key]))
+							else
+								formData.append(key,this.game[key])
+						})
 						
 						await this.update({
 							id: this.$route.params.id,
-							data: this.game
+							data: formData
 						})
 						.then((res) => {
 							this.$router.replace('/management/games');
@@ -250,9 +257,9 @@ export default {
 								customClass: 'success-alert',
 							});
 						})
-						.catch((error) => {
+						.catch((error) => {	
 							console.error(error);
-							
+													
 							this.$store.commit('setSplashScreen', false)
 							this.$notify({
 								title: 'something went wrong please try later',
@@ -302,17 +309,17 @@ export default {
 		},
 		async processIcon($event){
 			if (event.target.files.length) {
-				this.currentGame.icon = event.target.files[0]
+				this.game.icon = event.target.files[0]
 			}
 		},
 		async processBackground($event){
 			if (event.target.files.length) {
-				this.currentGame.background_image = event.target.files[0]
+				this.game.background_image = event.target.files[0]
 			}
 		},
 		async processFCMfile($event){
 			if (event.target.files.length) {
-				this.currentGame.fcm_file = event.target.files[0]
+				this.game.fcm_file = event.target.files[0]
 			}
 		},
 
