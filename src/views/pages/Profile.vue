@@ -69,6 +69,7 @@
 import ColorThief from 'color-thief-browser'
 import Affix from '@/components/Affix'
 import userServices from '../../services/user'
+import { mapMutations } from 'vuex'
 export default {
 	name: 'Profile',
 	data() {
@@ -89,6 +90,8 @@ export default {
 		}
 	},
 	methods: {
+		...mapMutations('session',['setUser']),
+
 		resizeAffixEnabled() {
 			if(window.innerWidth <= 768) {
 				this.affixEnabled = false	
@@ -102,7 +105,7 @@ export default {
 				this.uploadAvatarLoader = true
 				await userServices.uploadAvatar(event.target.files[0])
 				.then((res) => {
-					this.me.avatar = res.data.data
+					this.setUser(res.data.data)
 					this.uploadAvatarLoader = false
 				})
 				.catch((error) => {
