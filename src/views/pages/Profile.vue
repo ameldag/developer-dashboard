@@ -4,7 +4,7 @@
 			<div class="cover"></div>
 			<!--<div class="username" v-affix="{parentid: 'affix-container', boundaryid: '', delay:600, offset:0, enable:() => affixEnabled}">-->
 			
-				<span class="username">{{this.$store.state.session.user.first_name}} {{this.$store.state.session.user.last_name}}</span>
+				<span class="username">{{this.user.first_name}} {{this.user.last_name}}</span>
 			
 			<div class="avatar-upload">
 				<div class="avatar-preview" v-loading="uploadAvatarLoader">
@@ -69,7 +69,7 @@
 import ColorThief from 'color-thief-browser'
 import Affix from '@/components/Affix'
 import userServices from '../../services/user'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
 	name: 'Profile',
 	data() {
@@ -89,6 +89,9 @@ export default {
 			affixEnabled: true
 		}
 	},
+	computed: {
+		...mapState('session', ['user']),
+	},
 	methods: {
 		...mapMutations('session',['setUser']),
 
@@ -106,6 +109,7 @@ export default {
 				await userServices.uploadAvatar(event.target.files[0])
 				.then((res) => {
 					this.setUser(res.data.data)
+					this.me.avatar = this.user.avatar
 					this.uploadAvatarLoader = false
 				})
 				.catch((error) => {
@@ -121,11 +125,7 @@ export default {
 
 		async onSubmit(){
 			this.$store.commit('setSplashScreen', true)
-			let data = {
-				token : localStorage.getItem("token"),
-				id : this.$store.getters['session/me']._id
-			}
-			await userServices.updateUser(data, this.me)
+			await userServices.updateUser(this.me)
 			.then(async (res) => {
 				await this.$store.dispatch("session/getMe", localStorage.getItem('token'))
 				this.$store.commit('setSplashScreen', false)
