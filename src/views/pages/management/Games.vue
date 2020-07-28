@@ -52,11 +52,14 @@
 					</span>
 					
 					<span v-else-if="props.column.field == 'game_status'">
-						<span v-if="props.row.game_status == 'Finished'">
+						<span v-if="props.row.game_status == 'Running'">
 							<el-button type="success" class="text-truncate" round>{{ props.row.game_status }}</el-button>
 						</span>
-						<span v-else>
+						<span v-else-if="props.row.game_status == 'Finished'">
 							<el-button type="warning" class="text-truncate" round>{{ props.row.game_status }}</el-button>
+						</span>
+						<span v-else>
+							<el-button type="danger" class="text-truncate" round>{{ props.row.game_status }}</el-button>
 						</span>
 					</span>
 
@@ -126,6 +129,7 @@ export default {
 	},
 	async mounted() {
 		await this.getGames()
+		console.log(this.games[0])
 		this.loadingTableData= false;
 	}
 }
