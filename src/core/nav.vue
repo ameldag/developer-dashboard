@@ -13,34 +13,34 @@
 	
 	
 		<el-menu-item index="/dashboard">
-			<i class="mdi mdi-gauge"></i><span slot="title">Dashboard</span>
+			<i class="mdi mdi-gauge"></i><span slot="title">{{ $t('sidebar.Dashboard') }}</span>
 		</el-menu-item>
 
 		<div v-if="this.$store.state.team && this.$store.state.team.currentTeam ? this.$store.state.team.currentTeam.editor == this.$store.state.session.user._id : false">
-			<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Revenues</span></div>
+			<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>{{ $t('sidebar.Revenues') }}</span></div>
 			<el-menu-item index="/statements">
-				<i class="mdi mdi-cash-multiple"></i><span slot="title">Statements</span>
+				<i class="mdi mdi-cash-multiple"></i><span slot="title">{{ $t('sidebar.Statements') }}</span>
 			</el-menu-item>
 		</div>
-		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Management</span></div>
+		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>{{ $t('sidebar.Management') }}</span></div>
 		<el-menu-item :index="'/management/games'">
-			<i class="mdi mdi-gamepad-right"></i><span slot="title">Games</span>
+			<i class="mdi mdi-gamepad-right"></i><span slot="title">{{ $t('sidebar.Games') }}</span>
 		</el-menu-item>
 		<el-menu-item index="/management/teams">
-			<i class="mdi mdi-account-supervisor"></i><span slot="title">Teams</span>
+			<i class="mdi mdi-account-supervisor"></i><span slot="title">{{ $t('sidebar.Teams') }}</span>
 		</el-menu-item>
 		<el-menu-item index="/management/promotions">
-			<i class="mdi mdi-volume-high"></i><span slot="title">Promotions</span>
+			<i class="mdi mdi-volume-high"></i><span slot="title">{{ $t('sidebar.Promotions') }}</span>
 		</el-menu-item>
 
-		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>Resources</span></div>
+		<div class="el-menu-item-group__title" style="padding-top: 4px;"><span>{{ $t('sidebar.Resources') }}</span></div>
 		<el-menu-item index="/resources">
-			<i class="mdi mdi-settings"></i><span slot="title">Resources</span>
+			<i class="mdi mdi-settings"></i><span slot="title">{{ $t('sidebar.Resources') }}</span>
 		</el-menu-item>
 
 		<div class="el-menu-item-group__title"><span>Pages</span></div>
 		<el-menu-item index="/profile">
-			<i class="mdi mdi-account-card-details"></i><span slot="title">Profile</span>
+			<i class="mdi mdi-account-card-details"></i><span slot="title">{{ $t('sidebar.Profile') }}</span>
 		</el-menu-item>
 		
 

@@ -14,7 +14,7 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Played Duels This Month">Played Duels This Month</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Played Duels This Month">{{ $t('homePage.PlayedDuelsThisMonth') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.game_played_monthly }}</h2>
 							</div>
 						</div>
@@ -33,7 +33,7 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Installs">Installs</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Installs">{{ $t('homePage.Installs') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.new_installs }}</h2>
 							</div>
 						</div>
@@ -52,7 +52,7 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Seemba ARPDU">Seemba ARPDU</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Seemba ARPDU">Seemba {{ $t('homePage.ARPDU') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.arpdu }}</h2>
 							</div>
 						</div>
@@ -71,7 +71,7 @@
 								</div>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Estimated Revenue">Estimated Revenue</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Estimated Revenue">{{ $t('homePage.EstimatedRevenue') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.revenue }}</h2>
 							</div>
 						</div>
@@ -85,8 +85,8 @@
 		<el-row class="mt-0" :gutter="30">
 			<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
 				<div class="card-base card-shadow--medium bg-gradiant p-20 " style="height:400px" v-loading="!loadingChart">
-					<h1 class="white-text mv-0 animated fadeInDown" title="NET INCOME">NET INCOME</h1>
-					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">Total. {{ this.$store.state.analytics.monthly_income }}</h3>					
+					<h1 class="white-text mv-0 animated fadeInDown" title="NET INCOME">{{ $t('homePage.NET_INCOME') }}</h1>
+					<h3 class="mt-0 mb-40 white-text m-0 animated slideInUp">{{ $t('homePage.Total') }}. {{ this.$store.state.analytics.monthly_income }}</h3>					
 					<TrendChart
 						v-if="netIncome ? netIncome.length : false "
 						width="100%"
@@ -128,7 +128,7 @@
 								<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="All Tournaments">All Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="All Tournaments">{{ $t('homePage.All_Tournaments') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_tournaments }}</h2>
 							</div>
 						</div>
@@ -167,7 +167,7 @@
 								<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Free Tournaments">Free Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Free Tournaments">{{ $t('homePage.Free_Tournaments') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_tournaments }}</h2>
 							</div>
 						</div>
@@ -206,7 +206,7 @@
 								<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
 							</div>
 							<div class="widget-info box grow text-truncate animated fadeInLeft">
-								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Cash Tournaments">Cash Tournaments</div>
+								<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Cash Tournaments">{{ $t('homePage.Cash_Tournaments') }}</div>
 								<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_tournaments }}</h2>
 							</div>
 						</div>
@@ -244,7 +244,7 @@
 									<i class="widget-icon mdi mdi-finance accent-text fs-30"></i>
 								</div>
 								<div class="widget-info box grow text-truncate animated fadeInLeft">
-									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="All Challenges">All Challenges</div>
+									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="All Challenges">{{ $t('homePage.All_Challenges') }}</div>
 									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.all_challenges }}</h2>
 								</div>
 							</div>
@@ -283,7 +283,7 @@
 									<i class="widget-icon mdi mdi-poll-box accent-text fs-30"></i>
 								</div>
 								<div class="widget-info box grow text-truncate animated fadeInLeft">
-									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Free Challenges">Free Challenges</div>
+									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Free Challenges">{{ $t('homePage.Free_Challenges') }}</div>
 									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.free_challenges }}</h2>
 								</div>
 							</div>
@@ -322,7 +322,7 @@
 									<i class="widget-icon mdi mdi-cash-multiple accent-text fs-30"></i>
 								</div>
 								<div class="widget-info box grow text-truncate animated fadeInLeft">
-									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Cash Challenges">Cash Challenges</div>
+									<div class="m-0 widget-title text-truncate pt-5 pb-10" title="Cash Challenges">{{ $t('homePage.Cash_Challenges') }}</div>
 									<h2 class="m-0 text-truncate">{{ this.$store.state.analytics.cash_challenges }}</h2>
 								</div>
 							</div>

@@ -21,44 +21,44 @@
 			<el-form ref="form" label-width="120px">
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<el-form-item label="First Name">
+				<el-form-item :label="$t('profilePage.firstname')">
 					<el-input type="text" v-model="me.first_name"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<el-form-item label="Last Name">
+				<el-form-item :label="$t('profilePage.lastname')">
 					<el-input type="text" v-model="me.last_name"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<el-form-item label="Adress">
+				<el-form-item :label="$t('profilePage.adress')">
 					<el-input type="text" v-model="me.address"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<el-form-item label="Country">
+				<el-form-item :label="$t('profilePage.country')">
 					<el-input type="text" v-model="me.country"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<el-form-item label="City">
+				<el-form-item :label="$t('profilePage.city')">
 					<el-input type="text" v-model="me.city"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-				<el-form-item label="Zip Code">
+				<el-form-item :label="$t('profilePage.zip_code')">
 					<el-input type="text" v-model="me.zipcode"/>
 				</el-form-item>
 			</el-col>
 			
 			<el-col :span="12" :md="24" :sm="24" :xs="24">
-					<el-button class="float-right" type="primary" @click="onSubmit">Save</el-button>
-					<el-button class="float-right mr-5">Cancel</el-button>
+					<el-button class="float-right" type="primary" @click="onSubmit">{{ $t('profilePage.button.save') }}</el-button>
+					<el-button class="float-right mr-5">{{ $t('profilePage.button.cancel') }}</el-button>
 			</el-col>
 		</el-form>
 		</div>

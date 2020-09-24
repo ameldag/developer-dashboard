@@ -71,15 +71,11 @@ const actions = {
     async getCountriesSpecs({ commit }){
         await paymentService.countriesSpecs()
         .then((res) => {
-            if(res.data.success){
                 commit('setCountriesCodes', res.data.countries_codes)
                 commit('setCountries', res.data.countries)
                 commit('setCurrencies', res.data.currencies)
                 commit('setContinents', res.data.continents)
                 commit('clearMessage')
-            } else {
-                commit('setErrorMessage', res.data.message)
-            }
         })
         .catch((error) => {
             commit('setErrorMessage', error.response)    

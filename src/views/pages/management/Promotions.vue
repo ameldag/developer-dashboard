@@ -1,12 +1,12 @@
 <template>
 	<div class="page-vue-good-table scrollable only-y">
 		<div class="page-header">
-			<h1>Manage your promotions</h1>
+			<h1>{{ $t('promotionsPage.Manage_your_promotions') }}</h1>
 			<el-breadcrumb separator="/">
 				<el-breadcrumb-item :to="{ path: '/' }"><i class="mdi mdi-gamepad-right"></i></el-breadcrumb-item>
-				<el-breadcrumb-item>Management</el-breadcrumb-item>
-				<el-breadcrumb-item>Promotions</el-breadcrumb-item>
-				<el-breadcrumb-item>List</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('Management') }}</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('Promotions') }}</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('List') }}</el-breadcrumb-item>
 			</el-breadcrumb>
 			<el-button type="primary" class="text-truncate add-button" @click="addPromotionPage" >Create Promotion</el-button>
 		</div>
@@ -25,12 +25,12 @@
 					mode: 'records',
 					perPage: 10,
 					perPageDropdown: [10, 20, 30, 40, 50],
-					nextLabel: 'Next',
-					prevLabel: 'Prev',
-					rowsPerPageLabel: 'Rows per page',
-					ofLabel: 'of',
-					pageLabel: 'page', // for 'pages' mode
-					allLabel: 'All',
+					nextLabel: $t('pagination_option.nextLabel'),
+					prevLabel: $t('pagination_option.prevLabel'),
+					rowsPerPageLabel: $t('pagination_option.rowsPerPageLabel'),
+					ofLabel: $t('pagination_option.ofLabel'),
+					pageLabel: $t('pagination_option.pageLabel'), // for 'pages' mode
+					allLabel: $t('pagination_option.allLabel'),
 				}"
 				:lineNumbers="false"
 				class="styled">
@@ -91,45 +91,45 @@ export default {
 			loadingTableData: true,
 			columns: [
 				{
-					label: 'Icon',
+					label: this.$i18n.t('promotionsPage.icon_label'),
 					field: 'icon',
 					filterable: false,
 				},
 				{
-					label: 'Name',
+					label: this.$i18n.t('promotionsPage.name_label'),
 					field: 'promotion_name',
 					html: true,
 					filterable: true,
 				},
 				{
-					label: 'Game',
+					label: this.$i18n.t('promotionsPage.game_label'),
 					field: 'game.name',
 					filterable: true,
 				},
 				{
-					label: 'Featured in',
+					label: this.$i18n.t('promotionsPage.featured_in_label'),
 					field: 'channels',
 					filterable: true,
 				},
 				{
-					label: 'Status',
+					label: this.$i18n.t('promotionsPage.status_label'),
 					field: 'status',
 					html: false,
 					filterable: true,
 				},
 				{
-					label: 'Reach',
+					label: this.$i18n.t('promotionsPage.reach_label'),
 					field: 'reach_count',
 					html: false,
 					filterable: true,
 				},
 				{
-					label: 'Starts At',
+					label: this.$i18n.t('promotionsPage.start_date_label'),
 					field: 'start_date',
 					type: 'string'
 				},
 				{
-					label: 'Ends At',
+					label: this.$i18n.t('promotionsPage.end_date_label'),
 					field: 'end_date',
 					type: 'string'
 				},

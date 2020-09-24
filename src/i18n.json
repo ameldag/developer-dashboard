@@ -3,6 +3,128 @@
 		"message": {
 			"hello": "hello world"
 		},
+		"Management": "Management",
+		"Games": "Games",
+		"Promotions": "Promotions",
+		"Team_members": "Team Members",
+		"List": "List",
+		"pagination_option": {
+			"nextLabel": "Next",
+			"prevLabel": "Prev",
+			"rowsPerPageLabel": "Rows per page",
+			"ofLabel": "of",
+			"pageLabel": "page",
+			"allLabel": "All"
+		},
+		"sidebar": {
+			"Dashboard": "Dashboard",
+			"Revenues": "Revenues",
+			"Statements": "Statements",
+			"Management": "Management",
+			"Games": "Games",
+			"Teams": "Teams",
+			"Promotions": "Promotions",
+			"Resources": "Resources",
+			"Pages": "Pages",
+			"Profile": "Profile"
+		},
+		"homePage" :{
+			"PlayedDuelsThisMonth": "Played Duels This Month",
+			"Installs": "Installs",
+			"ARPDU": "ARPDU",
+			"EstimatedRevenue": "Estimated Revenue",
+			"NET_INCOME": "NET INCOME",
+			"Total": "Total",
+			"All_Tournaments": "All Tournaments",
+			"Free_Tournaments": "Free Tournaments",
+			"Cash_Tournaments": "Cash Tournaments",
+			"All_Challenges": "All Challenges",
+			"Free_Challenges": "Free Challenges",
+			"Cash_Challenges": "Cash Challenges"
+		},
+		"statementsPage": {
+			"Manage_your_revenue": "Manage your revenue",
+			"CURRENT_BALANCE": "CURRENT BALANCE",
+			"description": "Quick peek on your current balance",
+			"withdraw": "Withdraw",
+			"withdraw_msg": "Enter the amount you want to withdraw",
+			"AMOUNT": "AMOUNT :",
+			"account": {
+				"verified": "Verified Account",
+				"unverified": "Unverified Account"
+			},
+			"verify": {
+				"verifyAccountText": "Verify your account",
+				"verifyAccountDesc": "Complete the process of verification through the Stripe secured platform",
+				"button": "Go to verification"
+			},
+			"createAccount": {
+				"holder_name_label": "ACCOUNT HOLDER NAME:",
+				"holder_country_label": "ACCOUNT HOLDER COUNTRY:",
+				"stripe_type_label": "STRIPE ACCOUNT TYPE:",
+				"bank_country_label": "BANK ACCOUNT COUNTRY:",
+				"account_number_label": "ACCOUNT NUMBER:",
+				"iban_label": "IBAN:",
+				"routing_number_label": "ROUTING NUMBER:",
+				"currency_label": "CURRENCY:",
+				"bank_type_label": "BANK ACCOUNT TYPE:"
+			},
+			"button": {
+				"create": "Create Account",
+				"verify": "verify your account",
+				"withdraw": "Withdraw"
+			}
+		},
+		"gamesPage": {
+			"Manage_your_revenue": "Manage your games",
+			"new_game_button": "Add new game",
+			"icon_label": "Icon",
+			"app_name_label": "App Name",
+			"game_id_label": "Game Id",
+			"created_label": "Created",
+			"status_label": "Status"
+		},
+		"teamsPage": {
+			"Manage_your_team": "Manage your team",
+			"new_member_button": "Invite New Member",
+			"avatar_label": "Avatar",
+			"name_label": "Name",
+			"email_label": "Email",
+			"country_label": "Country",
+			"registered_label": "Registered",
+			"role_label": "Role"
+		},
+		"promotionsPage": {
+			"Manage_your_promotions": "Manage your promotions",
+			"new_promotion_button": "Invite New Member",
+			"icon_label": "Icon",
+			"name_label": "Name",
+			"game_label": "Game",
+			"featured_in_label": "Featured in",
+			"status_label": "Status",
+			"reach_label": "Reach",
+			"start_date_label": "Starts At",
+			"end_date_label": "Ends At"
+		},
+		"resourcesPage": {
+			"engine_label": "Engine",
+			"version_label": "Version",
+			"description_label": "Description",
+			"changelog_label": "Changelog",
+			"link_label": "Link"
+		},
+		"profilePage": {
+			"firstname": "First Name",
+			"lastname": "Last Name",
+			"adress": "Adress",
+			"country": "Country",
+			"city": "City",
+			"zip_code": "Zip Code",
+			"button": {
+				"cancel": "Cancel",
+				"save": "Save"
+			}
+		},
 		"languages": {
 			"English": "English",
 			"Italian": "Italian",

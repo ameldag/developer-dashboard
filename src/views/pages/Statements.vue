@@ -1,24 +1,24 @@
 <template>
 	<div class="">
 		<div class="page-header">
-			<h1 class="main-title">Manage your revenue</h1>
+			<h1 class="main-title">{{ $t('statementsPage.Manage_your_revenue') }}</h1>
 		</div>
 		<el-row :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
 			<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" style='margin: auto; float: none;'>
 
 				<div class="grid grid-cols-2 bg-gray-800 rounded-lg overflow-hidden px-5 py-5 mb-20">
 					<div class="border-r p-20">
-						<h2 class="uppercase font-bold">CURRENT BALANCE</h2>
-						<p class="font-thin">Quick peek on your current balance</p>
+						<h2 class="uppercase font-bold">{{ $t('statementsPage.CURRENT_BALANCE') }}</h2>
+						<p class="font-thin">{{ $t('statementsPage.description') }}</p>
 						<p class="m-0 text-teal-400 font-black text-2xl">
 							{{ this.$store.state.team.currentTeam.balance || 0 }} € </p>
 					</div>
 					<div class="p-20 text-center leading-none relative">
 						<div class="inline-block align-middle" v-if="this.account && this.account.payouts_enabled ">
-							<i class="text-green-600 shadow">&bull;</i> Verified Account
+							<i class="text-green-600 shadow">&bull;</i> {{ $t('statementsPage.account.verified') }}
 						</div>
 						<div class="inline-block align-middle" v-else>
-							<i class="text-red-600 shadow">&bull;</i> Unverified Account
+							<i class="text-red-600 shadow">&bull;</i> {{ $t('statementsPage.account.unverified') }}
 						</div>
 					</div>
 				</div>
@@ -33,11 +33,10 @@
 			<el-form label-position="top" ref="accountForm" :model="accountForm" :rules="rules">
 				
 
-				<el-form-item label="ACCOUNT HOLDER NAME:" prop="holder_name">
+				<el-form-item :label="$t('statementsPage.createAccount.holder_name_label')" prop="holder_name">
 					<el-input type="text" v-model="accountForm.holder_name" />
 				</el-form-item>
-
-				<el-form-item label="ACCOUNT HOLDER COUNTRY:" prop="holder_country">
+				<el-form-item :label="$t('statementsPage.createAccount.holder_country_label')" prop="holder_country">
 					<el-select v-model="accountForm.holder_country" placeholder="Select" class="w-full">
 						<el-option v-for="item in this.countries" :key="item.value" :label="item.label"
 							:value="item.value">
@@ -45,7 +44,7 @@
 					</el-select>
 				</el-form-item>
 
-				<el-form-item label="STRIPE ACCOUNT TYPE:" prop="account_type">
+				<el-form-item :label="$t('statementsPage.createAccount.stripe_type_label')" prop="account_type">
 					<el-select v-model="accountForm.account_type" placeholder="Select" class="w-full">
 						<el-option v-for="item in account_types" :key="item.value" :label="item.label"
 							:value="item.value">
@@ -53,7 +52,7 @@
 					</el-select>
 				</el-form-item>
 
-				<el-form-item label="BANK ACCOUNT COUNTRY:" prop="bank_account_country">
+				<el-form-item :label="$t('statementsPage.createAccount.bank_country_label')" prop="bank_account_country">
 					<el-select v-model="accountForm.bank_account_country" placeholder="Select" remote automatic-dropdown default-first-option @change="changeBankCountry" class="w-full">
 						<el-option v-for="item in this.countries" :key="item.value" :label="item.label"
 							:value="item.value">
@@ -65,15 +64,15 @@
 					<el-input type="text" style="height=40px;" v-model="accountForm.account_number" />
 				</el-form-item>
 
-				<el-form-item label="ROUTING NUMBER:" prop="routing_number" v-if="this.currentContinent != 'Europe'">
+				<el-form-item :label="$t('statementsPage.createAccount.routing_number_label')" prop="routing_number" v-if="this.currentContinent != 'Europe'">
 					<el-input type="text" style="height=40px;" v-model="accountForm.routing_number" />
 				</el-form-item>
 
-				<el-form-item label="CURRENCY:" prop="currency">
+				<el-form-item :label="$t('statementsPage.createAccount.currency_label')" prop="currency">
 					<el-input type="text" v-model="accountForm.currency" disabled />
 				</el-form-item>
 
-				<el-form-item label="BANK ACCOUNT TYPE:" prop="holder_type">
+				<el-form-item :label="$t('statementsPage.createAccount.bank_type_label')" prop="holder_type">
 					<el-select v-model="accountForm.holder_type" placeholder="Select" class="w-full">
 						<el-option v-for="item in holder_types" :key="item.value" :label="item.label"
 							:value="item.value">
@@ -95,9 +94,9 @@
 
 		<el-dialog :visible.sync="verifyAccountVisible" width="30%" custom-class="dialog" center>
 			<div class="grid grid-cols-1 text-gray-100 text-center">
-				<h2 class="text-2xl font-bold mb-10">Verify your account</h2>
+				<h2 class="text-2xl font-bold mb-10">{{ $t('statementsPage.verify.verifyAccountText') }}</h2>
 
-				<p class="mb-16">Complete the process of verification through the Stripe secured platform</p>
+				<p class="mb-16">{{ $t('statementsPage.verify.verifyAccountDesc') }}</p>
 
 				<svg class="w-24 h-auto" fill="#4379FF" viewBox="0 0 62 26" style="justify-self: center;">
 					<path
@@ -105,7 +104,7 @@
 					</path>
 				</svg>
 
-				<button class="bg-blue-600 rounded-md py-3 w-full mt-20" @click="verification()">Go to verification</button>
+				<button class="bg-blue-600 rounded-md py-3 w-full mt-20" @click="verification()">{{ $t('statementsPage.verify.button') }}</button>
 			</div>
 		</el-dialog>
 
@@ -130,12 +129,12 @@
 		<el-dialog :visible.sync="withdrawFormVisible" width="30%" custom-class="dialog" center>
 			<el-form label-position="top" ref="withdrawForm" :model="withdrawForm" :rules="rules">
 				<div class="grid grid-cols-1 text-gray-100 text-center">
-					<h2 class="text-2xl font-bold mb-10">WITHDRAW</h2>
+					<h2 class="text-2xl font-bold mb-10">{{ $t('statementsPage.withdraw') }}</h2>
 
-					<p class="mb-16">Enter the amount you want to withdraw</p>
+					<p class="mb-16">{{ $t('statementsPage.withdraw_msg') }}</p>
 
 				</div>
-					<el-form-item label="AMOUNT:" prop="amount">
+					<el-form-item :label=" $t('statementsPage.AMOUNT') " prop="amount">
 						<el-input type="number" v-model="withdrawForm.amount"  />
 					</el-form-item>
 			</el-form>
@@ -152,16 +151,16 @@
 			<el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8" style='margin: auto;	float: none; text-align: center;'>
 
 				<el-button type="primary" class="uppercase bg-teal-600 font-bold" round @click="FormVisible = true"
-					v-if="!this.account">Create Account
+					v-if="!this.account">{{ $t('statementsPage.button.create') }}
 				</el-button>
 
 				<el-button type="primary" class="uppercase bg-teal-600 font-bold" round @click="verifyAccountVisible = true"
-					v-else-if="!this.account.payouts_enabled">verify your account
+					v-else-if="!this.account.payouts_enabled">{{ $t('statementsPage.button.verify') }}
 				</el-button>
 
 				<button class="uppercase bg-teal-600 font-bold py-2 px-4 rounded-full" @click="withdrawFormVisible = true"
 					v-else-if="this.account.capabilities.transfers == 'active'">
-					Withdraw
+					{{ $t('statementsPage.button.withdraw') }}
 				</button>
 
 			</el-col>
@@ -281,7 +280,10 @@
 					return error.response;
 				});
 			} else {
-				await this.getCountriesSpecs()
+				this.getCountriesSpecs()
+				.then(() => {
+					this.isDataLoaded = true
+				})
 				.catch((error) => {
 					this.$store.commit('setSplashScreen', false)
 				});
@@ -298,7 +300,7 @@
 				return this.continents[this.countries_codes.indexOf(this.accountForm.bank_account_country)]
 			},
 			accountNumberLabel(){
-				return this.continents[this.countries_codes.indexOf(this.accountForm.bank_account_country)] == 'Europe' ? 'IBAN:' : 'ACCOUNT NUMBER:'
+				return this.continents[this.countries_codes.indexOf(this.accountForm.bank_account_country)] == 'Europe' ? this.$i18n.t('statementsPage.createAccount.iban_label') : this.$i18n.t('statementsPage.createAccount.account_number_label')
 			}
 		},
 		methods: {

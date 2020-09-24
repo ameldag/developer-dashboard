@@ -13,12 +13,12 @@
 					mode: 'records',
 					perPage: 10,
 					perPageDropdown: [10, 20, 30, 40, 50],
-					nextLabel: 'Next',
-					prevLabel: 'Prev',
-					rowsPerPageLabel: 'Rows per page',
-					ofLabel: 'of',
-					pageLabel: 'page', // for 'pages' mode
-					allLabel: 'All',
+					nextLabel: $t('pagination_option.nextLabel'),
+					prevLabel: $t('pagination_option.prevLabel'),
+					rowsPerPageLabel: $t('pagination_option.rowsPerPageLabel'),
+					ofLabel: $t('pagination_option.ofLabel'),
+					pageLabel: $t('pagination_option.pageLabel'), // for 'pages' mode
+					allLabel: $t('pagination_option.allLabel'),
 				}"
 				:lineNumbers="false"
 				class="styled">
@@ -66,28 +66,28 @@ export default {
 		return {
 			columns: [
 				{
-					label: 'Engine',
+					label: this.$i18n.t('resourcesPage.engine_label'),
 					field: 'engine',
 					filterable: false,
 				},
 				{
-					label: 'Version',
+					label: this.$i18n.t('resourcesPage.version_label'),
 					field: 'version',
 					filterable: true,
 				},
 				{
-					label: 'Description',
+					label: this.$i18n.t('resourcesPage.description_label'),
 					field: 'description',
 					html: false,
 					filterable: true,
 				},
 				{
-					label: 'Changelog',
+					label: this.$i18n.t('resourcesPage.changelog_label'),
 					field: 'changelog',
 					type: 'string'
 				},
 				{
-					label: 'Link',
+					label: this.$i18n.t('resourcesPage.link_label'),
 					field: 'link',
 					html: false,
 				},

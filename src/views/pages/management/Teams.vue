@@ -1,14 +1,14 @@
 <template>
 	<div class="page-vue-good-table scrollable only-y">
 		<div class="page-header">
-			<h1>Manage your team</h1>
+			<h1>{{ $t('teamsPage.Manage_your_team') }}</h1>
 			<el-breadcrumb separator="/">
 				<el-breadcrumb-item :to="{ path: '/' }"><i class="mdi mdi-gamepad-right"></i></el-breadcrumb-item>
-				<el-breadcrumb-item>Management</el-breadcrumb-item>
-				<el-breadcrumb-item>Team Members</el-breadcrumb-item>
-				<el-breadcrumb-item>List</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('Management') }}</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('Team_members') }}</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('List') }}</el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-button type="primary" class="text-truncate add-button" @click="centerDialogVisible = true" >Invite New Member</el-button>
+			<el-button type="primary" class="text-truncate add-button" @click="centerDialogVisible = true" >{{ $t('teamsPage.new_member_button') }}</el-button>
 			<el-dialog
 			:visible.sync="centerDialogVisible"
 			width="30%"
@@ -21,8 +21,8 @@
 						</el-form-item>
 					</el-row>
 					<el-row slot="footer" class="dialog-footer">
-						<el-button class="test-truncate" @click="centerDialogVisible = false">Annuler</el-button>
-						<el-button type="primary" class="test-truncate" v-loading="sendInvitationLoader" @click="sendInvitation">Confirmer</el-button>
+						<el-button class="test-truncate" @click="centerDialogVisible = false">{{ $t('teamsPage.button.cancel') }}</el-button>
+						<el-button type="primary" class="test-truncate" v-loading="sendInvitationLoader" @click="sendInvitation">{{ $t('teamsPage.button.confirm') }}</el-button>
 					</el-row>
 				</div>
 			</el-form>
@@ -42,12 +42,12 @@
 					mode: 'records',
 					perPage: 10,
 					perPageDropdown: [10, 20, 30, 40, 50],
-					nextLabel: 'Next',
-					prevLabel: 'Prev',
-					rowsPerPageLabel: 'Rows per page',
-					ofLabel: 'of',
-					pageLabel: 'page', // for 'pages' mode
-					allLabel: 'All',
+					nextLabel: $t('pagination_option.nextLabel'),
+					prevLabel: $t('pagination_option.prevLabel'),
+					rowsPerPageLabel: $t('pagination_option.rowsPerPageLabel'),
+					ofLabel: $t('pagination_option.ofLabel'),
+					pageLabel: $t('pagination_option.pageLabel'), // for 'pages' mode
+					allLabel: $t('pagination_option.allLabel'),
 				}"
 				:lineNumbers="false"
 				class="styled">
@@ -100,34 +100,34 @@ export default {
 			email: '',
 			columns: [
 				{
-					label: 'Avatar',
+					label: this.$i18n.t('teamsPage.avatar_label'),
 					field: 'avatar',
 					filterable: false,
 				},
 				{
-					label: 'Name',
+					label: this.$i18n.t('teamsPage.name_label'),
 					field: 'name',
 					filterable: true,
 				},
 				{
-					label: 'Email',
+					label: this.$i18n.t('teamsPage.email_label'),
 					field: 'email',
 					html: false,
 					filterable: true,
 				},
 				{
-					label: 'Country',
+					label: this.$i18n.t('teamsPage.country_label'),
 					field: 'country',
 					html: false,
 					filterable: true,
 				},
 				{
-					label: 'Registered',
+					label: this.$i18n.t('teamsPage.registered_label'),
 					field: 'createdAt',
 					type: 'string'
 				},
 				{
-					label: 'Role',
+					label: this.$i18n.t('teamsPage.role_label'),
 					field: 'role_in_team',
 					html: false,
 				},

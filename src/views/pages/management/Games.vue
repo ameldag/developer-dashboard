@@ -1,14 +1,14 @@
 <template>
 	<div class="page-vue-good-table scrollable only-y">
 		<div class="page-header">
-			<h1>Manage your games</h1>
+			<h1>{{ $t('gamesPage.Manage_your_revenue') }}</h1>
 			<el-breadcrumb separator="/">
 				<el-breadcrumb-item :to="{ path: '/' }"><i class="mdi mdi-gamepad-right"></i></el-breadcrumb-item>
-				<el-breadcrumb-item>Management</el-breadcrumb-item>
-				<el-breadcrumb-item>Games</el-breadcrumb-item>
-				<el-breadcrumb-item>List</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('Management') }}</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('Games') }}</el-breadcrumb-item>
+				<el-breadcrumb-item>{{ $t('List') }}</el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-button type="primary" class="text-truncate add-button" @click="addGamePage" >Add new game</el-button>
+			<el-button type="primary" class="text-truncate add-button" @click="addGamePage" >{{ $t('gamesPage.new_game_button') }}</el-button>
 		</div>
 
 		<div class="vue-good-table-box card-base card-shadow--medium">
@@ -24,12 +24,12 @@
 					mode: 'records',
 					perPage: 10,
 					perPageDropdown: [10, 20, 30, 40, 50],
-					nextLabel: 'Next',
-					prevLabel: 'Prev',
-					rowsPerPageLabel: 'Rows per page',
-					ofLabel: 'of',
-					pageLabel: 'page', // for 'pages' mode
-					allLabel: 'All',
+					nextLabel: $t('pagination_option.nextLabel'),
+					prevLabel: $t('pagination_option.prevLabel'),
+					rowsPerPageLabel: $t('pagination_option.rowsPerPageLabel'),
+					ofLabel: $t('pagination_option.ofLabel'),
+					pageLabel: $t('pagination_option.pageLabel'), // for 'pages' mode
+					allLabel: $t('pagination_option.allLabel'),
 				}"
 				:lineNumbers="false"
 				class="styled">
@@ -82,28 +82,28 @@ export default {
 			loadingTableData: true,
 			columns: [
 				{
-					label: 'Icon',
+					label: this.$i18n.t('gamesPage.icon_label'),
 					field: 'icon',
 					filterable: false,
 				},
 				{
-					label: 'App Name',
+					label: this.$i18n.t('gamesPage.app_name_label'),
 					field: 'name',
 					filterable: true,
 				},
 				{
-					label: 'Game Id',
+					label: this.$i18n.t('gamesPage.game_id_label'),
 					field: '_id',
 					html: false,
 					filterable: true,
 				},
 				{
-					label: 'Created',
+					label: this.$i18n.t('gamesPage.created_label'),
 					field: 'createdAt',
 					type: 'string'
 				},
 				{
-					label: 'Status',
+					label: this.$i18n.t('gamesPage.status_label'),
 					field: 'game_status',
 					html: false,
 				},
