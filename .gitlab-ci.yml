@@ -1,0 +1,27 @@
+build master:
+  image: node:9
+  stage: build
+  script:
+    - export VUE_APP_API_PATH=${VUE_APP_API_PATH_MASTER}
+    - npm install --progress=false
+    - npm run build
+  only:
+    - master
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
+
+build develop:
+  image: node:9
+  stage: build
+  script:
+    - export VUE_APP_API_PATH=${VUE_APP_API_PATH_DEVELOP}
+    - npm install --progress=false
+    - npm run build
+  except:
+    - master
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
