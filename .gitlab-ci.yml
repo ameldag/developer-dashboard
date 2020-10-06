@@ -3,6 +3,7 @@ build master:
   stage: build
   script:
     - export VUE_APP_API_PATH=${VUE_APP_API_PATH_MASTER}
+    - export VUE_APP_STRIPE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY_MASTER}
     - npm install --progress=false
     - npm run build
   only:
@@ -17,6 +18,7 @@ build develop:
   stage: build
   script:
     - export VUE_APP_API_PATH=${VUE_APP_API_PATH_DEVELOP}
+    - export VUE_APP_STRIPE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY_DEVELOP}
     - npm install --progress=false
     - npm run build
   except:
