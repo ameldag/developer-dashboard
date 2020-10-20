@@ -53,6 +53,15 @@
 				</el-col>
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+					<el-form-item label="Score mode" prop="score_mode">
+						<el-radio-group v-model="game.score_mode">
+							<el-radio label="highest" border></el-radio>
+							<el-radio label="lowest" border ></el-radio>
+						</el-radio-group>
+					</el-form-item>
+				</el-col>
+
+				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="Status" prop="status">
 						<el-radio-group v-model="game.status">
 							<el-radio label="true" border>Active</el-radio>
@@ -144,6 +153,7 @@ export default {
 				appstore_id: '',
 				bundle_id: null,
 				orientation: null,
+				score_mode: null,
 				status: null,
 				engine: null,
 				platforms: [],
@@ -163,6 +173,9 @@ export default {
 					],
 					engine: [
 						{ required: true, message: 'Please choose an engine', trigger: 'change' }
+					],
+					score_mode: [
+						{ required: true, message: 'Please choose a score mode', trigger: 'change' }
 					],
 					status: [
 						{ required: true, message: 'Please choose status', trigger: 'change' }
@@ -191,31 +204,31 @@ export default {
 						{
 							validator: (rule, value, callback, source, options) => {
 							if(value === ''){
-								callback(new Error('check this box to continue'))
+								callback(new Error('Please upload a backgroud image'))
 							} else {
 								callback();
 							}
 						}, trigger: 'change'}
 					],
 				},
-				3: {
-					fcm_file: [
-						{
-							validator: (rule, value, callback, source, options) => {
-							if(value === '' || value === null){
-								callback(new Error('Please upload an icon'))
-							} else {
-								callback();
-							}
-						}, trigger: 'change'}
-					],
-					p_12_password: [
-						{ required: true, message: 'Please enter a password', trigger: 'change' }
-					],
-					gcm_api_key: [
-						{ required: true, message: 'Please enter your server key', trigger: 'change' }
-					]
-				}
+				// 3: {
+				// 	fcm_file: [
+				// 		{
+				// 			validator: (rule, value, callback, source, options) => {
+				// 			if(value === '' || value === null){
+				// 				callback(new Error('Please upload an icon'))
+				// 			} else {
+				// 				callback();
+				// 			}
+				// 		}, trigger: 'change'}
+				// 	],
+				// 	p_12_password: [
+				// 		{ required: true, message: 'Please enter a password', trigger: 'change' }
+				// 	],
+				// 	gcm_api_key: [
+				// 		{ required: true, message: 'Please enter your server key', trigger: 'change' }
+				// 	]
+				// }
 			}
 		}
 	},
