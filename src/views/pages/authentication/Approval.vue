@@ -11,15 +11,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
 	name: 'account-approval',
 	data() {
 		return {
 		}
 	},
+	computed: {
+		...mapState('session', ['user']),
+	},
 	methods: {
 	},
 	mounted(){
+		if(this.user.approved) console.log(this.$router.push("dashboard"));
 	}
 }
 </script>
