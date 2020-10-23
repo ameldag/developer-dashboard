@@ -4,7 +4,7 @@
 			<div class="confirm-box card-base card-shadow--extraLarge">
 				<img class="image-logo" src="@/assets/images/logo_seemba_white.png" alt="logo"/>
 				<h1>Account approval</h1>
-				<p>your account is now waiting for adminoistrator approval. As soon as your account is approved you will receive a confirmation email.</p>
+				<p>your account is now waiting for administrator approval. As soon as your account is approved you will receive a confirmation email.</p>
 			</div>
 		</div>
 	</vue-scroll>
@@ -24,7 +24,7 @@ export default {
 	methods: {
 	},
 	mounted(){
-		if(this.user.approved) console.log(this.$router.push("dashboard"));
+		if(this.user.approved) this.$router.push("dashboard");
 	}
 }
 </script>
