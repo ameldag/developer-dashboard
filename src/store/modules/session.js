@@ -70,7 +70,11 @@ const actions = {
                 commit('setUser', res.data.editor);
                 commit('clearMessage');
             }
-        });
+        })
+        .catch(err => {
+            commit('setErrorMessage', err.response.data.message);
+            throw err
+        })
     },
 
     async getMe({ commit, dispatch }) {

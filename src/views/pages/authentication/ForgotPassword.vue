@@ -8,6 +8,8 @@
 					<input type="email" placeholder="E-mail" v-model="email">
 				</float-label>
 
+				<p class="text-center" style="color: red;">{{ error }}</p>
+
 				<div class="flex text-center center pt-20 pb-10">			
 					<el-button plain size="small" @click="sendResetMail" class="send-btn pulse animated themed">
 						SEND RESET LINK
@@ -24,6 +26,7 @@ export default {
 	name: 'ForgotPassword',
 	data() {
 		return {
+			error: '',
 			email: '',
 		}
 	},
@@ -36,6 +39,7 @@ export default {
 				this.$router.replace('/login');
 			})
 			.catch((error) => {
+				this.error = error.response.data.message
 				return error.response;
 			});
 		}

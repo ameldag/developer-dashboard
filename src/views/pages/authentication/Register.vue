@@ -27,6 +27,8 @@
 						<el-checkbox v-model="user.checked">I read and accept terms</el-checkbox>
 					</el-form-item>
 
+					<p class="text-center" style="color: red;">{{ error }}</p>
+
 					<div class="flex text-center center pt-30 pb-20">
 						<el-button type="primary signin-btn tada animated" @click="signup('user')">SIGN UP</el-button>
 					</div>
@@ -45,6 +47,7 @@ export default {
 	name: 'Register',
 	data() {
 		return {
+			error : '',
 			user: {
 				first_name:'',
 				last_name:'',
@@ -104,7 +107,7 @@ export default {
 						this.$store.commit('setSplashScreen', false)
 					})
 					.catch(err => {
-						return false
+						this. error = this.$store.state.session.errorMessage
 						this.$store.commit('setSplashScreen', false)
 						})
 				} else {
