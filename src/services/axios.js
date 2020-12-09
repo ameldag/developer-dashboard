@@ -11,7 +11,7 @@ const instance = axios.create({
     return response;
   }, function (error) {
   
-    if( error.response.status == 403){
+    if( error.response && error.response.status == 403){
       Router.push('/logout')
     }
     throw error
