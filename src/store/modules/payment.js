@@ -86,7 +86,7 @@ const actions = {
         })
     },
     
-    async createAccount({ commit, dispatch }, body){
+    async createConnectAccount({ commit, dispatch }, body){
         await paymentService.createAccount(body)
         .then(async (res) => {
             if(res.data.success){

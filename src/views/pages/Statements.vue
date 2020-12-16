@@ -282,6 +282,9 @@
 				});
 			} else {
 				await this.getCountriesSpecs()
+				.then(() => {
+					this.isDataLoaded = true
+				})
 				.catch((error) => {
 					this.$store.commit('setSplashScreen', false)
 				});
@@ -303,7 +306,7 @@
 		},
 		methods: {
 
-			...mapActions('payment',['retreiveAccount', 'getCountriesSpecs', 'createAccount', 'withdraw']),
+			...mapActions('payment',['retreiveAccount', 'getCountriesSpecs', 'createConnectAccount', 'withdraw']),
 			...mapActions('session',['getMe']),
 			createAccount(accountForm) {
 				this.$refs[accountForm].validate(async (valid) => {
@@ -339,7 +342,7 @@
 								})
 							}
 
-							await this.createAccount({
+							await this.createConnectAccount({
 								country_code: this.accountForm.holder_country,
 								ct: accountToken.token.id,
 								external_account: bankAccountToken.token.id,
@@ -366,6 +369,7 @@
 							});
 						} catch(error){
 							this.$store.commit('setSplashScreen', false)
+							console.log({error});
 							this.$notify({
 									title: 'Something went wrong. Please try later',
 									type: 'error',
