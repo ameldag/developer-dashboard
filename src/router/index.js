@@ -250,35 +250,35 @@ let auth = {
 router.beforeEach((to, from, next) => {
 
 
-			var hasPermission = localStorage.getItem("token");
-			if(hasPermission != null && to.name != 'email-confirmation'){
-				if(store.state.session.user.validated){
-					if(store.state.session.user.approved){
-						if(to.name === 'login' || to.name === 'register'){
-							window.location.href = '/'
-							return false
-						} else {
-							next()
-						}
-					} else {
-						window.location.href = '/approval'
-					}
-				} else {
-					if(to.name !== 'login' && to.name !== 'register'){
-						window.location.href = '/confirm'
-						return false
-					} else {
-						next()
-					}
-				}
-			} else {
-				if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'email-confirmation' ||   to.name === 'account-approval'){
-					next()
-				} else {
-					window.location.href = '/login'
+	var hasPermission = localStorage.getItem("token");
+	if(hasPermission != null && to.name != 'email-confirmation'){
+		if(store.state.session.user.validated){
+			// if(store.state.session.user.approved){
+				if(to.name === 'login' || to.name === 'register'){
+					window.location.href = '/'
 					return false
+				} else {
+					next()
 				}
+			// } else {
+			// 	window.location.href = '/approval'
+			// }
+		} else {
+			if(to.name !== 'login' && to.name !== 'register'){
+				window.location.href = '/confirm'
+				return false
+			} else {
+				next()
 			}
+		}
+	} else {
+		if(to.name === 'login' || to.name === 'register' || to.name === 'forgot-password' || to.name === 'reset-password' || to.name === 'email-confirmation' ){ //||   to.name === 'account-approval'
+			next()
+		} else {
+			window.location.href = '/login'
+			return false
+		}
+	}
 
 	if(to && to.meta && to.meta.layout){
 		l.set(to.meta.layout)

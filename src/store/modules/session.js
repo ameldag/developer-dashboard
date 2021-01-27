@@ -90,11 +90,12 @@ const actions = {
                 commit('clearMessage');
                 if(!state.user.validated){
                     router.push('/confirm')
-                } else {
-                    if(!state.user.approved){
-                        router.push('/approval')
-                    }
-                }
+                } 
+                // else {
+                //     if(!state.user.approved){
+                //         router.push('/approval')
+                //     }
+                // }
             }
         })
     },
