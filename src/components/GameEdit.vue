@@ -33,6 +33,18 @@
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
+				
+				<el-col v-if="game.platforms.includes('Android')" :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+					<el-form-item label="Play Store link" prop="play_store_link">
+						<el-input type="text" v-model="game.play_store_link" />
+					</el-form-item>
+				</el-col>
+				
+				<el-col v-if="game.platforms.includes('IOS')" :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
+					<el-form-item label="App Store link" prop="app_store_link">
+						<el-input type="text" v-model="game.app_store_link" />
+					</el-form-item>
+				</el-col>
 
 				<el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
 					<el-form-item label="Orientation" prop="orientation">
@@ -151,6 +163,8 @@ export default {
 				p_12_password_overwrite: '',
 				gcm_api_key: '',
 				appstore_id: '',
+				app_store_link: '',
+				play_store_link: '',
 				bundle_id: null,
 				orientation: null,
 				score_mode: null,
@@ -167,6 +181,26 @@ export default {
 					],
 					platforms: [
 						{ type: 'array', required: true, message: 'Please select at least one platform', trigger: 'change' }
+					],
+					play_store_link: [{
+							validator: (rule, value, callback, source, options) => {
+									
+							if(!this.isValidUrl(value)){
+								callback(new Error('Please enter a valid link'))
+							} else {
+								callback();
+							}
+						}, trigger: 'change'}
+					],
+					app_store_link: [{
+							validator: (rule, value, callback, source, options) => {
+									
+							if(!this.isValidUrl(value)){
+								callback(new Error('Please enter a valid link'))
+							} else {
+								callback();
+							}
+						}, trigger: 'change'}
 					],
 					orientation: [
 						{ required: true, message: 'Please choose orientation', trigger: 'change' }
@@ -314,6 +348,14 @@ export default {
 		},
 		back() {
 			this.active--
+		},
+		isValidUrl(url) {
+			try {
+				new URL(url);
+			} catch (e) {
+				return false;
+			}
+			return true;
 		},
 		resizeLabelPosition() {
 			if(window.innerWidth <= 768) {
