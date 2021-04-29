@@ -24,7 +24,7 @@ import Fullscreen from 'vue-fullscreen'
 import VueResize from 'vue-resize'
 import 'vue-resize/dist/vue-resize.css'
 //import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import 'flag-icon-css/css/flag-icon.css'
+// import 'flag-icon-css/css/flag-icon.css'
 
 
 /* ═ ═ ═ ═ ═ ═ ═ ═ ═ *\
