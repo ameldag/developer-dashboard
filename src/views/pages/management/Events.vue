@@ -1,7 +1,14 @@
 <template>
   <div class="page-vue-good-table scrollable only-y">
     <div class="page-header">
-      <h1>Manage your events</h1>
+      <h1>
+        <span
+          >Manage your events
+          <button @click="getPastEventPage()">
+            <i class="mdi mdi-archive"></i>
+          </button>
+        </span>
+      </h1>
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }"
           ><i class="mdi mdi-gamepad-right"></i
@@ -44,22 +51,17 @@
         class="styled"
       >
         <template slot="table-row" slot-scope="props">
-          
           <span v-if="props.column.field == 'icon'">
             <span v-if="props.row.icon">
-              <img
-                v-bind:src="props.row.icon"
-                alt="icon"
-                class="icon"
-              />
+              <img v-bind:src="props.row.icon" alt="icon" class="icon" />
             </span>
-             <span v-else>
+            <span v-else>
               <img
                 src="http://via.placeholder.com/300x300"
                 alt="icon"
                 class="icon"
-              /> 
-             </span>
+              />
+            </span>
           </span>
 
           <span v-else-if="props.column.field == 'createdAt'">
@@ -157,10 +159,17 @@ export default {
     addEventPage() {
       this.$router.replace("/events/new");
     },
+    async getPastEventPage() {
+      await this.getEvents({
+        eventPeriode: "pastEvent",
+      });
+    },
   },
   async mounted() {
     this.loadingTableData = true;
-    await this.getEvents();
+    await this.getEvents({
+      eventPeriode: "",
+    });
     this.loadingTableData = false;
   },
 };

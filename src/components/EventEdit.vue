@@ -128,7 +128,7 @@
             <el-button
               type="primary"
               style="float: right"
-              @click="next('event')"
+              @click="next('currentEvent')"
               >Next</el-button
             >
           </el-form-item>

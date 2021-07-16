@@ -24,8 +24,9 @@ export default {
             })
     },
 
-    async retreiveAll() {
-        return await axios.get(`/events/teams/${localStorage.getItem('current_team')}`, {
+    async retreiveAll(data) {
+        return await axios.get(`/events/teams/${localStorage.getItem('current_team')}?eventPeriode=` + data.eventPeriode + ((data.game_id == undefined) ? '' :
+                `&game_id=` + data.game_id), {
                 headers: {
                     'x-access-token': localStorage.getItem('token')
                 }
