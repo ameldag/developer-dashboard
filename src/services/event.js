@@ -46,5 +46,15 @@ export default {
                 throw error;
             });
     },
+    async leaderboardEvent(id) {
+        return await axios.post(`/events/${id}/leaderboard`, {
+                headers: {
+                    "x-access-token": localStorage.getItem('token')
+                }
+            })
+            .catch((error) => {
+                throw error;
+            })
+    }
 
 };

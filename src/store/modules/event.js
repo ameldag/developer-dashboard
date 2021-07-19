@@ -28,6 +28,9 @@ const mutations = {
         var ids = state.events.map(element => element._id)
         state.events[ids.indexOf(event._id)] = event
     },
+    setLeaderboard(state, events) {
+        state.events = events;
+    },
     setErrorMessage(state, msg) {
         state.errorMessage = msg;
     },
@@ -105,7 +108,22 @@ const actions = {
             .catch(error => {
                 throw error
             })
-    }
+    },
+
+    async leaderboard({ commit }, id) {
+        await events.leaderboardEvent(id).then(res => {
+
+                if (!res.data.success) {
+                    commit('setErrorMessage', res.data.error);
+                } else {
+                    commit('setLeaderboard', res.data.data);
+                    commit('clearMessage');
+                }
+            })
+            .catch(error => {
+                throw error
+            })
+    },
 };
 export default {
     namespaced: true,
