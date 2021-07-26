@@ -65,22 +65,28 @@
           </span>
 
           <span v-else-if="props.column.field == 'createdAt'">
-            <span>{{ moment(props.row.createdAt).format("YYYY/MM/DD") }}</span>
+            <span>{{ getEventDate(props.row.createdAt) }}</span>
           </span>
 
           <span v-else-if="props.column.field == 'start_date'">
-            <span>{{ moment(props.row.start_date).format("YYYY/MM/DD") }}</span>
+            <span>{{ getEventDate(props.row.start_date) }}</span>
           </span>
 
           <span v-else-if="props.column.field == 'end_date'">
-            <span>{{ moment(props.row.end_date).format("YYYY/MM/DD") }}</span>
+            <span>{{ getEventDate(props.row.end_date) }}</span>
           </span>
 
           <span v-else-if="props.column.field == 'name'">
             <el-button
               type="text"
               class="text-truncate"
-              @click="goToEvent(props.row._id)"
+              @click="
+                goToEvent(
+                  props.row._id,
+                  props.row.start_date,
+                  props.row.end_date
+                )
+              "
               >{{ props.row.name }}</el-button
             >
           </span>
@@ -105,6 +111,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import moment from "moment";
 export default {
   name: "Events",
   data() {
@@ -152,12 +159,16 @@ export default {
   methods: {
     ...mapActions("event", ["getEvents"]),
 
-    goToEvent(id) {
-      this.$router.replace("/events/" + id);
+    goToEvent(id, start_date, end_date) {
+      this.$router.replace(
+        "/events/" + id + "?start_date=" + start_date + "&end_date=" + end_date
+      );
     },
-
     addEventPage() {
       this.$router.replace("/events/new");
+    },
+    getEventDate: function (date) {
+      return moment(date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm:ss");
     },
     async getPastEventPage() {
       await this.getEvents({

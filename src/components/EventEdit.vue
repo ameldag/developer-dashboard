@@ -1,7 +1,7 @@
 <template>
   <div class="page-event-edit">
     <div class="page-header">
-      <h1>{{ action }} event</h1>
+      <h1>{{ action }} {{this.currentEvent.name.toLowerCase().trim()}} event</h1>
     </div>
     <el-form
       ref="currentEvent"
@@ -59,9 +59,13 @@
           <el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
             <el-form-item label="Beginging of Event :" prop="start_date">
               <el-date-picker
+                class="dateClass"
                 v-model="event.start_date"
-                type="date"
-                placeholder="pick a date"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                :picker-options="startDatePicker"
+                Placeholder="pick a start date"
+                size="small"
               >
               </el-date-picker>
             </el-form-item>
@@ -71,8 +75,11 @@
             <el-form-item label="End of Event :" prop="end_date">
               <el-date-picker
                 v-model="event.end_date"
-                type="date"
-                placeholder="pick a date"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                placeholder="pick a end date"
+                :picker-options="endDatePicker"
+                size="small"
               >
               </el-date-picker>
             </el-form-item>
@@ -189,7 +196,7 @@ export default {
         1: {
           start_date: [
             {
-              type: "date",
+              type: "string",
               required: true,
               message: "Please pick a start date",
               trigger: "change",
@@ -197,7 +204,7 @@ export default {
           ],
           end_date: [
             {
-              type: "date",
+              type: "string",
               required: true,
               message: "Please pick an end date",
               trigger: "change",
@@ -229,6 +236,8 @@ export default {
           ],
         },
       },
+      startDatePicker: this.beginDate(),
+      endDatePicker: this.processDate(),
     };
   },
   computed: {
@@ -294,7 +303,6 @@ export default {
         } else {
           return false;
         }
-
       });
     },
     resizeLabelPosition() {
@@ -312,14 +320,39 @@ export default {
         this.event.background_image = event.target.files[0];
       }
     },
-  },
-  async mounted() {
-    await this.getGames();
-    this.resizeLabelPosition();
-    window.addEventListener("resize", this.resizeLabelPosition);
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.resizeLabelPosition);
+    beginDate() {
+      const self = this;
+      return {
+        disabledDate(time) {
+          if (self.event.end_date) {
+            // If the end time is not empty, it is less than the end time
+            return new Date(self.event.end_date).getTime() < time.getTime();
+          } else {
+          }
+        },
+      };
+    },
+    processDate() {
+      const self = this;
+      return {
+        disabledDate(time) {
+          if (self.event.start_date) {
+            // If the start time is not empty, the end time is greater than the start time
+            return new Date(self.event.start_date).getTime() > time.getTime();
+          } else {
+            // return time.getTime()> Date.now()// When the start time is not selected, the maximum end time is less than or equal to the current day
+          }
+        },
+      };
+    },
+    async mounted() {
+      await this.getGames();
+      this.resizeLabelPosition();
+      window.addEventListener("resize", this.resizeLabelPosition);
+    },
+    beforeDestroy() {
+      window.removeEventListener("resize", this.resizeLabelPosition);
+    },
   },
 };
 </script>

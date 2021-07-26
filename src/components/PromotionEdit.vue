@@ -133,10 +133,10 @@ export default {
 				},
 				2:{
 					start_date: [
-						{ type: 'date', required: true, message: 'Please pick a start date', trigger: 'change' }
+						{ type: 'string', required: true, message: 'Please pick a start date', trigger: 'change' }
 					],
 					end_date: [
-						{ type: 'date', required: true, message: 'Please pick an end date', trigger: 'change' }
+						{ type: 'string', required: true, message: 'Please pick an end date', trigger: 'change' }
 					],
 				},
 			}

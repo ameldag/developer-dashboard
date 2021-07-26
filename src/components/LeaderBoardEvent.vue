@@ -48,15 +48,7 @@
           <span v-else-if="props.column.field == 'name'">
             <span> {{ props.row.firstname }} {{ props.row.lastname }} </span>
           </span>
-          <!-- <span v-else-if="props.column.field == 'games'">
-            <span
-              v-for="game in props.row.games"
-              :key="game._id"
-              class="el-tag mr-5"
-              >{{ game.name }}</span
-            >
-          </span> -->
-          
+
           <span v-else-if="props.column.field == 'total_score'">
             <span>{{ props.row.score }}</span>
           </span>
@@ -69,6 +61,9 @@
           </span>
         </template>
       </vue-good-table>
+      <div v-if="!this.events || !this.events.length">
+        This event has no leaderboard yet
+      </div>
     </div>
   </div>
 </template>
@@ -96,22 +91,6 @@ export default {
           field: "name",
           filterable: true,
         },
-        // {
-        //   label: "Game",
-        //   field: "games",
-        //   html: false,
-        //   filterable: true,
-        // },
-        {
-          label: "Country",
-          field: "country",
-          html: false,
-          filterable: true,
-        },
-        {
-          label: "Wins",
-          field: "current_victories_count",
-        },
         {
           label: "Score",
           field: "total_score",
@@ -123,6 +102,7 @@ export default {
           html: false,
         },
       ],
+      rows: [],
     };
   },
   computed: {
@@ -133,10 +113,6 @@ export default {
 
     goToEvent(id) {
       this.$router.replace("/events/" + id);
-    },
-
-    addEventPage() {
-      this.$router.replace("/events/new");
     },
   },
   async mounted() {
@@ -157,16 +133,6 @@ export default {
   width: 40px;
   object-fit: cover;
   border-radius: 10px;
-}
-
-.add-button {
-  float: right;
-}
-
-@media (max-width: 768px) {
-  .add-button {
-    float: left;
-  }
 }
 </style>
 
