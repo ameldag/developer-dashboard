@@ -1,14 +1,14 @@
 <template>
   <vue-scroll class="page-event" id="affix-container">
-    <div v-if="!comp">
+   <div v-if="upcomingEvent">
       <event-edit
         :action="action"
         :currentEvent="this.currentEvent"
       ></event-edit>
     </div>
-    <div v-if="comp">
+    <div>
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="Leaderboard" name="leaderboard">
+        <el-tab-pane label="Leaderboard" name="leaderboard" v-if="ongoingEvent || pastEvent && !upcomingEvent">
           <el-tabs>
             <leaderBoard-event
               :action="action"
@@ -16,7 +16,7 @@
             ></leaderBoard-event>
           </el-tabs>
         </el-tab-pane>
-        <el-tab-pane label="Update" name="update" v-if="!pastEvent">
+        <el-tab-pane label="Update" name="update" v-if="ongoingEvent || !pastEvent && !upcomingEvent">
           <event-edit
             :action="action"
             :currentEvent="this.currentEvent"
@@ -44,18 +44,25 @@ export default {
   },
   computed: {
     ...mapState("event", ["currentEvent"]),
-    comp() {
-      let current_date=moment(new Date(), "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm:ss")
-      let start_date= moment(this.$route.query.start_date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm:ss")
-      if (current_date> start_date)
-        return true;
-    },
-    pastEvent() {
-      let current_date=moment(new Date(), "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm:ss")
-      let end_date=moment(this.$route.query.end_date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm:ss")
-      if (current_date>end_date)
-        return true;
-    },
+      ongoingEvent() { 
+        let current_date=moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+        let start_date= moment(this.$route.query.start_date).format("YYYY-MM-DD HH:mm:ss")
+        let end_date= moment(this.$route.query.end_date).format("YYYY-MM-DD HH:mm:ss")
+          if (moment(start_date).isBefore(current_date)&& moment(current_date).isBefore(end_date))
+            return true;
+      },   
+      upcomingEvent() {
+      let current_date=moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      let start_date= moment(this.$route.query.start_date).format("YYYY-MM-DD HH:mm:ss")
+        if(moment(current_date).isBefore(start_date))
+            return true;      
+      },
+      pastEvent() {
+      let current_date=moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      let end_date= moment(this.$route.query.end_date).format("YYYY-MM-DD HH:mm:ss")
+        if(moment(end_date).isBefore(current_date))
+          return true;
+      },
   },
   methods: {
     ...mapActions("event", ["retreive"]),

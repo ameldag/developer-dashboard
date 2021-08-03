@@ -115,6 +115,16 @@ const router = new Router({
             }
         },
         {
+            path: '/management/events/past',
+            name: 'past_events',
+            component: Events,
+            meta: {
+                auth: true,
+                layout: layouts.navLeft,
+                searchable: true
+            }
+        },
+        {
             path: '/events/:id',
             name: 'event',
             component: Event,

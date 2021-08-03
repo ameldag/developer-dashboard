@@ -1,7 +1,8 @@
 <template>
   <div class="page-event-edit">
     <div class="page-header">
-      <h1>{{ action }} {{this.currentEvent.name.toLowerCase().trim()}} event</h1>
+      <h1 v-if="action == 'Update'">{{ action }} {{this.currentEvent.name.toLowerCase().trim()}} event</h1>
+      <h1 v-else> {{action}} event </h1>
     </div>
     <el-form
       ref="currentEvent"
@@ -32,7 +33,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" :md="12" :sm="24" :xs="24" class="col-p mr-20">
-            <el-form-item label="Select Game" prop="game">
+            <el-form-item label="Select Game" prop="games">
               <el-select v-model="event.game_id" placeholder="Select">
                 <el-option
                   v-for="item in this.games"
@@ -64,7 +65,7 @@
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 :picker-options="startDatePicker"
-                Placeholder="pick a start date"
+                placeholder="pick a start date"
                 size="small"
               >
               </el-date-picker>
@@ -162,7 +163,7 @@ export default {
       labelPosition: "left", //left, right, or top
       event: {
         name: "",
-        game: "",
+        game_id: "",
         start_date: "",
         end_date: "",
         description: "",

@@ -4,7 +4,7 @@ const state = {
     currentEvent: {
         name: '',
         description: '',
-        game: '',
+        game_id: '',
         icon: '',
         background_image: '',
         start_date: '',

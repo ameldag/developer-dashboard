@@ -114,6 +114,15 @@ import { mapActions, mapState } from "vuex";
 import moment from "moment";
 export default {
   name: "Events",
+  watch: {
+    $route: function () {
+      if (this.$route.name === "events_management") {
+        this.init();
+      } else if (this.$route.name === "past_event") {
+        this.getPastEventPage();
+      }
+    },
+  },
   data() {
     return {
       loadingTableData: true,
@@ -173,14 +182,19 @@ export default {
     async getPastEventPage() {
       await this.getEvents({
         eventPeriode: "pastEvent",
+      }).then(async (res) => {
+        await this.$router.replace("/management/events/past");
+      });
+    },
+    async init() {
+      await this.getEvents({
+        eventPeriode: "",
       });
     },
   },
   async mounted() {
     this.loadingTableData = true;
-    await this.getEvents({
-      eventPeriode: "",
-    });
+    this.init();
     this.loadingTableData = false;
   },
 };
